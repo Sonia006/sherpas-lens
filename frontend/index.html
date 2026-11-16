@@ -6,18 +6,40 @@
   <title>Sherpas Lens</title>
 </head>
 <body>
-  <!-- Contenedor principal donde se inyecta la app -->
   <div id="app"></div>
-  
-  <!-- Interfaz del chat flotante -->
-  <button id="fab" aria-label="Hablar con la IA">💬</button>
-  <section id="chat" hidden aria-label="Asistente">
-    <div class="chead"><span>Pregunta sobre tu plan</span><span><button id="vozbtn" title="Leer respuestas en voz alta">🔇</button><button id="cx" aria-label="Cerrar">✕</button></span></div>
-    <div id="msgs"></div>
-    <div class="cin"><input type="text" id="cinp" placeholder="Escribe tu duda…" maxlength="500"><button class="mic" id="mic" title="Hablar">🎤</button><button id="snd">Enviar</button></div>
+
+  <!-- Idioma de la interfaz y de la IA -->
+  <div id="lang" role="group" aria-label="Idioma / Language"><button data-l="es" aria-pressed="true">ES</button><button data-l="en" aria-pressed="false">EN</button></div>
+
+  <!-- Ventana para programar cita con el asesor -->
+  <dialog id="cita" aria-labelledby="ctit"></dialog>
+
+  <!-- Botón flotante de la asistente (se puede arrastrar) -->
+  <button id="fab" aria-label="Hablar con la asistente">
+    <svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="16" cy="14" r="5.5"/><path d="M6 29c1-6 5-8 10-8s9 2 10 8"/><path d="M7.5 14a8.5 8.5 0 0 1 17 0"/><rect x="5" y="13" width="3" height="6" rx="1.5"/><rect x="24" y="13" width="3" height="6" rx="1.5"/><path d="M25.5 19c0 3-3 4-6 4"/></svg>
+  </button>
+
+  <div id="scrim"></div>
+  <section id="chat" aria-label="Asistente" inert>
+    <div class="chead">
+      <h2>Pregunta sobre tu plan</h2>
+      <div>
+        <button class="ib mute" id="vozbtn" aria-label="Leer respuestas en voz alta">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 9a4 4 0 0 1 0 6M19 6.5a8 8 0 0 1 0 11"/><path class="slash" d="M3 3l18 18"/></svg>
+        </button>
+        <button class="ib" id="cx" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+    </div>
+    <div id="msgs" aria-live="polite"></div>
+    <div class="cin">
+      <div class="pill">
+        <input type="text" id="cinp" placeholder="Escribe tu duda..." maxlength="500" aria-label="Escribe tu duda">
+        <button class="ib" id="mic" aria-label="Hablar"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+        <button id="snd" aria-label="Enviar"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+      </div>
+    </div>
   </section>
 
-  <!-- Enlace que conecta tu archivo JavaScript -->
   <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>
