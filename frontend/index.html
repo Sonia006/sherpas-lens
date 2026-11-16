@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Sherpas Lens</title>
+</head>
+<body>
+  <!-- Contenedor principal donde se inyecta la app -->
+  <div id="app"></div>
+  
+  <!-- Interfaz del chat flotante -->
+  <button id="fab" aria-label="Hablar con la IA">💬</button>
+  <section id="chat" hidden aria-label="Asistente">
+    <div class="chead"><span>Pregunta sobre tu plan</span><span><button id="vozbtn" title="Leer respuestas en voz alta">🔇</button><button id="cx" aria-label="Cerrar">✕</button></span></div>
+    <div id="msgs"></div>
+    <div class="cin"><input type="text" id="cinp" placeholder="Escribe tu duda…" maxlength="500"><button class="mic" id="mic" title="Hablar">🎤</button><button id="snd">Enviar</button></div>
+  </section>
+
+  <!-- Enlace que conecta tu archivo JavaScript -->
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
