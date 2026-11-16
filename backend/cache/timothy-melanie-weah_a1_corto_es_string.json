@@ -1,0 +1,214 @@
+{
+  "case_id": "timothy-melanie-weah",
+  "animo": 1,
+  "tono": "muy agobiado",
+  "tiempo": "corto",
+  "idioma": "es",
+  "num_tarjetas": 5,
+  "frase_inicial": "Timothy y Melanie: con $150,800 en efectivo ya cubrís 16 meses de gastos; hay un camino claro",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "Pagar la tarjeta al 18%",
+      "reverso": "Haz un pago único de $6,800 desde vuestro efectivo para bajar el saldo de la Chase CC; así quitas el límite que frena la puntuación y reduces intereses caros.",
+      "detalle": "Top move: pagar $6,800 deja $11,200 de saldo en la tarjeta; interés 18%; esfuerzo medio.",
+      "meta_id": null
+    },
+    {
+      "id": "t2",
+      "frente": "Aumentar seguro de vida",
+      "reverso": "Añadid $235,000 de cobertura de vida (por ejemplo con un seguro temporal) para acercar el total a $485,000 y proteger a Liam y Josh si falta uno de los ingresos.",
+      "detalle": "Top move: target_amount 485000; tras el pago de tarjeta, la meta práctica del plan es llegar a $491,800.",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "Contratar umbrella de $1M",
+      "reverso": "Comprad una póliza de responsabilidad por $1,000,000: hoy no tenéis umbrella y vuestro patrimonio neto es $695,500, por lo que una reclamación podría alcanzar vuestras reservas.",
+      "detalle": "Sin cobertura actual; activos expuestos listan $428,500 y activos líquidos $360,000 según el plan.",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "Abrir 529 y empezar aportes",
+      "reverso": "Empezad aportando los $4,609.22 al año que faltan para la universidad; así atacáis la brecha de $113,508.60 necesaria para ambos niños.",
+      "detalle": "Funding gap total $113,508.60; Liam $55,117.56 hoy; Josh $58,391.04 hoy; no hay saldo actual en 529s.",
+      "meta_id": "college_liam_2038"
+    },
+    {
+      "id": "t5",
+      "frente": "Revisar mezcla de inversiones",
+      "reverso": "Sentad juntos 30–60 minutos para revisar la mezcla: la cartera tiene cerca del 77% en acciones y UPRO en la Roth por $12,740; acordad un punto medio entre Growth y Moderate.",
+      "detalle": "Inversiones totales $210,000; aproximadamente 77% en acciones; UPRO $12,740 en Roth reportado.",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 60,
+    "pilares": [
+      {
+        "pillar": "Savings and cash flow",
+        "score": 86,
+        "points_shown_in_app": "26/30"
+      },
+      {
+        "pillar": "Debt",
+        "score": 58,
+        "points_shown_in_app": "12/20"
+      },
+      {
+        "pillar": "Investments",
+        "score": 56,
+        "points_shown_in_app": "8/15"
+      },
+      {
+        "pillar": "Liquidity and emergency fund",
+        "score": 100,
+        "points_shown_in_app": "15/15"
+      },
+      {
+        "pillar": "Insurance and protection",
+        "score": 37,
+        "points_shown_in_app": "7/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Pay down revolving card",
+        "action": "Pay $6,800 on the 18% card from cash to remove high revolving exposure and clear the gate",
+        "effort": "medium",
+        "target_amount": 11200,
+        "score_before": 60,
+        "score_after": 62,
+        "lifts_a_cap": true
+      },
+      {
+        "title": "Add life cover",
+        "action": "Add $235,000 of life cover to raise the mortality ratio and clear the gate",
+        "effort": "low",
+        "target_amount": 485000,
+        "score_before": 60,
+        "score_after": 60,
+        "lifts_a_cap": true
+      },
+      {
+        "title": "Add umbrella cover",
+        "action": "Add $1M of umbrella to raise the liability shield",
+        "effort": "low",
+        "target_amount": 1000000,
+        "score_before": 60,
+        "score_after": 60,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [
+      {
+        "moves": [
+          "Pay down revolving card",
+          "Add life cover",
+          "Add umbrella cover"
+        ],
+        "score_after": 78,
+        "note": "After the card paydown, life cover must reach $491,800 to keep the mortality ratio at the gate line."
+      },
+      {
+        "moves": [
+          "Pay down revolving card",
+          "Add life cover"
+        ],
+        "score_after": 73,
+        "note": "After the card paydown, life cover must reach $491,800 to keep the mortality ratio at the gate line."
+      },
+      {
+        "moves": [
+          "Pay down revolving card",
+          "Add umbrella cover"
+        ],
+        "score_after": 62,
+        "note": "Together they raise the published score more than either move alone."
+      },
+      {
+        "moves": [
+          "Add life cover",
+          "Add umbrella cover"
+        ],
+        "score_after": 60,
+        "note": "Together they raise the published score more than either move alone."
+      }
+    ],
+    "limites": [
+      {
+        "reason": "High revolving balance with high APR",
+        "score_capped_at": 60
+      },
+      {
+        "reason": "Mortality coverage ratio below threshold with dependents",
+        "score_capped_at": 62
+      }
+    ],
+    "hitos": [
+      {
+        "id": "vacaciones_2027",
+        "anio": 2027,
+        "titulo": "Pagar las vacaciones (enero 2027)"
+      },
+      {
+        "id": "vehiculo_2028",
+        "anio": 2028,
+        "titulo": "Comprar vehículo (julio 2028)"
+      },
+      {
+        "id": "casa_2030",
+        "anio": 2030,
+        "titulo": "Comprar casa (enero 2030)"
+      },
+      {
+        "id": "college_liam_2038",
+        "anio": 2038,
+        "titulo": "Inicio universidad Liam (agosto 2038)"
+      },
+      {
+        "id": "retiro_melanie_2048",
+        "anio": 2048,
+        "titulo": "Jubilarse Melanie (marzo 2048)"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Pago extra de deuda al mes",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
+      },
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Ahorro mensual extra",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Simulador ilustrativo: muestra la dirección del cambio, no una proyección de Sherpas."
+  },
+  "siguiente_paso": {
+    "titulo": "Pagar $6,800 en la tarjeta al 18% desde efectivo para eliminar la exposición giratoria y limpiar la puerta",
+    "razon": "Es el movimiento que más sube la puntuación: eleva la puntuación publicada de 60 a 62 y deja $11,200 de saldo en la tarjeta según el plan.",
+    "minutos": 10,
+    "pasos": [
+      "Confirma que tienes $6,800 disponible en la cuenta 'Cash account' (saldo $150,000).",
+      "Inicia una transferencia o pago de $6,800 a la Chase CC para abonar el principal.",
+      "Guarda la confirmación del pago y anota el nuevo saldo de la tarjeta ($11,200)."
+    ],
+    "acciones": {
+      "calendario_url": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Pagar%20%246%2C800%20en%20la%20tarjeta%20al%2018%25%20desde%20efectivo%20para%20eliminar%20la%20exposici%C3%B3n%20giratoria%20y%20limpiar%20la%20puerta&dates=20261118/20261119&details=Recordatorio%20de%20tu%20plan%20Sherpas",
+      "asesor_url": "mailto:asesor@example.com?subject=Quiero%20hablar%20de%20mi%20plan&body=Hola%2C%20he%20visto%20mi%20plan%20y%20quiero%20ayuda%20con%20este%20paso%3A%20Pagar%20%246%2C800%20en%20la%20tarjeta%20al%2018%25%20desde%20efectivo%20para%20eliminar%20la%20exposici%C3%B3n%20giratoria%20y%20limpiar%20la%20puerta"
+    }
+  },
+  "fallback": false
+}
