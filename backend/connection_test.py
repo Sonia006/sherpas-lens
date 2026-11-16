@@ -33,3 +33,11 @@ async def probar_todo():
             print(reply.choices[0].message.content)
 
 asyncio.run(probar_todo())
+
+
+'''
+{
+  "case_id": "michael-carter",
+  "estado_animo": "ansioso"
+}
+'''
