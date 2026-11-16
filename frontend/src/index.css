@@ -535,3 +535,55 @@ ul.h b {
     display: none !important;
   }
 }
+
+/* ===== v2: diseño según el boceto ===== */
+.bk { border: 0; background: none; font-size: 24px; cursor: pointer; color: var(--night); padding: 2px 6px 2px 0; }
+.hd { display: flex; align-items: flex-start; gap: 8px; padding: 16px 0 12px; border-bottom: 2px solid var(--night); margin-bottom: 12px; }
+.hc { flex: 1; text-align: center; margin-right: 30px; }
+.brand { font: 700 1.7rem Georgia, serif; letter-spacing: .14em; }
+.sub { font-size: 14px; color: var(--mut); }
+.steps { position: relative; display: flex; justify-content: space-between; margin: 10px 12% 0; }
+.steps::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: #9fb2b2; }
+.steps i { position: relative; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 2px solid #9fb2b2; }
+.steps i.done { background: var(--teal); border-color: var(--teal); }
+.steps i.cur { background: var(--amber); border-color: var(--night); box-shadow: 0 0 0 4px #17283a22; }
+
+.title { font: 700 2.3rem Georgia, serif; letter-spacing: .1em; margin: 26px 0 10px; }
+.ask { font-size: 18px; margin: 18px 0 0; }
+.mood { margin: 18px 0 6px; }
+.g5 { display: grid; grid-template-columns: repeat(5, 1fr); justify-items: center; align-items: center; }
+.faces span { font-size: 40px; line-height: 1.3; }
+.mlab span { font-size: 13px; color: var(--mut); }
+.track { position: relative; margin: 4px 0; min-height: 34px; }
+.track::before { content: ''; position: absolute; left: 10%; right: 10%; top: 50%; height: 2px; background: #9fb2b2; }
+.dot { position: relative; width: 14px; height: 14px; padding: 0; border-radius: 50%; border: 2px solid var(--night); background: #fff; cursor: pointer; }
+.dot::after { content: ''; position: absolute; inset: -12px; }
+.dot.on { width: 26px; height: 26px; background: var(--amber); box-shadow: 0 0 0 4px #e3a02f44; }
+.cap { text-align: center; color: var(--mut); font-size: 14px; margin: 8px 0 0; }
+.opts { margin-top: 28px; }
+
+.meta { background: var(--ice); border-radius: 14px; padding: 12px 16px; text-align: center; margin-bottom: 12px; }
+.meta p { margin: 2px 0 0; font: 700 1.15rem Georgia, serif; }
+.face { padding: 0; justify-content: flex-start; }
+.tab { padding: 10px 16px; font-weight: 700; font-size: 13px; letter-spacing: .08em; border-bottom: 1.5px solid currentColor; }
+.body { flex: 1; padding: 18px; overflow: auto; display: flex; flex-direction: column; justify-content: center; }
+.back .body { justify-content: flex-start; }
+.front small { padding: 0 18px 14px; margin: 0; }
+.card { height: 290px; }
+.nav { margin-bottom: 14px; }
+.nav button { padding: 6px 18px; font-size: 22px; }
+.paso { display: flex; border: 1.5px solid var(--night); border-radius: 12px; overflow: hidden; margin-bottom: 8px; }
+.paso b { background: var(--night); color: #fff; padding: 12px 14px; letter-spacing: .08em; font-size: 13px; display: flex; align-items: center; }
+.paso span { padding: 10px 14px; font-size: 15px; background: #fff; flex: 1; }
+
+.ctl { background: #fff; border-radius: 18px; padding: 6px 14px 10px; margin: 10px 0; }
+.row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; font-weight: 600; border-bottom: 1px solid var(--ice); }
+.val { display: flex; align-items: center; gap: 6px; }
+.val output { min-width: 82px; text-align: center; border: 1.5px solid var(--night); border-radius: 8px; padding: 6px 8px; background: var(--snow); }
+.pm { display: flex; flex-direction: column; gap: 2px; }
+.pm button { width: 32px; height: 22px; line-height: 1; border: 1.5px solid var(--night); border-radius: 6px; background: #fff; cursor: pointer; font-size: 15px; }
+.info { text-align: center; font-size: 14px; margin: 12px 0 0; }
+.info a { color: var(--teal); font-weight: 700; }
+.next h3 { letter-spacing: .1em; text-align: center; }
+.dl { display: block; margin: 14px auto 0; background: none; border: 0; color: #c9d6df; text-decoration: underline; cursor: pointer; font: inherit; font-size: 14px; }
+@media print { .hd, .dl, .pm { display: none !important; } }

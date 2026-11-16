@@ -1,0 +1,170 @@
+{
+  "case_id": "michael-carter",
+  "animo": 3,
+  "tono": "neutral",
+  "tiempo": "corto",
+  "idioma": "es",
+  "num_tarjetas": 5,
+  "frase_inicial": "Michael: con una puntuación de 26, hay un camino claro en tres pasos",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "Reserva el dinero de la casa",
+      "reverso": "Mantén $113,300 separado para la compra en enero 2027; no uses ese dinero para inversiones de largo plazo.",
+      "detalle": "Cuenta en la que retener: ahorros y efectivo accesible hoy ($30,000). Confirma fuentes adicionales antes de transferir inversiones.",
+      "meta_id": "casa_2027"
+    },
+    {
+      "id": "t2",
+      "frente": "Aumenta el colchón de efectivo",
+      "reverso": "Tienes $30,000 accesibles, que cubren 3.2 meses; la reserva recomendada es de $46,530 a $55,836 (5–6 meses).",
+      "detalle": "Prioriza llegar al mínimo $46,530 antes de usar ahorros para la casa o inversiones riesgosas.",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "Paga la tarjeta al 20%",
+      "reverso": "La Amex tiene $3,500 al 20% y pagas $200 al mes; está proyectada para quedar saldada en julio 2028 si sigues así.",
+      "detalle": "Reducir esta deuda elimina el interés más caro y mejora flujo mensual sin tocar ahorros a largo plazo.",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "Añade cobertura de responsabilidad",
+      "reverso": "Agregar $1,000,000 de umbrella subiría la puntuación de 26 a 31 y protege frente a reclamos grandes.",
+      "detalle": "Datos muestran activos líquidos expuestos $172,000 y vehículo con $25,000 de equity marcado como sin seguro; confirma pólizas actuales.",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "Decide: casa ahora o ahorrar para retiro",
+      "reverso": "Cerrar la brecha de retiro pide $1,177,586 y unos $20,231 adicionales al año; hoy tus ahorros se agotarían a los 85 y faltarían $32,439.",
+      "detalle": "Tu flujo neto este año es -$8,336; valora si priorizar la compra de enero 2027 o aportar esos $20,231 extra al retiro.",
+      "meta_id": "retiro_2047"
+    }
+  ],
+  "mapa": {
+    "score_base": 26,
+    "pilares": [
+      {
+        "pillar": "Savings and cash flow",
+        "score": 0,
+        "points_shown_in_app": "0/25"
+      },
+      {
+        "pillar": "Debt",
+        "score": 78,
+        "points_shown_in_app": "8/10"
+      },
+      {
+        "pillar": "Investments",
+        "score": 42,
+        "points_shown_in_app": "11/25"
+      },
+      {
+        "pillar": "Liquidity and emergency fund",
+        "score": 22,
+        "points_shown_in_app": "4/20"
+      },
+      {
+        "pillar": "Insurance and protection",
+        "score": 18,
+        "points_shown_in_app": "4/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Add umbrella cover",
+        "action": "Add $1M of umbrella to raise the liability shield",
+        "effort": "low",
+        "target_amount": 1000000,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Lower the withdrawal rate",
+        "action": "Cutting withdrawals to $10,300/year (6.0%) reaches the sustainable band",
+        "effort": "high",
+        "target_amount": 10300,
+        "score_before": 26,
+        "score_after": 62,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Raise growth allocation toward glide",
+        "action": "Move the invested mix from 74% to 88% growth (glide 98%) for the next horizon-fit band — about $19,900 of the invested book",
+        "effort": "high",
+        "target_amount": 19900,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [],
+    "limites": [],
+    "hitos": [
+      {
+        "id": "casa_2027",
+        "anio": 2027,
+        "titulo": "Compra de casa"
+      },
+      {
+        "id": "vacaciones_2027",
+        "anio": 2027,
+        "titulo": "Vacación anual"
+      },
+      {
+        "id": "retiro_2047",
+        "anio": 2047,
+        "titulo": "Retiro de Michael"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Ahorro mensual extra",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      },
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Pago extra de deuda al mes",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
+      },
+      {
+        "id": "gasto_menos",
+        "etiqueta": "Gasto mensual que recortas",
+        "unidad": "$",
+        "min": 0,
+        "max": 500,
+        "paso": 25,
+        "puntos_por_unidad": 0.012
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Simulador ilustrativo: muestra la dirección del cambio, no una proyección de Sherpas."
+  },
+  "siguiente_paso": {
+    "titulo": "Agregar $1,000,000 de umbrella para subir la protección",
+    "razon": "Añadir $1,000,000 de umbrella eleva la puntuación de 26 a 31 y protege frente a reclamos que podrían afectar $172,000 de activos líquidos.",
+    "minutos": 10,
+    "pasos": [
+      "Solicita 2–3 cotizaciones para $1,000,000 de cobertura de responsabilidad.",
+      "Compara primas, exclusiones y si tu auto (BMW) ya está cubierto.",
+      "Compra la póliza que encaje y guarda la confirmación con tus otros seguros."
+    ],
+    "acciones": {
+      "calendario_url": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Agregar%20%241%2C000%2C000%20de%20umbrella%20para%20subir%20la%20protecci%C3%B3n&dates=20261118/20261119&details=Recordatorio%20de%20tu%20plan%20Sherpas",
+      "asesor_url": "mailto:asesor@example.com?subject=Quiero%20hablar%20de%20mi%20plan&body=Hola%2C%20he%20visto%20mi%20plan%20y%20quiero%20ayuda%20con%20este%20paso%3A%20Agregar%20%241%2C000%2C000%20de%20umbrella%20para%20subir%20la%20protecci%C3%B3n"
+    }
+  },
+  "fallback": false
+}
