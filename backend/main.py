@@ -17,6 +17,7 @@ import json
 import logging
 import os
 import re
+import copy
 from datetime import date, timedelta
 from pathlib import Path
 from typing import Literal
@@ -44,6 +45,7 @@ CACHE_DIR = Path(os.getenv("CACHE_DIR", "cache"))
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 CASES = ["timothy-melanie-weah", "michael-carter", "daniel-emily-johnson", "samantha-lewis"]
+BASE_LANG = "en"  # idioma en el que se genera; el resto se traduce
 CASE_PATTERN = r"^[a-z0-9-]{3,60}$"  # evita rutas raras 
 
 llm = AsyncOpenAI(base_url=LLM_BASE_URL, api_key=LLM_API_KEY, timeout=90, max_retries=0)
@@ -366,7 +368,6 @@ No calcules cifras nuevas. Si dos cifras del plan no coinciden o miden cosas dis
 - PROHIBIDA la jerga financiera o bancaria: exposición, ratio, activos, liquidez, cobertura, rentabilidad, "optimizar". No uses ningún término técnico (401(k), 529, umbrella...).
 - Traduce a lenguaje de andar por casa. Ejemplos: "colchón para imprevistos" (fondo de emergencia); "seguro extra por si te reclaman una cantidad muy grande (umbrella)"; "el plan de ahorro para la jubilación de tu empresa (401(k))"; "el ahorro para la universidad de los niños (529)"; "la parte de la casa que ya es vuestra" (equity); "la tarjeta es la deuda que más cuesta de mantener"; "tenéis más ahorro parado de lo que haría falta; parte podría trabajar para vosotros" (exceso de reserva). Los ratios de deuda no se mencionan: di solo si la deuda aprieta o no.
 - Frases cortas, una idea por frase, verbos concretos: pagar, apartar, comprobar, elegir, mantener. Di quién hace qué y cómo le afecta.
-- Explica el "qué hay que hacer" y el "por qué" de forma directa, para que una familia sin estudios financieros lo entienda al primer vistazo.
 </lenguaje>
 
 <psicologia>
@@ -611,9 +612,7 @@ async def map_texts(case_id, block, language):
                 model=LLM_MODEL,
                 reasoning_effort="minimal",
                 messages=[
-                    {"role": "system", "content": "Traduce al español sencillo y sin jerga financiera los textos de este JSON. "
-                     "Devuelve el mismo JSON, con las mismas claves, el mismo orden y los mismos números; traduce solo los valores de texto. "
-                     "Los nombres dentro de 'moves' deben coincidir con los 'title' traducidos."},
+                    {"role": "system", "content": "Adapta al español sencillo y natural, sin jerga financiera y sin calcos del inglés, los textos de este JSON. Vocabulario fijo: " + GLOSSARY + ". "},
                     {"role": "user", "content": json.dumps(src, ensure_ascii=False)},
                 ],
                 response_format={"type": "json_object"},
@@ -627,6 +626,86 @@ async def map_texts(case_id, block, language):
             log.warning("Traduccion del mapa fallida (%s): %s", case_id, e)
         return block
 
+GLOSSARY = ("emergency fund / cash reserve = colchón para imprevistos; life insurance = seguro de vida; "
+            "umbrella insurance = seguro extra por si os reclaman una cantidad muy grande; "
+            "401(k) = plan de ahorro para la jubilación de la empresa; 529 = ahorro para la universidad de los niños; "
+            "home equity = la parte de la casa que ya es vuestra; credit card debt = la deuda de la tarjeta; "
+            "goal = meta; next step = siguiente paso")
+
+TRANSLATE_RULES = """You adapt a short financial-plan summary from English into {language}. This is NOT a literal translation: rewrite each text the way a warm, clear person would say it in a kitchen conversation with a family that has no financial training.
+
+READER: a family in the US. Today they feel "{mood}": let that set the warmth of the wording, and never mention it.
+
+HOW TO ADAPT
+- Translate the meaning, not the words. Rephrase and reorder freely inside each field, as long as the facts stay the same and each sentence keeps one idea.
+- Avoid calques and stiff phrasing. Examples: "you're on track" -> "vais por buen camino" (not "estáis en la pista"); "put your cash to work" -> "que ese dinero trabaje para vosotros"; "a cushion for surprises" -> "un colchón para imprevistos".
+- Short sentences and everyday verbs (pagar, apartar, comprobar, elegir, mantener). No bank or finance jargon, no acronyms.
+- Register: tú for one person, vosotros for two or more.
+- Use this vocabulary every time: {glossary}.
+
+KEEP EXACTLY: names, years, dates, numbers, currency symbols and amounts (write $6,800 as "$6,800"), account names, JSON keys, and the order and number of items. Empty strings stay empty.
+LENGTH: the translation runs longer by default. Keep each text within about 10% of the word count of the English original: cut filler, never meaning.
+Do not add, remove or soften facts, and do not add notes or explanations."""
+
+LANGUAGE_NAMES = {"es": "Spanish (informal 'tú', plain everyday words)", "en": "English"}
+
+# Traduce un resumen ya generado en BASE_LANG: mucho mas rapido que generarlo de nuevo
+async def translate_summary(base: dict, req: SummaryRequest, ctx: dict) -> dict:
+    lang, texts = req.idioma, TEXTS[req.idioma]
+    step = base["siguiente_paso"]
+    src = {
+        "frase_inicial": base["frase_inicial"],
+        "tarjetas": [{k: t[k] for k in ("frente", "reverso", "detalle")} for t in base["tarjetas"]],
+        "hitos": [h["titulo"] for h in base["mapa"]["hitos"]],
+        "siguiente_paso": {k: step[k] for k in ("titulo", "razon", "pasos")},
+    }
+    system = TRANSLATE_RULES.format(language=LANGUAGE_NAMES[lang], mood=texts["mood"][req.animo_efectivo], glossary=GLOSSARY)
+
+    block_task = asyncio.create_task(map_texts(req.case_id, ctx["score_block"], lang))
+    last_error = None
+    for attempt in (1, 2):
+        try:
+            resp = await llm.chat.completions.create(
+                model=LLM_MODEL,
+                reasoning_effort="minimal",
+                messages=[{"role": "system", "content": system},
+                          {"role": "user", "content": json.dumps(src, ensure_ascii=False)}],
+                response_format={"type": "json_object"},
+            )
+            out = json.loads(resp.choices[0].message.content)
+            sp = out["siguiente_paso"]
+            if (len(out["tarjetas"]) != len(src["tarjetas"]) or len(out["hitos"]) != len(src["hitos"])
+                    or len(sp["pasos"]) != len(step["pasos"]) or not str(out["frase_inicial"]).strip()):
+                raise ValueError("La traduccion no conserva la estructura")
+            break
+        except Exception as e:
+            last_error = e
+            log.warning("Traduccion del resumen fallida, intento %s: %r", attempt, e)
+            await asyncio.sleep(0.5)
+    else:
+        raise RuntimeError(f"No se pudo traducir el resumen: {last_error}")
+
+    block = await block_task
+    block = block if isinstance(block, dict) else {}
+    result = copy.deepcopy(base)
+    result.update(idioma=lang, tono=texts["mood"][req.animo_efectivo], frase_inicial=str(out["frase_inicial"]).strip())
+    for c, t in zip(result["tarjetas"], out["tarjetas"]):
+        for k in ("frente", "reverso", "detalle"):
+            c[k] = str(t.get(k) or "").strip()
+    for h, title in zip(result["mapa"]["hitos"], out["hitos"]):
+        h["titulo"] = str(title).strip()
+    title = str(sp.get("titulo") or texts["default_step"]).strip()
+    result["siguiente_paso"].update(
+        titulo=title, razon=str(sp.get("razon") or "").strip(),
+        pasos=[str(p).strip() for p in sp["pasos"]],
+        acciones={"calendario_url": calendar_link(title, lang), "asesor_url": advisor_link(title, lang)})
+    result["mapa"].update(
+        pilares=block.get("pillars") or [], movimientos=block.get("top_moves") or [],
+        combinaciones=block.get("combined_moves") or [], limites=block.get("caps_applied") or [],
+        palancas=build_levers([p["id"] for p in base["mapa"]["palancas"]], lang),
+        aviso=texts["notice"])
+    return result
+
 
 # Generacion
 async def build_summary(req: SummaryRequest) -> dict:
@@ -637,6 +716,13 @@ async def build_summary(req: SummaryRequest) -> dict:
             return cached
 
     ctx = await case_context(req.case_id)
+
+    if req.idioma != BASE_LANG:
+        base = await build_summary(req.model_copy(update={"idioma": BASE_LANG, "regenerar": False}))
+        result = await translate_summary(base, req, ctx)
+        save_cache(key, result)
+        return result
+        
     n = num_cards(req.animo_efectivo, req.tiempo)
     last_error = None
     for attempt in (1, 2):
@@ -649,7 +735,6 @@ async def build_summary(req: SummaryRequest) -> dict:
                 response_format={"type": "json_object"},
             )
             raw = json.loads(resp.choices[0].message.content)
-            #result = normalize(raw, req, n, ctx["score"], ctx["score_block"])
             result = normalize(raw, req, n, ctx["score"], await map_texts(req.case_id, ctx["score_block"], req.idioma))
             save_cache(key, result)
             return result
@@ -728,7 +813,7 @@ Devuelve EXCLUSIVAMENTE un JSON: {{"respuesta": "...", "derivar_asesor": false}}
 
 # Utilidades: precalcular y depurar
 @app.post("/precalcular")
-async def precompute(x_admin_token: str = Header(default=""), regenerar: bool = False, solo_es: bool = True):
+async def precompute(x_admin_token: str = Header(default=""), regenerar: bool = False, idiomas: str = "en,es"):
     """Genera 4 casos x 5 animos x 2 tiempos y los guarda en cache. Ejecurar antes de la demo."""
     if ADMIN_TOKEN and x_admin_token != ADMIN_TOKEN:
         raise HTTPException(401, "Falta X-Admin-Token")
@@ -736,7 +821,7 @@ async def precompute(x_admin_token: str = Header(default=""), regenerar: bool = 
     sem = asyncio.Semaphore(3)  # el proxy permite 4 peticiones concurrentes por equipo
     results = {"ok": 0, "errores": []}
 
-    langs = ["es"] if solo_es else ["es", "en"]
+    langs = sorted((l for l in idiomas.split(",") if l in TEXTS), key=lambda l: l != BASE_LANG)
 
     async def run_one(case_id, mood, duration, lang):
         async with sem:
@@ -747,7 +832,9 @@ async def precompute(x_admin_token: str = Header(default=""), regenerar: bool = 
             except Exception as e:
                 results["errores"].append(f"{case_id} a{mood} {duration}: {e}")
 
-    await asyncio.gather(*[run_one(c, a, t, lang) for c in CASES for a in range(1, 6) for t in ("corto", "completo") for lang in langs])
+    for lang in langs:  # primero el idioma base; los demas solo traducen
+        await asyncio.gather(*[run_one(c, a, t, lang) for c in CASES for a in range(1, 6) for t in ("corto", "completo")])
+
     return results
 
 
