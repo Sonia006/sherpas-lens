@@ -125,10 +125,10 @@ hr{border:0;border-top:1.5px solid var(--line);margin:8px 0}
 .mood{touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:pointer}
 .face-b{width:88px;height:88px;border:0;background:none;border-radius:50%;color:var(--soft);display:grid;place-items:center;padding:0}
 .face-b svg{transition:transform .2s,filter .2s}
-.face-b svg circle:first-child{transition:fill .2s}
+.face-b svg .fb{transition:fill .2s}
 .face-b.on{color:var(--ink)}
 .face-b.on svg{transform:scale(1.15);filter:drop-shadow(0 0 10px #f08c3caa)}
-.face-b.on svg circle:first-child{fill:#ffe3c4}
+.face-b.on svg .fb{fill:#ffe3c4}
 .dp{transition:all .15s}
 .who{margin:0 0 4px;text-align:center;font-weight:800;font-size:1.1rem}
 .mood+.mood{margin-top:26px}
@@ -182,9 +182,9 @@ body{background:linear-gradient(160deg,#dfeceb,#e9ecef 40%,#f3e9de)}
 .mlab span{display:block;text-align:center;white-space:nowrap;font-weight:800}
 .g5{grid-template-columns:repeat(5,minmax(0,1fr))}
 .mood{background:#fff;border-radius:28px;padding:18px 6px 14px;box-shadow:0 4px 18px #1f293712}
-.face-b[data-k=sad].on{color:var(--rose)}.face-b[data-k=sad].on svg circle:first-child{fill:#ffd9d4}
-.face-b[data-k=neu].on{color:var(--sun)}.face-b[data-k=neu].on svg circle:first-child{fill:#fff0b8}
-.face-b[data-k=smi].on{color:var(--teal)}.face-b[data-k=smi].on svg circle:first-child{fill:#cdeedd}
+.face-b[data-k=sad].on{color:var(--rose)}.face-b[data-k=sad].on svg .fb{fill:#ffd9d4}
+.face-b[data-k=neu].on{color:var(--sun)}.face-b[data-k=neu].on svg .fb{fill:#fff0b8}
+.face-b[data-k=smi].on{color:var(--teal)}.face-b[data-k=smi].on svg .fb{fill:#cdeedd}
 .face-b.on svg{filter:drop-shadow(0 3px 8px currentColor)}
 .face-b[data-k=sad]:not(.on){color:#e8b1aa}.face-b[data-k=neu]:not(.on){color:#e6d18f}.face-b[data-k=smi]:not(.on){color:#a5d3cb}
 .dp.on{background:var(--teal);box-shadow:0 0 0 5px #2f9a8a30}
@@ -223,3 +223,154 @@ svg.chart{touch-action:pan-y;cursor:crosshair;margin-top:4px}
 .next{background:linear-gradient(160deg,#fff,#effaf8);border:1px solid #cfe9e4}
 .next h3{color:var(--teal)}
 .info .lnk{color:var(--teal)}
+
+
+/* ═════ Ajustes móvil / tarjetas / tipografía ═════ */
+.face-b{-webkit-tap-highlight-color:transparent;outline:none;-webkit-appearance:none;appearance:none}
+.face-b.on svg,.face-b.on[data-k] svg{filter:none!important}
+.face-b svg .halo{opacity:0;transition:opacity .2s}.face-b.on svg .halo{opacity:.22}
+.fh{display:flex;align-items:center;justify-content:center;gap:12px;margin:2px 0 16px;width:100%}
+.fh .ic{width:46px;height:46px;margin:0;flex:none}.ic svg{width:24px;height:24px}
+.face .fh h3{font-size:1.35rem;margin:0;text-align:left;line-height:1.1}
+.back .fh{justify-content:flex-start;margin-bottom:12px}
+.back .fh .ic{width:38px;height:38px}.back .fh .ic svg{width:20px;height:20px}
+.back .fh h3{font-size:1.1rem}
+.next h3{font-family:inherit;font-weight:800;font-size:1.2rem;letter-spacing:.06em}
+
+
+/* ═════ Ajustes v3: pasos, ajuste a pantalla, tarjetas, transiciones ═════ */
+
+/* botón atrás: siempre con círculo blanco (todas las pantallas) */
+.bk,.hd.round .bk{background:#fff;box-shadow:0 2px 8px #0002}
+.tb{position:relative;height:56px;margin-top:14px}.tb .bk{top:0}
+
+/* cabecera más compacta para que todo quepa */
+.hd{padding-top:16px}.hd .bk{top:20px}
+.brand{font-size:1.9rem}.brand.sm{font-size:1.6rem;margin-top:0}
+.sub{font-size:1.05rem}.steps{margin-top:10px}
+
+/* pantallas que deben verse enteras sin deslizar (móvil) */
+#app.fit{height:100dvh;min-height:0;overflow-y:auto;overflow-x:hidden;padding-bottom:max(18px,env(safe-area-inset-bottom))}
+#app.fit.s2{padding-bottom:0}
+#app.fit.s2 .foot{margin-bottom:0;padding-bottom:max(18px,env(safe-area-inset-bottom))}
+#app.fit .spacer{min-height:8px}
+
+/* bienvenida */
+.welcome{flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;padding-bottom:6vh}
+.brand.big{margin-top:0;font-size:2.6rem}
+.wt{font-size:1.6rem;line-height:1.2;margin:28px 8px 12px}
+.wb{color:var(--mut);font-size:1.1rem;margin:0 14px}
+#app.fit>.opts{margin:10px 0 0}
+
+/* pantalla de ánimo */
+.intro{font-size:1.15rem;margin:14px 6px 16px}.intro.cpl{margin:10px 6px 12px;font-size:1.05rem}
+.mood{padding:14px 16px 12px}
+.mlab span{font-size:clamp(.82rem,3.8vw,1.02rem)}
+.mlab span:nth-child(1){grid-column:1/3!important;justify-self:start}
+.mlab span:nth-child(2){grid-column:2/5!important;justify-self:center}
+.mlab span:nth-child(3){grid-column:4/6!important;justify-self:end}
+.face-b{width:76px;height:76px}.face-b svg{width:56px;height:56px}
+.track{margin-top:14px}
+.slidehint{display:flex;align-items:center;justify-content:center;gap:8px;margin:14px 0 0;color:var(--mut);font-weight:700;font-size:.95rem}
+.slidehint svg{color:var(--teal);animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(-4px)}50%{transform:translateX(4px)}}
+.mood:not(.touched) .dp.on{animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 4px #2f9a8a30}50%{box-shadow:0 0 0 10px #2f9a8a14}}
+.pace{font-size:1.5rem;text-align:center;margin:26px 0 20px}
+
+/* pantalla de tarjetas: tarjeta centrada; las vecinas solo asoman y se cortan en los bordes */
+.meta{margin-top:12px;padding:12px 20px}.meta b{font-size:1.2rem}.mi{width:38px;height:38px}
+.stack{flex:1;min-height:300px;overflow:hidden;margin:8px -14px 0;position:relative}
+.fc{left:14px;right:14px;top:42px;bottom:42px}
+.peek{left:38px;right:38px;height:110px;border-radius:26px;padding:0;align-items:center}
+.peek.up{top:-78px;justify-content:flex-end;padding:0 0 3px}
+.peek.dn{bottom:-78px;justify-content:flex-start;padding:3px 0 0}
+.peek svg{width:24px;height:24px}
+.foot{padding:14px 22px 22px}.cta2{padding:13px}.cta2 b{font-size:1.25rem}
+
+/* delante / detrás bien distintos */
+.face.front{background:linear-gradient(180deg,var(--tint,#fff),#fff 60%);color:var(--ink)}
+.face.back{background:color-mix(in srgb,var(--acc) 68%,#0f1f27);border-color:color-mix(in srgb,var(--acc) 68%,#0f1f27);border-top-width:3px;color:#fff;box-shadow:0 10px 28px #1f293740;align-items:center;justify-content:center;text-align:center}
+.bi{margin:auto 0;width:100%}
+.bt{font-size:1.2rem;line-height:1.4;margin:0 0 12px}
+.face.back ol{text-align:left;display:inline-block;margin:0 0 10px}.face.back ol li::marker{color:#fff}
+.face.back .mut{color:#ffffffb8}
+.face.back details,.face.back summary{color:#fff}
+.side{position:absolute;top:10px;right:14px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;opacity:.45;color:inherit}
+.face.front .side{color:var(--acc)}
+.face.front .ft{margin:auto 0}
+.face .fh{margin:6px 0 4px}
+
+/* última pantalla: cita opcional al final */
+.opt{text-align:center;margin:22px 0 4px;padding-top:6px}
+.opt p{margin:0;color:var(--mut);font-size:14px}
+.opt .cta.sm{margin-top:10px;width:auto;display:inline-flex;padding:12px 22px;font-size:.98rem;box-shadow:none}
+
+/* transiciones entre pantallas */
+#app.go-f>*{animation:inF .42s cubic-bezier(.2,.8,.2,1) both}
+#app.go-b>*{animation:inB .42s cubic-bezier(.2,.8,.2,1) both}
+#app.go-f>*:nth-child(2),#app.go-b>*:nth-child(2){animation-delay:.04s}
+#app.go-f>*:nth-child(3),#app.go-b>*:nth-child(3){animation-delay:.08s}
+#app.go-f>*:nth-child(4),#app.go-b>*:nth-child(4){animation-delay:.12s}
+#app.go-f>*:nth-child(n+5),#app.go-b>*:nth-child(n+5){animation-delay:.16s}
+@keyframes inF{from{opacity:0;transform:translateX(28px)}}
+@keyframes inB{from{opacity:0;transform:translateX(-28px)}}
+@media (max-height:700px){.wt{margin-top:18px}.face-b{width:64px;height:64px}.face-b svg{width:48px;height:48px}.tb{height:50px;margin-top:10px}.intro{margin:8px 6px 10px}.mood+.mood{margin-top:10px}}
+@media(prefers-reduced-motion:reduce){#app.go-f>*,#app.go-b>*,.slidehint svg,.mood .dp{animation:none!important}}
+
+
+/* ═════ v4 ═════ */
+
+/* ── Pantallas de inicio (bienvenida, ánimo, ritmo) ── */
+.brand.big{margin-top:clamp(24px,8dvh,64px);font-size:2.4rem}
+.wlead{text-align:center;font-size:1.3rem;color:#4b5563;margin:clamp(14px,3dvh,26px) 6px clamp(16px,4dvh,30px)}
+.wsteps{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.wsteps li{display:flex;align-items:center;gap:14px;background:#fff;border-radius:22px;padding:14px 16px;box-shadow:0 4px 14px #1f293710;font-weight:700;color:#374151}
+.wn{width:32px;height:32px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:800;flex:none}
+.pre{position:relative;height:72px;display:flex;align-items:center;justify-content:center;flex:none}
+.pre .bk{top:14px;left:-8px}
+.pdots{display:flex;gap:8px}
+.pdots i{width:30px;height:6px;border-radius:3px;background:#d1d5db}
+.pdots i.cur{background:var(--teal)}.pdots i.done{background:var(--teal);opacity:.45}
+.intro{font-size:1.2rem;margin:clamp(6px,1.6dvh,18px) 8px clamp(12px,2.6dvh,24px)}
+.intro.cpl{margin:2px 6px 12px;font-size:1.05rem}
+/* "Preocupado · Tranquilo · Confiado": una sola línea y siempre dentro de la caja blanca */
+.mood{padding:14px 16px 12px;overflow:hidden}
+.mlab span{font-size:clamp(.8rem,3.7vw,1rem);white-space:nowrap}
+.couple .mlab span{font-size:clamp(.78rem,3.5vw,.98rem)}
+/* pista de deslizar */
+.shint{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 0;color:var(--mut);font-weight:700;font-size:.95rem;text-align:center}
+.shint span{display:grid;color:var(--teal)}
+.shint .l{animation:nudgeL 1.3s ease-in-out infinite}.shint .r{animation:nudgeR 1.3s ease-in-out infinite}
+.shint.touched span{animation:none;opacity:.4}
+.mood:not(.touched) .dp.on{animation:wig 1.5s ease-in-out infinite}
+@keyframes nudgeL{50%{transform:translateX(-6px)}}
+@keyframes nudgeR{50%{transform:translateX(6px)}}
+@keyframes wig{0%,100%{transform:translateX(0)}30%{transform:translateX(-9px)}70%{transform:translateX(9px)}}
+
+/* ── Pantalla de carga: frases que cambian ── */
+.center .lead{min-height:3em;margin:8px 12px 0;transition:opacity .35s,transform .35s}
+.center .lead.swap{opacity:0;transform:translateY(6px)}
+
+/* ── Pantalla 2: tarjeta de diagnóstico ── */
+/* la etiqueta Delante/Detrás ocupa su propia fila (ya no se pisa con el texto) */
+.face .side{position:static;align-self:flex-end;flex:none;margin:0 0 4px}
+.face.front .fh{margin:2px 0 4px}
+/* reverso: texto normal alineado a la izquierda, con sangría y letra algo menor */
+.face.back{align-items:stretch;justify-content:flex-start;text-align:left;padding:12px 22px 16px;scrollbar-width:thin;scrollbar-color:#fff6 transparent}
+.face.back .side{align-self:flex-end}
+.face.back .bi{margin:auto 0;width:100%;padding:2px 6px 4px}   /* margin:auto centra si cabe y NO corta la parte de arriba si hay que desplazar */
+.face.back .bt{font-size:1rem;line-height:1.45;margin:0 0 10px}
+.face.back ol{display:block;margin:0 0 10px;padding-left:1.25em;font-size:.94rem;line-height:1.4;text-align:left}
+.face.back li{margin-bottom:4px}
+.face.back .mut{font-size:.88rem;margin:0 0 10px}
+.face.back details{margin-top:6px}
+.face.back summary{display:inline-flex;align-items:center;gap:8px;list-style:none;padding:6px 14px;border:1.5px solid #ffffff99;border-radius:18px;font-size:.88rem;font-weight:700;cursor:pointer}
+.face.back summary::-webkit-details-marker{display:none}
+.face.back summary::after{content:'';width:7px;height:7px;border-right:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(45deg) translate(-1px,-1px);transition:transform .25s}
+.face.back details[open] summary{background:#ffffff22}
+.face.back details[open] summary::after{transform:rotate(-135deg) translate(-1px,-1px)}
+.face.back details p{font-size:.92rem;line-height:1.45;margin:10px 0 2px;animation:dFade .3s ease}
+@keyframes dFade{from{opacity:0;transform:translateY(-6px)}}
+
+@media(prefers-reduced-motion:reduce){.shint span,.mood .dp.on,.face.back details p{animation:none!important}.center .lead{transition:none}}

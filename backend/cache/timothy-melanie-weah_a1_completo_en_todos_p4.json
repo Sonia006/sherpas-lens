@@ -1,0 +1,242 @@
+{
+  "case_id": "timothy-melanie-weah",
+  "animo": 1,
+  "tono": "very overwhelmed",
+  "tiempo": "completo",
+  "idioma": "en",
+  "num_tarjetas": 9,
+  "frase_inicial": "Timothy and Melanie: let's take one small step together today, starting with something simple.",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "Card with high interest needs attention",
+      "reverso": "That credit card is costing you both money each month. Paying some cash toward it will cut what you lose and free income for other goals.",
+      "detalle": "Pay $6,800 on the 18% Chase card from cash to reduce high revolving exposure; leaves $11,200 on card per plan.",
+      "meta_id": null
+    },
+    {
+      "id": "t2",
+      "frente": "Life cover for the family is thin",
+      "reverso": "If either of you died, Liam and Josh would lose a large part of the household income. Adding life cover protects the kids and your ability to keep plans on track.",
+      "detalle": "Add $235,000 of life cover to bring total to $485,000; after card paydown life cover should reach $491,800 to clear the gate.",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "You have a strong cash cushion",
+      "reverso": "Your cash already covers many months of essentials. That gives you a safe source to use for a few protection fixes without risking daily life.",
+      "detalle": "Accessible cash today: $150,800; recommended emergency reserve: 8–9 months; cash above reserve and short-term goals: $60,222.50.",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "No umbrella policy for big liability claims",
+      "reverso": "A large claim could touch the savings you are holding for the kids. Buying extra liability cover shields your cash and home from that risk.",
+      "detalle": "Umbrella gap per plan: $1,000,000; no umbrella policy in place today.",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "College saving still needs a plan",
+      "reverso": "Nothing is set aside yet for Liam and Josh's college. Decide how education shares your spare cash so you both know whether to save now or later.",
+      "detalle": "College funding gap: $113,508.60; extra yearly saving needed first year: $4,609.22.",
+      "meta_id": null
+    },
+    {
+      "id": "t6",
+      "frente": "Retirement saving is on track",
+      "reverso": "Your retirement plan looks solid and captures the employer matches. For now, you can focus spare cash on protection and the card without changing retirement saving.",
+      "detalle": "Combined retirement savings rate: 22.8% of income; plan projects savings last through retirement.",
+      "meta_id": null
+    },
+    {
+      "id": "t7",
+      "frente": "Invested mix is more aggressive than Melanie prefers",
+      "reverso": "Timothy and Melanie have different comfort with swings. Agreeing together on how much ups-and-downs you accept will help both sleep better and keep the plan steady.",
+      "detalle": "Household long-term portfolio about 77% stocks; Timothy growth, Melanie moderate.",
+      "meta_id": null
+    },
+    {
+      "id": "t8",
+      "frente": "You have near-term purchases coming",
+      "reverso": "A new car and a home are planned in coming years. Keep those dates in mind when choosing whether to use cash now or hold some for those payments.",
+      "detalle": "Vehicle planned 2028; home planned 2030 per goals.",
+      "meta_id": null
+    },
+    {
+      "id": "t9",
+      "frente": "There is spare cash above needs you can use",
+      "reverso": "You’re not short on a basic cushion. That spare money can pay down expensive card debt or start life cover without touching daily spending.",
+      "detalle": "Cash above emergency reserve and vacation goal: $60,222.50 available today.",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 60,
+    "pilares": [
+      {
+        "pillar": "Savings and cash flow",
+        "score": 86,
+        "points_shown_in_app": "26/30"
+      },
+      {
+        "pillar": "Debt",
+        "score": 58,
+        "points_shown_in_app": "12/20"
+      },
+      {
+        "pillar": "Investments",
+        "score": 56,
+        "points_shown_in_app": "8/15"
+      },
+      {
+        "pillar": "Liquidity and emergency fund",
+        "score": 100,
+        "points_shown_in_app": "15/15"
+      },
+      {
+        "pillar": "Insurance and protection",
+        "score": 37,
+        "points_shown_in_app": "7/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Pay down revolving card",
+        "action": "Pay $6,800 on the 18% card from cash to remove high revolving exposure and clear the gate",
+        "effort": "medium",
+        "target_amount": 11200,
+        "score_before": 60,
+        "score_after": 62,
+        "lifts_a_cap": true
+      },
+      {
+        "title": "Add life cover",
+        "action": "Add $235,000 of life cover to raise the mortality ratio and clear the gate",
+        "effort": "low",
+        "target_amount": 485000,
+        "score_before": 60,
+        "score_after": 60,
+        "lifts_a_cap": true
+      },
+      {
+        "title": "Add umbrella cover",
+        "action": "Add $1M of umbrella to raise the liability shield",
+        "effort": "low",
+        "target_amount": 1000000,
+        "score_before": 60,
+        "score_after": 60,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [
+      {
+        "moves": [
+          "Pay down revolving card",
+          "Add life cover",
+          "Add umbrella cover"
+        ],
+        "score_after": 78,
+        "note": "After the card paydown, life cover must reach $491,800 to keep the mortality ratio at the gate line."
+      },
+      {
+        "moves": [
+          "Pay down revolving card",
+          "Add life cover"
+        ],
+        "score_after": 73,
+        "note": "After the card paydown, life cover must reach $491,800 to keep the mortality ratio at the gate line."
+      },
+      {
+        "moves": [
+          "Pay down revolving card",
+          "Add umbrella cover"
+        ],
+        "score_after": 62,
+        "note": "Together they raise the published score more than either move alone."
+      },
+      {
+        "moves": [
+          "Add life cover",
+          "Add umbrella cover"
+        ],
+        "score_after": 60,
+        "note": "Together they raise the published score more than either move alone."
+      }
+    ],
+    "limites": [
+      {
+        "reason": "High revolving balance with high APR",
+        "score_capped_at": 60
+      },
+      {
+        "reason": "Mortality coverage ratio below threshold with dependents",
+        "score_capped_at": 62
+      }
+    ],
+    "hitos": [
+      {
+        "id": "vehicle_2028",
+        "anio": 2028,
+        "titulo": "Purchase a vehicle in 2028"
+      },
+      {
+        "id": "house_2030",
+        "anio": 2030,
+        "titulo": "Purchase a home in 2030"
+      },
+      {
+        "id": "college_liam_2038",
+        "anio": 2038,
+        "titulo": "Liam starts college in 2038"
+      },
+      {
+        "id": "college_josh_2041",
+        "anio": 2041,
+        "titulo": "Josh starts college in 2041"
+      },
+      {
+        "id": "melanie_retire_2048",
+        "anio": 2048,
+        "titulo": "Melanie plans to retire in 2048"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Extra monthly debt payment",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
+      },
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Extra monthly savings",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Illustrative simulator: it shows the direction of change, not a Sherpas projection."
+  },
+  "siguiente_paso": {
+    "titulo": "Pay down the high-rate card",
+    "razon": "The plan shows paying $6,800 from cash reduces the expensive revolving exposure and raises the household score; cash stays well above your emergency reserve afterward.",
+    "minutos": 20,
+    "pasos": [
+      "Sit together at your kitchen table with the bank app or online banking",
+      "Locate the Chase credit card account and the cash account balance",
+      "Make a one-time payment of $6,800 from your cash account to the Chase card"
+    ],
+    "acciones": {
+      "calendario_url": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Pay%20down%20the%20high-rate%20card&dates=20261119/20261120&details=Reminder%20for%20your%20Sherpas%20plan",
+      "asesor_url": "mailto:asesor@example.com?subject=I%27d%20like%20to%20talk%20about%20my%20plan&body=Hi%2C%20I%27ve%20seen%20my%20plan%20and%20I%27d%20like%20help%20with%20this%20step%3A%20Pay%20down%20the%20high-rate%20card"
+    }
+  },
+  "fallback": false
+}

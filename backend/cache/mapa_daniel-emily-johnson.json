@@ -1,0 +1,94 @@
+{
+  "pillars": [
+    {
+      "pillar": "Ahorros y flujo de caja",
+      "score": 54,
+      "points_shown_in_app": "16/30"
+    },
+    {
+      "pillar": "Deuda",
+      "score": 76,
+      "points_shown_in_app": "15/20"
+    },
+    {
+      "pillar": "Inversiones",
+      "score": 51,
+      "points_shown_in_app": "8/15"
+    },
+    {
+      "pillar": "Liquidez y colchón para imprevistos",
+      "score": 85,
+      "points_shown_in_app": "13/15"
+    },
+    {
+      "pillar": "Seguros y protección",
+      "score": 0,
+      "points_shown_in_app": "0/20"
+    }
+  ],
+  "top_moves": [
+    {
+      "title": "Aumentar la cobertura por fallecimiento",
+      "action": "Añadir $1,166,000 de seguro de vida para llegar al siguiente umbral de cobertura por fallecimiento",
+      "effort": "bajo",
+      "target_amount": 1616000,
+      "score_before": 52,
+      "score_after": 57,
+      "lifts_a_cap": false
+    },
+    {
+      "title": "Añadir seguro extra",
+      "action": "Añadir $1M de seguro extra por si os reclaman una cantidad muy grande para aumentar la protección por responsabilidad",
+      "effort": "bajo",
+      "target_amount": 1000000,
+      "score_before": 52,
+      "score_after": 56,
+      "lifts_a_cap": false
+    },
+    {
+      "title": "Aumentar el ahorro anual",
+      "action": "Redirigir $15,032/año del flujo de caja disponible hacia ahorros para acercar el ahorro destinado a la jubilación al siguiente nivel",
+      "effort": "medio",
+      "target_amount": 41032.01,
+      "score_before": 52,
+      "score_after": 55,
+      "lifts_a_cap": false
+    }
+  ],
+  "combined_moves": [
+    {
+      "moves": [
+        "Aumentar la cobertura por fallecimiento",
+        "Añadir seguro extra"
+      ],
+      "score_after": 60,
+      "note": "Juntos aumentan la puntuación publicada más que cada medida por separado."
+    },
+    {
+      "moves": [
+        "Aumentar la cobertura por fallecimiento",
+        "Aumentar el ahorro anual"
+      ],
+      "score_after": 60,
+      "note": "Juntos aumentan la puntuación publicada más que cada medida por separado."
+    },
+    {
+      "moves": [
+        "Aumentar la cobertura por fallecimiento",
+        "Añadir seguro extra",
+        "Aumentar el ahorro anual"
+      ],
+      "score_after": 60,
+      "note": "Juntos aumentan la puntuación publicada más que cada medida por separado."
+    },
+    {
+      "moves": [
+        "Añadir seguro extra",
+        "Aumentar el ahorro anual"
+      ],
+      "score_after": 59,
+      "note": "Juntos aumentan la puntuación publicada más que cada medida por separado."
+    }
+  ],
+  "caps_applied": []
+}

@@ -1,0 +1,161 @@
+{
+  "case_id": "michael-carter",
+  "animo": 5,
+  "tono": "muy confiado",
+  "tiempo": "corto",
+  "idioma": "es",
+  "num_tarjetas": 5,
+  "frase_inicial": "Michael: tu puntuación financiera hoy es 26, y hay un camino claro para mejorarla.",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "Comprar casa en enero de 2027 es la gran decisión",
+      "reverso": "Si sigues adelante sin separar el dinero, la entrada se comerá lo que usas para mantener el colchón para imprevistos y para hacer crecer el ahorro para la jubilación. Eso aumenta la probabilidad de quedar en apuros con un gasto inesperado y reduce lo que tus inversiones podrán aportar más adelante.",
+      "detalle": "Down payment needed January 2027: USD 113,300 (Michael). Planned mortgage monthly payment: USD 3,015.15 at 7% for 30 years.",
+      "meta_id": "casa_2027"
+    },
+    {
+      "id": "t2",
+      "frente": "Los ahorros se acaban antes de que termine el plan si no cambia nada",
+      "reverso": "Jubilarte a los 58 deja un hueco: los ahorros se agotarían a los 85, y los gastos previstos quedarían sin pagar en los años finales. Ese problema viene de los retiros actuales y de cómo se usa el efectivo a corto plazo.",
+      "detalle": "Savings and investments run out at age 85; unpaid planned spending at end: USD 32,439.",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "El efectivo está justo hoy y las metas de enero lo dejan a cero",
+      "reverso": "Solo tienes unas tres meses de gastos en efectivo accesible ahora. Apartar la entrada de la casa y las vacaciones te dejaría sin colchón; un pequeño imprevisto te empujaría a usar la deuda de la tarjeta o a vender inversiones.",
+      "detalle": "Accessible cash today: USD 30,000 (Michael). Cash target including goals: USD 163,330–172,636.",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "El seguro os deja expuestos a una gran reclamación o pérdida de ingresos",
+      "reverso": "Tu seguro de vida y la cobertura por responsabilidad están muy por debajo de lo recomendado. Si pasa algo grave, las deudas y la pérdida de ingresos recaerían sobre vuestros activos y los planes de quienes dependan de vosotros.",
+      "detalle": "Life cover: USD 180,000; recommended minimum: USD 900,000. Umbrella gap recommended: USD 1,000,000.",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "La tarjeta de crédito con alto interés es la deuda pequeña más cara",
+      "reverso": "Esa tarjeta cuesta más que las otras deudas y está consumiendo efectivo cada mes. Pagarla más rápido libera dinero futuro, pero compite con crear el colchón, la entrada de la casa y el ahorro para la jubilación.",
+      "detalle": "Credit card balance: USD 3,500 at 20% APR; current monthly payment USD 200, projected payoff July 2028.",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 26,
+    "pilares": [
+      {
+        "pillar": "Ahorros y flujo de efectivo",
+        "score": 0,
+        "points_shown_in_app": "0/25"
+      },
+      {
+        "pillar": "Deuda",
+        "score": 78,
+        "points_shown_in_app": "8/10"
+      },
+      {
+        "pillar": "Inversiones",
+        "score": 42,
+        "points_shown_in_app": "11/25"
+      },
+      {
+        "pillar": "Liquidez y colchón para imprevistos",
+        "score": 22,
+        "points_shown_in_app": "4/20"
+      },
+      {
+        "pillar": "Seguro y protección",
+        "score": 18,
+        "points_shown_in_app": "4/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Añadir seguro extra por si os reclaman una cantidad muy grande",
+        "action": "Añadir $1M de seguro extra para subir la cobertura ante responsabilidades",
+        "effort": "bajo",
+        "target_amount": 1000000,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Bajar la tasa de retirada",
+        "action": "Reducir las retiradas a $10,300/año (6.0%) para situarse en la banda sostenible",
+        "effort": "alto",
+        "target_amount": 10300,
+        "score_before": 26,
+        "score_after": 62,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Aumentar la asignación hacia crecimiento según la trayectoria",
+        "action": "Mover la mezcla invertida de 74% a 88% en crecimiento (trayectoria 98%) para la próxima banda adecuada para el horizonte — unos $19,900 del patrimonio invertido",
+        "effort": "alto",
+        "target_amount": 19900,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [],
+    "limites": [],
+    "hitos": [
+      {
+        "id": "casa_2027",
+        "anio": 2027,
+        "titulo": "Purchase a home in January 2027"
+      },
+      {
+        "id": "vacation_2027",
+        "anio": 2027,
+        "titulo": "Take a vacation in January 2027"
+      },
+      {
+        "id": "retire_2047",
+        "anio": 2047,
+        "titulo": "Michael's planned retirement at age 58"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Ahorro mensual extra",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      },
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Pago extra de deuda al mes",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Simulador ilustrativo: muestra la dirección del cambio, no una proyección de Sherpas."
+  },
+  "siguiente_paso": {
+    "titulo": "Añadir seguro extra por si os reclaman una cantidad muy grande",
+    "razon": "El plan detecta que no tenéis ese seguro y recomienda añadir USD 1,000,000 para elevar vuestra protección por responsabilidad; eso reduce de forma directa el riesgo de que una reclamación se lleve el efectivo y descarrile la compra de la casa y la jubilación.",
+    "minutos": 30,
+    "pasos": [
+      "Llama a tu aseguradora de coche o de inquilinos y pregunta si venden seguro extra y cuál sería la prima anual para USD 1,000,000.",
+      "Si no lo venden o el precio es alto, pide dos presupuestos a otras aseguradoras por el mismo límite de USD 1,000,000.",
+      "Elige el presupuesto que entre en vuestro presupuesto mensual y pon la póliza en marcha antes del cierre de la compra de la casa."
+    ],
+    "acciones": {
+      "calendario_url": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=A%C3%B1adir%20seguro%20extra%20por%20si%20os%20reclaman%20una%20cantidad%20muy%20grande&dates=20261119/20261120&details=Recordatorio%20de%20tu%20plan%20Sherpas",
+      "asesor_url": "mailto:asesor@example.com?subject=Quiero%20hablar%20de%20mi%20plan&body=Hola%2C%20he%20visto%20mi%20plan%20y%20quiero%20ayuda%20con%20este%20paso%3A%20A%C3%B1adir%20seguro%20extra%20por%20si%20os%20reclaman%20una%20cantidad%20muy%20grande"
+    }
+  },
+  "fallback": false
+}

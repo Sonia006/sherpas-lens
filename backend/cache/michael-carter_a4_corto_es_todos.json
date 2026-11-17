@@ -5,41 +5,41 @@
   "tiempo": "corto",
   "idioma": "es",
   "num_tarjetas": 5,
-  "frase_inicial": "Michael: tu puntuación es 26; hay un camino claro.",
+  "frase_inicial": "Michael: hoy tu plan saca 26 de 100, y hay un paso claro para evitar que el efectivo sea el cuello de botella.",
   "tarjetas": [
     {
       "id": "t1",
-      "frente": "Prioriza caja y la compra",
-      "reverso": "Tienes $30,000 en efectivo; necesitas $113,300 para la casa en enero 2027. La meta total de efectivo hoy es $163,330 a $172,636.",
-      "detalle": "Separar $113,300 en enero 2027; no vender inversiones de largo plazo para financiarla.",
+      "frente": "En enero de 2027 el pago de la casa y las vacaciones tensan vuestro efectivo",
+      "reverso": "Hoy tenéis poco colchón para imprevistos y el pago de la casa junto con las vacaciones coinciden. Si apartas ese dinero ahora, evitas vender inversiones o usar la tarjeta si surge un imprevisto.",
+      "detalle": "Cash today: accessible cash $30,000; short-term needs for home + vacation $116,800 (plan shows home down payment $113,300 and vacation $3,500).",
       "meta_id": "casa_2027"
     },
     {
       "id": "t2",
-      "frente": "Reduce las extracciones",
-      "reverso": "Hoy retiras $144,693.29 al año; cortar a $10,300/año (6.0%) movería tu puntuación de 26 a 62 y protege el ahorro para retiro.",
-      "detalle": "Objetivo operativo: limitar extracciones a $10,300/año; impacto score 26→62.",
-      "meta_id": "retiro_2047"
+      "frente": "La jubilación se queda corta seis años antes de que acabe el plan",
+      "reverso": "Mantener el plan de la casa y el ritmo actual de ahorro hace que los ahorros para la jubilación se agoten sobre los 85 años, dejando gastos planeados sin cubrir al final de la vida. Importa porque la Seguridad Social cubre una parte, así que tus ahorros deben pagar el resto.",
+      "detalle": "Plan: savings run out at age 85; retirement spending gap about $59,613 a year (plan labels yearly need $89,649; guaranteed income covers 34%).",
+      "meta_id": null
     },
     {
       "id": "t3",
-      "frente": "Mejora tus seguros",
-      "reverso": "Tienes $180,000 de seguro de vida; se recomiendan $900,000–$1,800,000. No tienes umbrella; falta $1,000,000 de cobertura.",
-      "detalle": "Cotizar aumentar vida a mínimo $900,000 y cotizar umbrella de $1,000,000 para reducir riesgo de pérdida grande.",
+      "frente": "La protección por muerte y responsabilidad es escasa para un único perceptor",
+      "reverso": "Tu póliza de vida actual y la falta de seguro extra os dejan expuestos si hay un gran reclamo o si falleces. Mejorar la protección permite que la familia mantenga las metas que estáis construyendo.",
+      "detalle": "Life insurance present $180,000; recommended range $900,000–$1,800,000. No umbrella coverage; recommended minimum $1,000,000.",
       "meta_id": null
     },
     {
       "id": "t4",
-      "frente": "Paga la tarjeta al 20%",
-      "reverso": "Amex: $3,500 al 20% con pago $200/mes; proyectada para pagarse en julio 2028. Es la deuda más cara y te cobra mucho interés.",
-      "detalle": "Valorar pago extra si no deja la reserva de caja en peligro; mantener plan si prefieres priorizar la compra de la casa.",
-      "meta_id": "cc_2028"
+      "frente": "La deuda de la tarjeta con interés alto es la más cara",
+      "reverso": "Esa tarjeta te cuesta más por cada dólar que debes. Pagarla antes libera efectivo futuro, pero compite con la entrada de la casa y el ahorro para la jubilación, así que valora qué es más importante.",
+      "detalle": "Credit card balance $3,500 at 20% APR; monthly payment $200, projected payoff July 2028 if unchanged.",
+      "meta_id": null
     },
     {
       "id": "t5",
-      "frente": "Separa efectivo y inversión",
-      "reverso": "Tus inversiones suman $145,000 y VTI vale $60,000. Reserva los $113,300 de la casa fuera del dinero invertido para no vender en mal momento.",
-      "detalle": "Mover $113,300 a efectivo antes de enero 2027 y revisar la concentración de VTI después de la compra.",
+      "frente": "Tu mezcla de inversiones y concentración son un lastre secundario",
+      "reverso": "La mayor parte del patrimonio está en cuentas invertibles y una cuenta imponible tiene una posición concentrada. Puedes revisar si la mezcla encaja con tu elección de Crecimiento cuando tengas controlado el efectivo a corto plazo.",
+      "detalle": "Investable assets $145,000; stocks ~74% of invested mix; largest position VTI $60,000; tax-inefficient holdings $36,500 including $15,000 in high-yield bonds.",
       "meta_id": null
     }
   ],
@@ -47,54 +47,54 @@
     "score_base": 26,
     "pilares": [
       {
-        "pillar": "Savings and cash flow",
+        "pillar": "Ahorros y flujo de efectivo",
         "score": 0,
         "points_shown_in_app": "0/25"
       },
       {
-        "pillar": "Debt",
+        "pillar": "Deuda",
         "score": 78,
         "points_shown_in_app": "8/10"
       },
       {
-        "pillar": "Investments",
+        "pillar": "Inversiones",
         "score": 42,
         "points_shown_in_app": "11/25"
       },
       {
-        "pillar": "Liquidity and emergency fund",
+        "pillar": "Liquidez y colchón para imprevistos",
         "score": 22,
         "points_shown_in_app": "4/20"
       },
       {
-        "pillar": "Insurance and protection",
+        "pillar": "Seguro y protección",
         "score": 18,
         "points_shown_in_app": "4/20"
       }
     ],
     "movimientos": [
       {
-        "title": "Add umbrella cover",
-        "action": "Add $1M of umbrella to raise the liability shield",
-        "effort": "low",
+        "title": "Añadir seguro extra por si os reclaman una cantidad muy grande",
+        "action": "Añadir $1M de seguro extra para subir la cobertura ante responsabilidades",
+        "effort": "bajo",
         "target_amount": 1000000,
         "score_before": 26,
         "score_after": 31,
         "lifts_a_cap": false
       },
       {
-        "title": "Lower the withdrawal rate",
-        "action": "Cutting withdrawals to $10,300/year (6.0%) reaches the sustainable band",
-        "effort": "high",
+        "title": "Bajar la tasa de retirada",
+        "action": "Reducir las retiradas a $10,300/año (6.0%) para situarse en la banda sostenible",
+        "effort": "alto",
         "target_amount": 10300,
         "score_before": 26,
         "score_after": 62,
         "lifts_a_cap": false
       },
       {
-        "title": "Raise growth allocation toward glide",
-        "action": "Move the invested mix from 74% to 88% growth (glide 98%) for the next horizon-fit band — about $19,900 of the invested book",
-        "effort": "high",
+        "title": "Aumentar la asignación hacia crecimiento según la trayectoria",
+        "action": "Mover la mezcla invertida de 74% a 88% en crecimiento (trayectoria 98%) para la próxima banda adecuada para el horizonte — unos $19,900 del patrimonio invertido",
+        "effort": "alto",
         "target_amount": 19900,
         "score_before": 26,
         "score_after": 31,
@@ -107,34 +107,20 @@
       {
         "id": "casa_2027",
         "anio": 2027,
-        "titulo": "Comprar casa en enero 2027 (entrada $113,300)"
+        "titulo": "Purchase a home in January 2027"
       },
       {
-        "id": "vacaciones_2027",
+        "id": "vacation_2027",
         "anio": 2027,
-        "titulo": "Vacaciones en enero 2027 ($3,500)"
+        "titulo": "Take a vacation in January 2027"
       },
       {
-        "id": "cc_2028",
-        "anio": 2028,
-        "titulo": "Pagar Amex: saldo $3,500 proyectado julio 2028"
-      },
-      {
-        "id": "retiro_2047",
+        "id": "retire_2047",
         "anio": 2047,
-        "titulo": "Retiro objetivo: cumplir 58 años en 2047"
+        "titulo": "Michael's retirement at age 58"
       }
     ],
     "palancas": [
-      {
-        "id": "pago_deuda_extra",
-        "etiqueta": "Pago extra de deuda al mes",
-        "unidad": "$",
-        "min": 0,
-        "max": 1000,
-        "paso": 50,
-        "puntos_por_unidad": 0.008
-      },
       {
         "id": "ahorro_mensual",
         "etiqueta": "Ahorro mensual extra",
@@ -143,23 +129,32 @@
         "max": 1000,
         "paso": 50,
         "puntos_por_unidad": 0.01
+      },
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Pago extra de deuda al mes",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
       }
     ],
     "ilustrativo": true,
     "aviso": "Simulador ilustrativo: muestra la dirección del cambio, no una proyección de Sherpas."
   },
   "siguiente_paso": {
-    "titulo": "Reducir las extracciones a $10,300/año (6.0%) para alcanzar la banda sostenible",
-    "razon": "Porque hoy retiras $144,693.29 al año; reducir a $10,300/año movería tu puntuación de 26 a 62 según el plan.",
-    "minutos": 10,
+    "titulo": "Add umbrella cover",
+    "razon": "El plan detecta que no hay seguro extra y recomienda añadir uno para aumentar vuestra protección por responsabilidad; eso reduce de forma directa la posibilidad de que un único reclamo agote los líquidos antes del cierre de la casa.",
+    "minutos": 30,
     "pasos": [
-      "Revisa exactamente de dónde salen los $144,693.29 de retiros hoy.",
-      "Decide qué gastos posponer o recortar para poder dejar las extracciones en $10,300/año.",
-      "Llama 10 minutos con tu asesor y fija la regla operativa para cortar a $10,300/año."
+      "Call your insurance agent or company and ask whether you can add an umbrella policy to your renter and auto coverage.",
+      "Ask for a quote for the recommended minimum level in the plan and one a step higher so you can compare premium versus protection.",
+      "If the quote fits your budget, buy the umbrella or schedule a follow-up to decide after you confirm the home-closing cash plan."
     ],
     "acciones": {
-      "calendario_url": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Reducir%20las%20extracciones%20a%20%2410%2C300/a%C3%B1o%20%286.0%25%29%20para%20alcanzar%20la%20banda%20sostenible&dates=20261118/20261119&details=Recordatorio%20de%20tu%20plan%20Sherpas",
-      "asesor_url": "mailto:asesor@example.com?subject=Quiero%20hablar%20de%20mi%20plan&body=Hola%2C%20he%20visto%20mi%20plan%20y%20quiero%20ayuda%20con%20este%20paso%3A%20Reducir%20las%20extracciones%20a%20%2410%2C300/a%C3%B1o%20%286.0%25%29%20para%20alcanzar%20la%20banda%20sostenible"
+      "calendario_url": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Add%20umbrella%20cover&dates=20261119/20261120&details=Recordatorio%20de%20tu%20plan%20Sherpas",
+      "asesor_url": "mailto:asesor@example.com?subject=Quiero%20hablar%20de%20mi%20plan&body=Hola%2C%20he%20visto%20mi%20plan%20y%20quiero%20ayuda%20con%20este%20paso%3A%20Add%20umbrella%20cover"
     }
   },
   "fallback": false

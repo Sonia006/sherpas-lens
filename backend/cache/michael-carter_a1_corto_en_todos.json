@@ -1,0 +1,161 @@
+{
+  "case_id": "michael-carter",
+  "animo": 1,
+  "tono": "very overwhelmed",
+  "tiempo": "corto",
+  "idioma": "en",
+  "num_tarjetas": 5,
+  "frase_inicial": "Michael: vamos paso a paso — keep one small money task today and we’ll go from there",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "Cash cushion needs attention",
+      "reverso": "Your bank cash covers about three months. With the planned January 2027 house and vacation, you’d have no reserve. Start by separating the money for those goals so it can’t be spent by accident.",
+      "detalle": "Accessible cash today: $30,000. Shortfall to 5–6 month cushion: $16,530. Short-term goals cash need (Jan 2027): $116,800.",
+      "meta_id": "casa_2027"
+    },
+    {
+      "id": "t2",
+      "frente": "Retirement has a gap to watch",
+      "reverso": "If nothing changes, savings are projected to run out before your plan ends. That’s why we’ll weigh saving more versus the house choice. First, confirm how much you want to keep for retirement versus the down payment.",
+      "detalle": "Retirement planning gap in today's dollars: $1,177,586. Savings projected to run out at age 85; planned retirement age 58.",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "Life and liability coverage deserves a look",
+      "reverso": "Your life cover and umbrella are below recommended levels, which could leave your savings exposed if something happens. A simple check today is to confirm current policies and who they name as beneficiary.",
+      "detalle": "Recorded life insurance: $180,000. Recommended minimum range: $900,000 to $1,800,000. No umbrella recorded; recommended $1,000,000.",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "The credit card is the priciest debt",
+      "reverso": "That card costs the most interest and eats cash. Paying a bit more each month speeds payoff and frees money later—balance this against the cash you need for the house.",
+      "detalle": "Credit card balance: $3,500 at 20% APR; current monthly payment $200; projected payoff July 2028 if unchanged.",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "Your savings habit is a strength",
+      "reverso": "You save a lot each year and capture the full employer match. That gives options: rebuild cash, shift some saving, or delay parts of the house plan—one small choice at a time.",
+      "detalle": "Annual savings including employer match: $43,000; employer match captured: $7,000.",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 26,
+    "pilares": [
+      {
+        "pillar": "Savings and cash flow",
+        "score": 0,
+        "points_shown_in_app": "0/25"
+      },
+      {
+        "pillar": "Debt",
+        "score": 78,
+        "points_shown_in_app": "8/10"
+      },
+      {
+        "pillar": "Investments",
+        "score": 42,
+        "points_shown_in_app": "11/25"
+      },
+      {
+        "pillar": "Liquidity and emergency fund",
+        "score": 22,
+        "points_shown_in_app": "4/20"
+      },
+      {
+        "pillar": "Insurance and protection",
+        "score": 18,
+        "points_shown_in_app": "4/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Add umbrella cover",
+        "action": "Add $1M of umbrella to raise the liability shield",
+        "effort": "low",
+        "target_amount": 1000000,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Lower the withdrawal rate",
+        "action": "Cutting withdrawals to $10,300/year (6.0%) reaches the sustainable band",
+        "effort": "high",
+        "target_amount": 10300,
+        "score_before": 26,
+        "score_after": 62,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Raise growth allocation toward glide",
+        "action": "Move the invested mix from 74% to 88% growth (glide 98%) for the next horizon-fit band — about $19,900 of the invested book",
+        "effort": "high",
+        "target_amount": 19900,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [],
+    "limites": [],
+    "hitos": [
+      {
+        "id": "casa_2027",
+        "anio": 2027,
+        "titulo": "Purchase a home in January 2027"
+      },
+      {
+        "id": "vacation_2027",
+        "anio": 2027,
+        "titulo": "Take the planned vacation in January 2027"
+      },
+      {
+        "id": "retire_2047",
+        "anio": 2047,
+        "titulo": "Michael's retirement target (age 58)"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Extra monthly savings",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      },
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Extra monthly debt payment",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Illustrative simulator: it shows the direction of change, not a Sherpas projection."
+  },
+  "siguiente_paso": {
+    "titulo": "Add umbrella cover",
+    "razon": "The plan shows no umbrella policy and recommends adding coverage to protect your liquid assets and net worth. Adding the umbrella raises your overall score and closes a clear protection gap.",
+    "minutos": 15,
+    "pasos": [
+      "Find the contact for your current auto or renter insurer (phone or app).",
+      "Ask: do I have an umbrella policy, and can you quote one for a $1,000,000 limit?",
+      "If the quote is affordable, start the policy today or schedule a short follow-up to buy it."
+    ],
+    "acciones": {
+      "calendario_url": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Add%20umbrella%20cover&dates=20261119/20261120&details=Reminder%20for%20your%20Sherpas%20plan",
+      "asesor_url": "mailto:asesor@example.com?subject=I%27d%20like%20to%20talk%20about%20my%20plan&body=Hi%2C%20I%27ve%20seen%20my%20plan%20and%20I%27d%20like%20help%20with%20this%20step%3A%20Add%20umbrella%20cover"
+    }
+  },
+  "fallback": false
+}

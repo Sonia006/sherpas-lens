@@ -1,0 +1,196 @@
+{
+  "case_id": "samantha-lewis",
+  "animo": 5,
+  "tono": "very confident",
+  "tiempo": "completo",
+  "idioma": "en",
+  "num_tarjetas": 10,
+  "frase_inicial": "Samantha and Ethan: your plan scores 82 and you own the house outright — there is a clear path forward.",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "Retirement runs short unless something changes",
+      "reverso": "Today your guaranteed income covers only part of retirement, so savings must fill a big gap; if you do nothing, the plan shows savings stop well before your life expectancy.",
+      "detalle": "Savings and investments run out at age 73; yearly retirement shortfall about $115,335 per year on average",
+      "meta_id": null
+    },
+    {
+      "id": "t2",
+      "frente": "College payments start now and press your cash",
+      "reverso": "Ethan's and Ava's college bills take the same cash you could use for retirement, so paying college from bank accounts will shrink your cushion fast unless you choose a priority.",
+      "detalle": "College funding still needed beyond current 529 balances: $98,837.55; Ethan starts August 2026, Ava starts August 2028",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "You have a good emergency reserve, but it barely breathes after near-term goals",
+      "reverso": "Your cash covers more than the recommended months, yet after the vacation and Ethan's payment only a tiny cushion remains to absorb surprises or a continued yearly shortfall.",
+      "detalle": "Accessible cash $80,000; months covered today 7.9; cash above reserve and near-term goals $750",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "Homeowners insurance is flagged as missing",
+      "reverso": "The plan ranks adding homeowners cover as the top move because the home and car still show uninsured; confirm existing policies so a single claim doesn't touch your savings.",
+      "detalle": "Top move: Add homeowners insurance on Primary home; score would rise from 82 to 84",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "Most investments sit in one big US stock position",
+      "reverso": "A large single holding and heavy tech exposure make your invested pot concentrated; spreading the holdings reduces the risk that a market drop wipes out the cushion you need in retirement.",
+      "detalle": "VTI is ~39% of investable; plan suggests moving about $58,300 from that line toward diversification",
+      "meta_id": null
+    },
+    {
+      "id": "t6",
+      "frente": "None of your savings goes into retirement accounts yet",
+      "reverso": "You already save a lot each year, but it flows into taxable places; shifting some into the tax-advantaged accounts you can use changes how long savings last and how much tax you pay.",
+      "detalle": "Eligible deductible traditional IRA up to $7,500; HSA available up to $4,400 if qualified; current contributions $0",
+      "meta_id": null
+    },
+    {
+      "id": "t7",
+      "frente": "You run a small yearly cash shortfall now",
+      "reverso": "Even with no debt and high savings rate, your plan year shows outflows slightly above income, which chips away at the cushion if near-term goals repeat or surprise costs appear.",
+      "detalle": "Net cash flow this year: -$6,417.99",
+      "meta_id": null
+    },
+    {
+      "id": "t8",
+      "frente": "The planned 2030 home purchase adds another call on cash",
+      "reverso": "Buying in 2030 requires a down payment and a mortgage payment after that; decide now how the down payment fits with college and retirement so one goal doesn't steal from the others.",
+      "detalle": "Planned purchase value 2030 ~$562,754; planned loan ~$450,203.52 with monthly payment ~$2,995.22",
+      "meta_id": "home_2030"
+    },
+    {
+      "id": "t9",
+      "frente": "Insurance protects the kids if your income stops",
+      "reverso": "Your term life and disability cover sit where they should: they would support Ethan and Ava if you couldn't work, so keep those premiums built into your yearly cash plan.",
+      "detalle": "Term life coverage $2,000,000; long-term disability pays $150,000 per year gross ($12,500 per month); umbrella $2,000,000",
+      "meta_id": null
+    },
+    {
+      "id": "t10",
+      "frente": "A choice you must make now: fund retirement or accelerate college savings",
+      "reverso": "Both goals draw on the same cash. One path shifts more annual saving into retirement accounts; the other directs cash to college. Each eases a different future risk — you pick which risk to reduce first.",
+      "detalle": "",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 82,
+    "pilares": [
+      {
+        "pillar": "Savings and cash flow",
+        "score": 75,
+        "points_shown_in_app": "22/30"
+      },
+      {
+        "pillar": "Debt",
+        "score": 100,
+        "points_shown_in_app": "20/20"
+      },
+      {
+        "pillar": "Investments",
+        "score": 66,
+        "points_shown_in_app": "10/15"
+      },
+      {
+        "pillar": "Liquidity and emergency fund",
+        "score": 100,
+        "points_shown_in_app": "15/15"
+      },
+      {
+        "pillar": "Insurance and protection",
+        "score": 71,
+        "points_shown_in_app": "14/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Close a coverage gap",
+        "action": "Add homeowners insurance on Primary home so coverage integrity clears that gap",
+        "effort": "medium",
+        "target_amount": null,
+        "score_before": 82,
+        "score_after": 84,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Reduce single-name concentration",
+        "action": "Bring VTI from 39% to 25% of investable for the next concentration band — about $58,300 of that line",
+        "effort": "high",
+        "target_amount": 58300,
+        "score_before": 82,
+        "score_after": 83,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Reduce growth allocation toward glide",
+        "action": "Move the invested mix from 85% to 80% growth (glide 80%) for the next horizon-fit band — about $17,100 of the invested book",
+        "effort": "high",
+        "target_amount": 17100,
+        "score_before": 82,
+        "score_after": 83,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [],
+    "limites": [],
+    "hitos": [
+      {
+        "id": "ethan_college_2027",
+        "anio": 2027,
+        "titulo": "Ethan's next college payment due August 2027"
+      },
+      {
+        "id": "vacation_2027",
+        "anio": 2027,
+        "titulo": "Take a vacation (next payment January 2027)"
+      },
+      {
+        "id": "home_2030",
+        "anio": 2030,
+        "titulo": "Purchase a home in 2030"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Extra monthly savings",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      },
+      {
+        "id": "gasto_menos",
+        "etiqueta": "Monthly spending you cut",
+        "unidad": "$",
+        "min": 0,
+        "max": 500,
+        "paso": 25,
+        "puntos_por_unidad": 0.012
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Illustrative simulator: it shows the direction of change, not a Sherpas projection."
+  },
+  "siguiente_paso": {
+    "titulo": "Add homeowners insurance on the primary home",
+    "razon": "It is the plan's top-ranked move and closes a coverage gap that currently leaves the largest asset exposed; confirming or buying this policy prevents a claim from forcing sales of investments.",
+    "minutos": 30,
+    "pasos": [
+      "Check current paperwork or call your insurer to confirm whether the primary home is already covered.",
+      "If not covered, get one homeowners insurance quote for the home value and compare one other insurer.",
+      "Buy the policy that fits and file the declaration page in your records; add the annual premium into next month’s budget."
+    ],
+    "acciones": {
+      "calendario_url": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Add%20homeowners%20insurance%20on%20the%20primary%20home&dates=20261119/20261120&details=Reminder%20for%20your%20Sherpas%20plan",
+      "asesor_url": "mailto:asesor@example.com?subject=I%27d%20like%20to%20talk%20about%20my%20plan&body=Hi%2C%20I%27ve%20seen%20my%20plan%20and%20I%27d%20like%20help%20with%20this%20step%3A%20Add%20homeowners%20insurance%20on%20the%20primary%20home"
+    }
+  },
+  "fallback": false
+}

@@ -1,0 +1,161 @@
+{
+  "case_id": "michael-carter",
+  "animo": 4,
+  "tono": "confident",
+  "tiempo": "corto",
+  "idioma": "en",
+  "num_tarjetas": 5,
+  "frase_inicial": "Michael: today your plan scores 26 out of 100, and there is a clear first step to stop cash from being the bottleneck.",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "January 2027 home payment and vacation squeeze your cash",
+      "reverso": "You only have a small cash cushion today and the planned house payment plus the vacation are due at the same time. If you set that money aside now, you avoid selling investments or running the card when something goes wrong.",
+      "detalle": "Cash today: accessible cash $30,000; short-term needs for home + vacation $116,800 (plan shows home down payment $113,300 and vacation $3,500).",
+      "meta_id": "casa_2027"
+    },
+    {
+      "id": "t2",
+      "frente": "Retirement runs short six years before your plan ends",
+      "reverso": "Keeping the home plan and current savings pace means retirement savings run out around age 85, leaving planned spending unpaid late in life. This matters because Social Security covers a portion, so your savings must cover the rest.",
+      "detalle": "Plan: savings run out at age 85; retirement spending gap about $59,613 a year (plan labels yearly need $89,649; guaranteed income covers 34%).",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "Life and liability protection are thin for a single earner",
+      "reverso": "Your current life policy and no umbrella leave your income and assets exposed if you have a big claim or die. Fixing protection lets your family keep the plans you’re building.",
+      "detalle": "Life insurance present $180,000; recommended range $900,000–$1,800,000. No umbrella coverage; recommended minimum $1,000,000.",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "High-interest card is the most expensive debt",
+      "reverso": "That card costs you the most for each dollar outstanding. Paying it down faster frees future cash but competes with the home down payment and retirement saving, so weigh which matters most.",
+      "detalle": "Credit card balance $3,500 at 20% APR; monthly payment $200, projected payoff July 2028 if unchanged.",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "Your investment mix and concentration are a secondary drag",
+      "reverso": "Most wealth sits in investable accounts and a taxable brokerage holding is concentrated. You can review how the mix fits your Growth choice once near-term cash is handled.",
+      "detalle": "Investable assets $145,000; stocks ~74% of invested mix; largest position VTI $60,000; tax-inefficient holdings $36,500 including $15,000 in high-yield bonds.",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 26,
+    "pilares": [
+      {
+        "pillar": "Savings and cash flow",
+        "score": 0,
+        "points_shown_in_app": "0/25"
+      },
+      {
+        "pillar": "Debt",
+        "score": 78,
+        "points_shown_in_app": "8/10"
+      },
+      {
+        "pillar": "Investments",
+        "score": 42,
+        "points_shown_in_app": "11/25"
+      },
+      {
+        "pillar": "Liquidity and emergency fund",
+        "score": 22,
+        "points_shown_in_app": "4/20"
+      },
+      {
+        "pillar": "Insurance and protection",
+        "score": 18,
+        "points_shown_in_app": "4/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Add umbrella cover",
+        "action": "Add $1M of umbrella to raise the liability shield",
+        "effort": "low",
+        "target_amount": 1000000,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Lower the withdrawal rate",
+        "action": "Cutting withdrawals to $10,300/year (6.0%) reaches the sustainable band",
+        "effort": "high",
+        "target_amount": 10300,
+        "score_before": 26,
+        "score_after": 62,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Raise growth allocation toward glide",
+        "action": "Move the invested mix from 74% to 88% growth (glide 98%) for the next horizon-fit band — about $19,900 of the invested book",
+        "effort": "high",
+        "target_amount": 19900,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [],
+    "limites": [],
+    "hitos": [
+      {
+        "id": "casa_2027",
+        "anio": 2027,
+        "titulo": "Purchase a home in January 2027"
+      },
+      {
+        "id": "vacation_2027",
+        "anio": 2027,
+        "titulo": "Take a vacation in January 2027"
+      },
+      {
+        "id": "retire_2047",
+        "anio": 2047,
+        "titulo": "Michael's retirement at age 58"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Extra monthly savings",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      },
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Extra monthly debt payment",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Illustrative simulator: it shows the direction of change, not a Sherpas projection."
+  },
+  "siguiente_paso": {
+    "titulo": "Add umbrella cover",
+    "razon": "The plan flags no umbrella policy and recommends adding one to raise your liability shield; this directly reduces the chance that a single claim wipes out your liquid assets before the home closes.",
+    "minutos": 30,
+    "pasos": [
+      "Call your insurance agent or company and ask whether you can add an umbrella policy to your renter and auto coverage.",
+      "Ask for a quote for the recommended minimum level in the plan and one a step higher so you can compare premium versus protection.",
+      "If the quote fits your budget, buy the umbrella or schedule a follow-up to decide after you confirm the home-closing cash plan."
+    ],
+    "acciones": {
+      "calendario_url": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Add%20umbrella%20cover&dates=20261119/20261120&details=Reminder%20for%20your%20Sherpas%20plan",
+      "asesor_url": "mailto:asesor@example.com?subject=I%27d%20like%20to%20talk%20about%20my%20plan&body=Hi%2C%20I%27ve%20seen%20my%20plan%20and%20I%27d%20like%20help%20with%20this%20step%3A%20Add%20umbrella%20cover"
+    }
+  },
+  "fallback": false
+}

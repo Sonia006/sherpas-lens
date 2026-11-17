@@ -1,0 +1,205 @@
+{
+  "case_id": "michael-carter",
+  "animo": 3,
+  "tono": "neutral",
+  "tiempo": "completo",
+  "idioma": "en",
+  "num_tarjetas": 10,
+  "frase_inicial": "Michael: your Financial Health score is 26 and there’s a clear path to get steadier.",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "January 2027 home purchase is the big driver.",
+      "reverso": "That down payment and the one-time costs take the same cash you’d use for emergencies and retirement. Decide whether to pause, reduce, or fund the purchase before touching long-term savings.",
+      "detalle": "Down payment and short-term cash needs: $113,300 for home purchase; closing costs $9,464; payment timing January 2027.",
+      "meta_id": "casa_2027"
+    },
+    {
+      "id": "t2",
+      "frente": "Cash cushion is thinner than it should be.",
+      "reverso": "You have about three months of living costs in accessible cash, but you’d feel safer with five to six months. That gap makes small shocks likely to push you to sell investments or use credit.",
+      "detalle": "Accessible cash today $30,000; recommended emergency reserve $46,530–$55,836 (5–6 months).",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "Retirement at 58 won’t fully cover planned spending to age 91.",
+      "reverso": "If you keep the plan as-is, savings run out before the plan ends and some planned spending would be unpaid. That’s because retirement income covers only part of the yearly need and savings must fill the rest.",
+      "detalle": "Savings run out at age 85; unpaid planned spending by end of plan $32,439; retirement gap today ~$1,177,586.",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "Your income and saving habit are strengths.",
+      "reverso": "You bring in a high salary and save steadily, including getting the full employer match. That gives real options: rebuild cash, shift the home plan, or add protection without starting from scratch.",
+      "detalle": "Annual salary $180,000; annual savings $43,000 including $7,000 employer match.",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "No umbrella liability cover and weak life insurance.",
+      "reverso": "A big liability claim or your loss would hit the household hard because current life cover and liability protection are well below recommended levels. Confirm existing auto insurance first, then weigh adding liability cover.",
+      "detalle": "Life insurance $180,000 (shortfall ~$720,000); recommended umbrella gap $1,000,000.",
+      "meta_id": null
+    },
+    {
+      "id": "t6",
+      "frente": "High-interest credit card is the most expensive debt.",
+      "reverso": "Although the card balance is small, its high cost eats cash. Faster payoff frees interest dollars, but it will compete with building the cash cushion and the home down payment.",
+      "detalle": "Credit card balance $3,500 at 20% APR; current monthly payment $200; projected payoff July 2028 at current pace.",
+      "meta_id": null
+    },
+    {
+      "id": "t7",
+      "frente": "Invested mix is roughly aligned with Growth but concentrated.",
+      "reverso": "Most of your invested money is in stocks, which fits your risk choice, yet one holding is a large share. That concentration can make short-term drops feel bigger when you need cash.",
+      "detalle": "Investable assets $145,000; largest position $60,000 in a single index; tax-inefficient holdings $36,500 including $15,000 in high-yield bonds.",
+      "meta_id": null
+    },
+    {
+      "id": "t8",
+      "frente": "Net cash flow is negative this year.",
+      "reverso": "Even saving aggressively, your expenses and savings outstrip income this year. That makes choices urgent: shift near-term spending, pause some savings, or adjust the home timing.",
+      "detalle": "Net cash flow this year -$8,336 (plan year).",
+      "meta_id": null
+    },
+    {
+      "id": "t9",
+      "frente": "The home, retirement and protection choices tug the same dollars.",
+      "reverso": "You can’t fully fund all three at once without changing timing or amounts. Picking which matters most first makes the rest achievable in sequence rather than all at once.",
+      "detalle": "",
+      "meta_id": null
+    },
+    {
+      "id": "t10",
+      "frente": "Small confirmations matter before big moves.",
+      "reverso": "Before moving investments or buying extra insurance, check whether the BMW is actually insured in your records and confirm exact cash available—small data fixes change what to do next.",
+      "detalle": "",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 26,
+    "pilares": [
+      {
+        "pillar": "Savings and cash flow",
+        "score": 0,
+        "points_shown_in_app": "0/25"
+      },
+      {
+        "pillar": "Debt",
+        "score": 78,
+        "points_shown_in_app": "8/10"
+      },
+      {
+        "pillar": "Investments",
+        "score": 42,
+        "points_shown_in_app": "11/25"
+      },
+      {
+        "pillar": "Liquidity and emergency fund",
+        "score": 22,
+        "points_shown_in_app": "4/20"
+      },
+      {
+        "pillar": "Insurance and protection",
+        "score": 18,
+        "points_shown_in_app": "4/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Add umbrella cover",
+        "action": "Add $1M of umbrella to raise the liability shield",
+        "effort": "low",
+        "target_amount": 1000000,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Lower the withdrawal rate",
+        "action": "Cutting withdrawals to $10,300/year (6.0%) reaches the sustainable band",
+        "effort": "high",
+        "target_amount": 10300,
+        "score_before": 26,
+        "score_after": 62,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Raise growth allocation toward glide",
+        "action": "Move the invested mix from 74% to 88% growth (glide 98%) for the next horizon-fit band — about $19,900 of the invested book",
+        "effort": "high",
+        "target_amount": 19900,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [],
+    "limites": [],
+    "hitos": [
+      {
+        "id": "casa_2027",
+        "anio": 2027,
+        "titulo": "Purchase a home in January 2027"
+      },
+      {
+        "id": "vacacion_2027",
+        "anio": 2027,
+        "titulo": "Take a vacation in January 2027 (recurs annually)"
+      },
+      {
+        "id": "retiro_2047",
+        "anio": 2047,
+        "titulo": "Michael's planned retirement at age 58"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Extra monthly savings",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      },
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Extra monthly debt payment",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
+      },
+      {
+        "id": "gasto_menos",
+        "etiqueta": "Monthly spending you cut",
+        "unidad": "$",
+        "min": 0,
+        "max": 500,
+        "paso": 25,
+        "puntos_por_unidad": 0.012
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Illustrative simulator: it shows the direction of change, not a Sherpas projection."
+  },
+  "siguiente_paso": {
+    "titulo": "Add umbrella cover",
+    "razon": "It raises your liability shield and is a low-effort way to protect the liquid assets you’re rebuilding and the home you plan to buy; the plan shows this move improves your score immediately.",
+    "minutos": 30,
+    "pasos": [
+      "Call or log in to your auto or insurance agent and ask if an umbrella policy is available for your account.",
+      "If yes, request a written quote for a $1,000,000 umbrella and note the premium and start date.",
+      "Decide whether the quoted premium fits your monthly budget and, if so, bind the policy or schedule a meeting to compare with other providers."
+    ],
+    "acciones": {
+      "calendario_url": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Add%20umbrella%20cover&dates=20261119/20261120&details=Reminder%20for%20your%20Sherpas%20plan",
+      "asesor_url": "mailto:asesor@example.com?subject=I%27d%20like%20to%20talk%20about%20my%20plan&body=Hi%2C%20I%27ve%20seen%20my%20plan%20and%20I%27d%20like%20help%20with%20this%20step%3A%20Add%20umbrella%20cover"
+    }
+  },
+  "fallback": false
+}

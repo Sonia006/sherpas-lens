@@ -2,7 +2,9 @@ import './index.css';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 // MODO MOCK: true = datos de prueba, NO llama al backend ni gasta tokens. Pon false para usar la IA real.
-const MOCK = true;
+const MOCK = false;
+// Voz de la IA con ElevenLabs a través del backend (/tts). Si falla o no está configurado, usa la voz del navegador.
+const USE_ELEVEN = true;
 // Idioma por defecto la primera vez (luego se recuerda la elección del botón ES/EN)
 const DEFAULT_LANG = 'en';
 
@@ -16,9 +18,10 @@ const CASOS = {
 const COUPLES = { 'timothy-melanie-weah': ['Timothy', 'Melanie'], 'daniel-emily-johnson': ['Daniel', 'Emily'] };
 
 const saved = (() => { try { return localStorage.getItem('lang'); } catch { return null; } })();
-// screen: 0 inicio · 1 cargando · 2 flashcards · 3 plan interactivo · -1 error
+// screen: -2 bienvenida · 0 ánimo · 4 ritmo · 1 cargando ...
+// (antes) 0 inicio · 1 cargando · 2 flashcards · 3 plan interactivo · -1 error
 // m[i]: ánimo de cada persona (1 = muy agobiado ... 5 = muy confiado). Posición del selector = m - 1.
-const S = { lang: ['es', 'en'].includes(saved) ? saved : DEFAULT_LANG, screen: 0, caso: 'michael-carter', persona: '', m: [3, 3], tiempo: 'corto', data: null, i: 0, flip: false, dir: '', vals: {}, msgs: [], voz: false, wait: false, err: '', opts: false };
+const S = { lang: ['es', 'en'].includes(saved) ? saved : DEFAULT_LANG, screen: -2, caso: 'michael-carter', persona: '', m: [3, 3], tiempo: 'corto', data: null, i: 0, flip: false, dir: '', vals: {}, msgs: [], voz: false, wait: false, err: '', opts: false };
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const app = $('#app');
@@ -46,18 +49,23 @@ const T = {
     nextStep: 'Siguiente paso', toViz: 'Pasar a visualizarlo ↓',
     wellbeing: 'Bienestar financiero', pathTo: 'Camino hacia:', chartAria: 'Bienestar financiero de hoy a tu meta, seguir igual frente a hacer cambios',
     legStay: 'Si sigues igual', legChange: 'Con tus cambios', yAxis: 'Bienestar (0-100)', today: 'Hoy',
-    moreInfo: 'Para más información:', book: 'Programar cita con asesor', nextHead: 'NEXT STEP',
+    moreInfo: 'Para más información:', book: 'Programar cita con asesor', nextHead: '¿Qué hacer ahora?',
     activate: 'Activar plan de ahorro →', pdf: 'Descargar informe completo (PDF)',
     assistant: 'Asistente', openAssistant: 'Hablar con la asistente', chatTitle: 'Pregunta sobre tu plan', voiceAria: 'Leer respuestas en voz alta', close: 'Cerrar',
     chatPh: 'Escribe tu duda...', mic: 'Hablar', send: 'Enviar',
     welcome: 'Pregúntame lo que quieras sobre tu plan. También puedes hablarme con el micrófono.', thinking: 'Pensando…', thinkingAria: 'La asistente está pensando',
     mockReply: 'Respuesta de prueba: aquí contestaría la IA, sin gastar tokens.', connErr: 'No consigo conectar ahora mismo. Inténtalo de nuevo en un momento.',
     talkAdvisor: 'Hablar con un asesor',
+    wTitle: 'Tu plan financiero, paso a paso', wBody: 'Dos preguntas rápidas y verás lo más importante de tu plan.', wStart: 'Empezar', next: 'Continuar',
+    slide: 'Desliza el círculo o toca una opción', sideF: 'delante', sideB: 'detrás', optional: '¿Prefieres hablar con una persona?',
     ctxCard: (l, f) => `[Contexto de la app: el usuario está viendo la tarjeta "${l}: ${f}"] `, ctxSim: v => `[Contexto de la app: el usuario está en el simulador con ${v}] `,
     citaTitle: 'Programar cita con el asesor', citaDesc: 'Elige día y hora, y añádelo a tu calendario o envía un correo al asesor.',
     date: 'Día', time: 'Hora', gcal: 'Añadir a Google Calendar', ics: 'Descargar para Apple / Outlook (.ics)', mailBtn: 'Enviar correo al asesor',
     copyMail: 'Copiar correo', copied: 'Correo copiado ✓', pickDate: 'Elige un día primero.', mailHint: 'Si no se abre tu correo, copia la dirección del asesor y escríbele desde tu app de correo.',
-    pref: 'Me vendría bien:', langAria: 'Idioma', speech: 'es-ES', scrub: 'Desliza sobre la gráfica para ver cada año'
+    pref: 'Me vendría bien:', langAria: 'Idioma', speech: 'es-ES', scrub: 'Desliza sobre la gráfica para ver cada año',
+    ctxCouple: (a, la, b, lb, st) => `Somos pareja: ${a} se siente ${la} y ${b} se siente ${lb}. Queremos ver juntos un primer paso común (${st}).`, ctxSingle: l => `Hoy me siento ${l}.`,
+    welcomeLead: 'Entiende tu plan financiero, paso a paso y sin prisa.', wsteps: ['Cuéntanos cómo te sientes', 'Descubre tu diagnóstico en tarjetas', 'Prueba cambios sobre tu plan'], paceQ: 'Elige tu ritmo', stepQ: n => `Pregunta ${n} de 2`,
+    loadMsgs: ['Estamos leyendo tu plan.', 'Buscando lo más importante para ti…', 'Ordenando tus metas y tus riesgos.', 'Poniéndolo en palabras sencillas.', 'Preparando tus tarjetas una a una.', 'Ya casi está, gracias por tu paciencia.']
   },
   en: {
     stepOf: (n, t) => `${t} - Step ${n} of 3`, dx: 'Diagnosis', plan: 'Interactive plan', back: 'Back',
@@ -77,18 +85,23 @@ const T = {
     nextStep: 'Next step', toViz: 'See it on the chart ↓',
     wellbeing: 'Financial wellbeing', pathTo: 'Path to:', chartAria: 'Financial wellbeing from today to your goal, staying the same versus making changes',
     legStay: 'If nothing changes', legChange: 'With your changes', yAxis: 'Wellbeing (0-100)', today: 'Today',
-    moreInfo: 'For more information:', book: 'Book a call with an advisor', nextHead: 'NEXT STEP',
+    moreInfo: 'For more information:', book: 'Book a call with an advisor', nextHead: 'What to do now?',
     activate: 'Start my savings plan →', pdf: 'Download full report (PDF)',
     assistant: 'Assistant', openAssistant: 'Talk to the assistant', chatTitle: 'Ask about your plan', voiceAria: 'Read answers aloud', close: 'Close',
     chatPh: 'Type your question...', mic: 'Speak', send: 'Send',
     welcome: 'Ask me anything about your plan. You can also talk to me with the microphone.', thinking: 'Thinking…', thinkingAria: 'The assistant is thinking',
     mockReply: 'Test reply: the AI would answer here, without spending tokens.', connErr: 'I can\'t connect right now. Please try again in a moment.',
     talkAdvisor: 'Talk to an advisor',
+    wTitle: 'Your financial plan, step by step', wBody: 'Two quick questions, then you\'ll see what matters most in your plan.', wStart: 'Let\'s start', next: 'Continue',
+    slide: 'Slide the dot or tap an option', sideF: 'front', sideB: 'back', optional: 'Prefer to talk to a person?',
     ctxCard: (l, f) => `[App context: the user is looking at the card "${l}: ${f}"] `, ctxSim: v => `[App context: the user is in the simulator with ${v}] `,
     citaTitle: 'Book a call with the advisor', citaDesc: 'Pick a day and time, then add it to your calendar or email the advisor.',
     date: 'Day', time: 'Time', gcal: 'Add to Google Calendar', ics: 'Download for Apple / Outlook (.ics)', mailBtn: 'Email the advisor',
     copyMail: 'Copy email', copied: 'Email copied ✓', pickDate: 'Pick a day first.', mailHint: 'If your email app doesn\'t open, copy the advisor\'s address and write from your email app.',
-    pref: 'My preferred time:', langAria: 'Language', speech: 'en-US', scrub: 'Slide across the chart to see each year'
+    pref: 'My preferred time:', langAria: 'Language', speech: 'en-US', scrub: 'Slide across the chart to see each year',
+    ctxCouple: (a, la, b, lb, st) => `We are a couple: ${a} feels ${la} and ${b} feels ${lb}. We'd like to look at a common first step together (${st}).`, ctxSingle: l => `Today I feel ${l}.`,
+    welcomeLead: 'Understand your financial plan, one step at a time and with no rush.', wsteps: ['Tell us how you feel', 'Discover your diagnosis in cards', 'Try changes on your plan'], paceQ: 'Choose your pace', stepQ: n => `Question ${n} of 2`,
+    loadMsgs: ['We are reading your plan.', 'Looking for what matters most to you…', 'Sorting your goals and your risks.', 'Putting it into plain words.', 'Preparing your cards one by one.', 'Almost there, thanks for your patience.']
   }
 };
 const t = (k, ...a) => { const v = T[S.lang][k]; return typeof v === 'function' ? v(...a) : v; };
@@ -117,7 +130,7 @@ const I = {
 };
 const KI = { goal: I.target, risk: I.shield, step: I.flag };   // icono por tipo de tarjeta
 const LS = { ahorro_mensual: [I.coin, '#2f9a8a'], pago_deuda_extra: [I.card, '#f08c3c'], gasto_menos: [I.cut, '#5b6ee1'], anos_extra_trabajando: [I.clock, '#8b5cf6'] };
-const face = k => `<svg viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" aria-hidden="true"><circle cx="32" cy="32" r="26"/><circle cx="23" cy="27" r="2.6" fill="currentColor" stroke="none"/><circle cx="41" cy="27" r="2.6" fill="currentColor" stroke="none"/>${k === 'sad' ? '<path d="M22 44q10-9 20 0"/>' : k === 'neu' ? '<path d="M23 42h18"/>' : '<path d="M21 38q11 11 22 0"/>'}</svg>`;
+const face = k => `<svg viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" aria-hidden="true"><circle class="halo" cx="32" cy="32" r="31" fill="currentColor" stroke="none"/><circle class="fb" cx="32" cy="32" r="26"/><circle cx="23" cy="27" r="2.6" fill="currentColor" stroke="none"/><circle cx="41" cy="27" r="2.6" fill="currentColor" stroke="none"/>${k === 'sad' ? '<path d="M22 44q10-9 20 0"/>' : k === 'neu' ? '<path d="M23 42h18"/>' : '<path d="M21 38q11 11 22 0"/>'}</svg>`;
 
 // ───── Datos de prueba (solo se usan con MOCK = true). Cada familia tiene su propia meta y sus propias palancas.
 // [etiqueta es/en, unidad (o es/en), min, max, paso, puntos por unidad]
@@ -134,7 +147,7 @@ const MC = {
   'samantha-lewis': { hitos: [[2027, 'Matrícula de agosto', 'August tuition'], [2038, 'Primera vivienda', 'First home']], pal: ['ahorro_mensual', 'pago_deuda_extra'], paso: ['Separa ahora el dinero de la matrícula', 'Set aside the tuition money now'] }
 };
 const mockResult = () => {
-  const c = MC[S.caso], mood = eff(), n = S.tiempo === 'completo' ? 5 : mood <= 2 ? 2 : 3, L = S.lang === 'en' ? 1 : 0;
+  const c = MC[S.caso], mood = eff(), n = 5, L = S.lang === 'en' ? 1 : 0;
   const goalT = pick('Objetivo', 'Goal'), vulT = pick('Vulnerabilidad', 'Vulnerability');
   return {
     frase_inicial: mood <= 2 ? pick('Vamos paso a paso, sin prisa.', 'Let\'s take it step by step, no rush.') : mood === 3 ? pick('Tienes una base sólida, veamos qué mejorar.', 'You have a solid base, let\'s see what to improve.') : pick('Vas muy bien, afinemos los detalles.', 'You\'re doing great, let\'s fine-tune the details.'),
@@ -157,6 +170,9 @@ const mockResult = () => {
 };
 
 // ───── Pantallas
+const pre = n => `<div class="pre"><button class="bk" data-a="back" aria-label="${t('back')}">${I.back}</button><div class="pdots" role="img" aria-label="${t('stepQ', n)}"><i class="${n === 1 ? 'cur' : 'done'}"></i><i class="${n === 2 ? 'cur' : ''}"></i></div></div>`;
+const arrow = d => svg(`<path d="${d}"/>`, 22);
+const topbar = () => `<div class="tb"><button class="bk" data-a="back" aria-label="${t('back')}">${I.back}</button></div>`;
 const head = (n, title, round) => `<header class="hd ${round ? 'round' : ''}"><button class="bk" data-a="back" aria-label="${t('back')}">${I.back}</button><h1 class="brand">SHERPAS</h1><p class="sub">${t('stepOf', n, title)}</p>
   <div class="steps">${[1, 2, 3].map(k => `<i class="${k === n ? 'cur' : k < n ? 'done' : ''}"></i>`).join('<b></b>')}</div></header>`;
 const deck = () => {
@@ -170,50 +186,85 @@ const FACE = [0, 0, 1, 2, 2];  // posición del selector → cara más cercana (
 // Un selector de ánimo (una persona). La cara solo se ilumina cuando el selector está sobre su propio círculo (posiciones 1, 3 y 5).
 const moodBlock = (who, name) => {
   const pos = S.m[who] - 1, lit = pos % 2 === 0 ? pos / 2 : -1, L = t('moods');
-  return `<div class="mood" data-who="${who}">${name ? `<p class="who">${esc(name)}</p>` : ''}
+  return `<div class="mood ${S.touched ? 'touched' : ''}" data-who="${who}">${name ? `<p class="who">${esc(name)}</p>` : ''}
     <div class="g5">${[['sad', 1], ['neu', 3], ['smi', 5]].map(([k, c], j) => `<button class="face-b ${lit === j ? 'on' : ''}" data-k="${k}" style="grid-column:${c}" data-a="mood" data-v="${c - 1}" aria-label="${L[j]}">${face(k)}</button>`).join('')}</div>
     <div class="g5 track" role="radiogroup" aria-label="${t('moodAria')}${name ? ': ' + esc(name) : ''}">${[0, 1, 2, 3, 4].map(i => `<button class="dp ${i % 2 === 0 ? 'big' : ''} ${i === pos ? 'on' : ''}" role="radio" aria-checked="${i === pos}" data-a="mood" data-v="${i}" aria-label="${t('pos', i + 1)}"></button>`).join('')}</div>
     <div class="g5 mlab">${[1, 3, 5].map((c, j) => `<span style="grid-column:${c}" class="${lit === j ? 'on' : ''}">${L[j]}</span>`).join('')}</div>
   </div>`;
 };
 
+// Frases de la pantalla de carga: cambian cada 4 s (con fundido) para entretener sin agobiar; la última se queda fija
+let loadTimer = null;
+function stopLoadMsgs() { clearInterval(loadTimer); loadTimer = null; }
+function startLoadMsgs() {
+  stopLoadMsgs(); let k = 0;
+  loadTimer = setInterval(() => {
+    const e = $('#lmsg'); if (!e) return stopLoadMsgs();
+    const list = t('loadMsgs'); if (k >= list.length - 1) return stopLoadMsgs();
+    e.classList.add('swap');
+    setTimeout(() => { const e2 = $('#lmsg'); if (!e2) return; k++; e2.textContent = t('loadMsgs')[Math.min(k, t('loadMsgs').length - 1)]; e2.classList.remove('swap'); }, 350);
+  }, 4000);
+}
+
 function render() {
   const d = S.data;
-  if (S.screen === 0) {
+  const ORD = { '-2': 0, 0: 1, 4: 2, 1: 3, '-1': 3, 2: 4, 3: 5 };
+  if (S.screen !== S.shown) {   // cambio de pantalla: entra con fundido y deslizamiento (adelante o atrás)
+    const fwd = (ORD[S.screen] ?? 0) >= (ORD[S.shown] ?? 0);
+    app.classList.remove('go-f', 'go-b'); void app.offsetWidth; app.classList.add(fwd ? 'go-f' : 'go-b');
+    clearTimeout(S.goT); S.goT = setTimeout(() => app.classList.remove('go-f', 'go-b'), 700); S.shown = S.screen;
+  }
+  const fit = [-2, 0, 4, 2].includes(S.screen);
+  app.classList.toggle('fit', fit); app.classList.toggle('s2', S.screen === 2);
+  if (S.screen !== 1) stopLoadMsgs();
+  if (S.screen === -2) {
     const cp = COUPLES[S.caso];
     app.innerHTML = `<h1 class="brand big">SHERPAS</h1>
-    <p class="intro ${cp ? 'cpl' : ''}">${cp ? t('introCouple') : t('intro')}</p>
-    <div class="${cp ? 'couple' : ''}">${cp ? cp.map((n, i) => moodBlock(i, n)).join('') : moodBlock(0, '')}</div>
-    <p class="lab">${t('pace')}</p>
-    <div role="radiogroup" aria-label="${t('paceAria')}">
-      <button class="rit ${S.tiempo === 'corto' ? 'on' : ''}" role="radio" aria-checked="${S.tiempo === 'corto'}" data-a="tiempo" data-v="corto"><span class="rd"></span>${t('direct')} ${I.bolt}</button>
-      <button class="rit ${S.tiempo === 'completo' ? 'on' : ''}" role="radio" aria-checked="${S.tiempo === 'completo'}" data-a="tiempo" data-v="completo"><span class="rd"></span>${t('full')} ${I.lines}</button>
-    </div>
-    <div class="spacer"></div>
-    <button class="cta" data-a="go">${t('start')}</button>
-    <p class="tag">${t('tag')}</p>
-    <details class="opts" ${S.opts ? 'open' : ''}><summary>${t('demo')}</summary>
-      <label for="caso">${t('family')}</label>
-      <select id="caso">${Object.entries(CASOS).map(([k, v]) => `<option value="${k}" ${k === S.caso ? 'selected' : ''}>${v}</option>`).join('')}</select>
-      ${cp ? '' : `<label for="persona">${t('who')}</label>
-      <input type="text" id="persona" maxlength="40" placeholder="${t('whoPh')}" value="${esc(S.persona)}">`}
-    </details>`;
+      <p class="wlead">${t('welcomeLead')}</p>
+      <ol class="wsteps">${t('wsteps').map((x, i) => `<li><span class="wn">${i + 1}</span>${x}</li>`).join('')}</ol>
+      <div class="spacer"></div>
+      <button class="cta" data-a="begin">${t('wStart')}</button>
+      <details class="opts" ${S.opts ? 'open' : ''}><summary>${t('demo')}</summary>
+        <label for="caso">${t('family')}</label>
+        <select id="caso">${Object.entries(CASOS).map(([k, v]) => `<option value="${k}" ${k === S.caso ? 'selected' : ''}>${v}</option>`).join('')}</select>
+        ${cp ? '' : `<label for="persona">${t('who')}</label>
+        <input type="text" id="persona" maxlength="40" placeholder="${t('whoPh')}" value="${esc(S.persona)}">`}
+      </details>`;
+  } else if (S.screen === 0) {
+    const cp = COUPLES[S.caso];
+    app.innerHTML = `${pre(1)}
+      <p class="intro ${cp ? 'cpl' : ''}">${cp ? t('introCouple') : t('intro')}</p>
+      <div class="${cp ? 'couple' : ''}">${cp ? cp.map((n, i) => moodBlock(i, n)).join('') : moodBlock(0, '')}</div>
+      <p class="shint ${S.touched ? 'touched' : ''}"><span class="l">${arrow('M15 6l-6 6 6 6')}</span>${t('slide')}<span class="r">${arrow('M9 6l6 6-6 6')}</span></p>
+      <div class="spacer"></div>
+      <button class="cta" data-a="toPace">${t('next')}</button>`;
+  } else if (S.screen === 4) {
+    app.innerHTML = `${pre(2)}
+      <p class="intro">${t('paceQ')}</p>
+      <div role="radiogroup" aria-label="${t('paceAria')}">
+        <button class="rit ${S.tiempo === 'corto' ? 'on' : ''}" role="radio" aria-checked="${S.tiempo === 'corto'}" data-a="tiempo" data-v="corto"><span class="rd"></span>${t('direct')} ${I.bolt}</button>
+        <button class="rit ${S.tiempo === 'completo' ? 'on' : ''}" role="radio" aria-checked="${S.tiempo === 'completo'}" data-a="tiempo" data-v="completo"><span class="rd"></span>${t('full')} ${I.lines}</button>
+      </div>
+      <div class="spacer"></div>
+      <button class="cta" data-a="go">${t('start')}</button>
+      <p class="tag">${t('tag')}</p>`;
   } else if (S.screen === 1) {
-    app.innerHTML = `<div class="center"><div class="spin"></div><h2>${t('loading')}</h2><p class="lead">${t('reading')}</p></div>`;
+    app.innerHTML = `<div class="center"><div class="spin"></div><h2>${t('loading')}</h2><p class="lead" id="lmsg" aria-live="polite">${t('loadMsgs')[0]}</p></div>`;
+    startLoadMsgs();
   } else if (S.screen === -1) {
     app.innerHTML = `<div class="center"><h2>${t('errTitle')}</h2><p class="lead">${t('errBody', esc(API))}</p><p class="note">${t('detail')}: ${esc(S.err)}</p><button class="cta sm" data-a="go">${t('retry')}</button><button class="cta sm alt" data-a="back">${t('home')}</button></div>`;
   } else if (S.screen === 2) {
     const cs = deck(), c = cs[S.i];
-    const back = `<h3>${esc(c.label)}</h3><p>${esc(c.back)}</p>${c.steps?.length ? `<ol>${c.steps.map(p => `<li>${esc(p)}</li>`).join('')}</ol>` : ''}${c.min ? `<p class="mut">${t('minutes', c.min)}</p>` : ''}${c.more ? `<details><summary>${t('deeper')}</summary><p>${esc(c.more)}</p></details>` : ''}`;
+    const back = `<div class="bi"><p class="bt">${esc(c.back)}</p>${c.steps?.length ? `<ol>${c.steps.map(p => `<li>${esc(p)}</li>`).join('')}</ol>` : ''}${c.min ? `<p class="mut">${t('minutes', c.min)}</p>` : ''}${c.more ? `<details><summary>${t('deeper')}</summary><p>${esc(c.more)}</p></details>` : ''}</div>`;
     app.innerHTML = `${head(2, t('dx'))}
     <div class="meta"><span class="mi">${I.flag}</span><div><small>${t('goal')}</small><b>${esc(goal())}</b></div></div>
     ${S.fallback ? `<div class="warn">${t('saved')}</div>` : ''}
     <div class="stack" aria-label="${t('stackAria')}">
       ${S.i > 0 ? `<button class="peek up k-${cs[S.i - 1].kind}" data-a="prev" aria-label="${t('prevCard')}">${I.up}</button>` : ''}
       <div class="fc ${S.flip ? 'flip' : ''} ${S.dir ? 'in-' + S.dir : ''}" data-a="flip" tabindex="0" role="button" aria-label="${esc(c.label)}. ${t('flipAria')}"><div class="inner">
-        <div class="face k-${c.kind}"><span class="ic">${KI[c.kind]}</span><h3>${esc(c.label)}</h3><p class="ft">${esc(c.front)}</p><div class="hint">${I.hand} ${t('hint')}</div></div>
-        <div class="face back k-${c.kind}">${back}</div></div></div>
-      ${S.i < cs.length - 1 ? `<button class="peek dn k-${cs[S.i + 1].kind}" data-a="next" aria-label="${t('nextCard')}"><span>${esc(cs[S.i + 1].label)}</span>${I.dn}</button>` : ''}
+        <div class="face front k-${c.kind}"><span class="side">${t('sideF')}</span><div class="fh"><span class="ic">${KI[c.kind]}</span><h3>${esc(c.label)}</h3></div><p class="ft">${esc(c.front)}</p><div class="hint">${I.hand} ${t('hint')}</div></div>
+        <div class="face back k-${c.kind}"><span class="side">${t('sideB')}</span>${back}</div></div></div>
+      ${S.i < cs.length - 1 ? `<button class="peek dn k-${cs[S.i + 1].kind}" data-a="next" aria-label="${t('nextCard')}">${I.dn}</button>` : ''}
     </div>
     <div class="foot"><button class="cta2" data-a="sim"><b>${t('nextStep')}</b><span>${t('toViz')}</span></button></div>`;
     S.dir = '';
@@ -230,11 +281,11 @@ function render() {
         <input class="rng" type="range" id="r_${p.id}" data-id="${p.id}" min="${p.min}" max="${p.max}" step="${p.paso}" value="${S.vals[p.id] || 0}" style="--p:${pct(p, S.vals[p.id] || 0)}%"></div>`).join('')}
     </section>
     <p class="note">${esc(m.aviso)}</p>
-    <p class="info">${t('moreInfo')} <button class="lnk" data-a="cita">${t('book')}</button> ${I.mail}</p>
     <section class="panel next"><h3>${t('nextHead')}</h3><p class="nt">${esc(n.titulo)}</p>
       <div class="chk">${n.pasos.map(p => `<label><input type="checkbox"> ${esc(p)}</label>`).join('')}</div>
       <a class="cta sm" href="${esc(n.acciones.calendario_url)}" target="_blank" rel="noopener">${t('activate')}</a>
-      <button class="dl" data-a="pdf">${t('pdf')} ${I.dl}</button></section>`;
+      <button class="dl" data-a="pdf">${t('pdf')} ${I.dl}</button></section>
+    <div class="opt"><p>${t('optional')}</p><button class="cta sm alt" data-a="cita">${t('book')} ${I.mail}</button></div>`;
     updSim();
   }
 }
@@ -253,6 +304,18 @@ function updSim() {
   const f = x => { const k = (x - PL) / W; return Y(b) + (Y(nb) - Y(b)) * k * k * (3 - 2 * k); };
   const pts = Array.from({ length: 41 }, (_, i) => { const x = PL + i * W / 40; return x.toFixed(1) + ',' + f(x).toFixed(1); }).join(' ');
   const fy = f(PR), by = Y(b), iy = up ? Math.min(fy, by - 22) : fy;
+  // Hitos: si dos caen en el mismo año (o muy cerca) se separan en horizontal para que ninguno quede tapado
+  const hp = m.hitos.map((h, k) => ({ h, k, x: Math.max(PL, Math.min(PR, X(h.anio))), cx: 0 })).sort((a, c) => a.x - c.x || a.k - c.k), grp = [];
+  hp.forEach((p, i) => { if (i && p.x - hp[i - 1].x < 22) grp.at(-1).push(p); else grp.push([p]); });
+  grp.forEach(g => { const mid = g.reduce((q, p) => q + p.x, 0) / g.length; g.forEach((p, j) => p.cx = Math.max(PL, Math.min(PR + 12, mid + (j - (g.length - 1) / 2) * 22))); });
+  let lastLab = -99;
+  const hitosSvg = hp.map(({ h, k, x, cx }) => {
+    let lab = '';
+    if (x >= PL + 62 && x - lastLab >= 34) { lastLab = x; lab = `<text x="${x}" y="192" font-size="11" fill="#374151" font-weight="700" text-anchor="${x > PR - 22 ? 'end' : 'middle'}">${h.anio}</text>`; }
+    return `<line x1="${x}" y1="50" x2="${x}" y2="170" stroke="#f08c3c" stroke-dasharray="2 3" stroke-opacity=".75"/>
+      <circle cx="${x}" cy="${by}" r="4.5" fill="#2d4a4f" stroke="#fff" stroke-width="1.5"/>${up ? `<circle cx="${x}" cy="${f(x)}" r="6" fill="#f08c3c" stroke="#fff" stroke-width="2.2"/>` : ''}
+      <circle cx="${cx}" cy="40" r="9" fill="#f08c3c" stroke="#fff" stroke-width="2"/><text x="${cx}" y="44" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">${k + 1}</text>${lab}`;
+  }).join('');
   const badge = (y, txt, col) => `<g><rect x="${PR + 6}" y="${y - 11}" width="40" height="22" rx="11" fill="${col}"/><text x="${PR + 26}" y="${y + 4}" font-size="12" font-weight="800" fill="#fff" text-anchor="middle">${txt}</text></g>`;
   let cur = '';
   if (S.cur != null) {
@@ -278,11 +341,7 @@ function updSim() {
     ${up ? `<polyline points="${pts}" fill="none" stroke="url(#gL)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>` : ''}
     <line x1="${PL}" y1="170" x2="${PR}" y2="170" stroke="#9ca3af"/>
     <text x="${PL}" y="192" font-size="11" fill="#374151" font-weight="700">${t('today')} ${y0}</text>
-    ${m.hitos.map((h, k) => { const x = Math.min(PR, X(h.anio)), last = x > PR - 22, hide = x < 90;
-      return `<line x1="${x}" y1="50" x2="${x}" y2="170" stroke="#f08c3c" stroke-dasharray="2 3" stroke-opacity=".75"/>
-      <circle cx="${x}" cy="40" r="9" fill="#f08c3c" stroke="#fff" stroke-width="2"/><text x="${x}" y="44" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">${k + 1}</text>
-      <circle cx="${x}" cy="${by}" r="4.5" fill="#2d4a4f" stroke="#fff" stroke-width="1.5"/>${up ? `<circle cx="${x}" cy="${f(x)}" r="6" fill="#f08c3c" stroke="#fff" stroke-width="2.2"/>` : ''}
-      ${hide ? '' : `<text x="${x}" y="192" font-size="11" fill="#374151" font-weight="700" text-anchor="${last ? 'end' : 'middle'}">${h.anio}</text>`}`; }).join('')}
+    ${hitosSvg}
     ${badge(by, Math.round(b), '#2d4a4f')}${up ? badge(iy, Math.round(nb), '#2f9a8a') : ''}
     ${cur}
     <rect x="${PL}" y="30" width="${W}" height="150" fill="transparent"/>`;
@@ -319,7 +378,7 @@ async function load(keep) {
 
 // ───── Eventos
 function setMoodPos(block, v) {
-  const who = +block.dataset.who; S.m[who] = v + 1;
+  const who = +block.dataset.who; S.m[who] = v + 1; S.touched = true; document.querySelectorAll('.mood,.shint').forEach(x => x.classList.add('touched'));
   const lit = v % 2 === 0 ? v / 2 : -1;
   block.querySelectorAll('.dp').forEach((d, i) => { d.classList.toggle('on', i === v); d.setAttribute('aria-checked', i === v); });
   block.querySelectorAll('.face-b').forEach((d, j) => d.classList.toggle('on', j === lit));
@@ -328,8 +387,10 @@ function setMoodPos(block, v) {
 const act = {
   mood: b => setMoodPos(b.closest('.mood'), +b.dataset.v),
   tiempo: b => { S.tiempo = b.dataset.v; document.querySelectorAll('.rit').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-checked', x === b); }); },
+  begin: () => { S.screen = 0; render(); },
+  toPace: () => { S.screen = 4; render(); },
   go: () => load(),
-  back: () => { if (S.screen === 0) return; S.screen = S.screen === 3 ? 2 : 0; S.flip = false; render(); },
+  back: () => { const to = { 0: -2, 4: 0, 3: 2, 2: 4, '-1': 4 }[S.screen]; if (to == null) return; S.screen = to; S.flip = false; render(); },
   flip: b => { S.flip = !S.flip; b.classList.toggle('flip', S.flip); },
   next: () => { if (S.screen === 2 && S.i < deck().length - 1) { S.i++; S.flip = false; S.dir = 'up'; render(); } },
   prev: () => { if (S.screen === 2 && S.i > 0) { S.i--; S.flip = false; S.dir = 'dn'; render(); } },
@@ -359,7 +420,11 @@ app.addEventListener('input', e => {
 app.addEventListener('change', e => {
   if (e.target.id === 'caso') { S.caso = e.target.value; S.opts = true; render(); $('#caso')?.focus(); }   // cambia entre 1 y 2 selectores
 });
-app.addEventListener('toggle', e => { if (e.target.matches?.('details.opts')) S.opts = e.target.open; }, true);
+app.addEventListener('toggle', e => {
+  if (e.target.matches?.('details.opts')) S.opts = e.target.open;
+  else if (e.target.closest?.('.face.back') && e.target.open) setTimeout(() => e.target.scrollIntoView({ block: 'nearest', behavior: reduceMo ? 'auto' : 'smooth' }), 60);
+}, true);
+const reduceMo = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Deslizar el selector de ánimo (táctil o ratón) + deslizar tarjetas hacia arriba/abajo
 let py = null, lock = false, mdrag = null;
@@ -411,8 +476,13 @@ function parseMail(url) {
   const [a, q = ''] = String(url || '').replace(/^mailto:/i, '').split('?'), qp = new URLSearchParams(q);
   return { to: decodeURIComponent(a), subject: qp.get('subject') || '', body: qp.get('body') || '' };
 }
+const advisorCtx = () => {   // lo que el asesor necesita saber: si son pareja y cómo se sienten
+  const L = t('moods'), lab = v => `${L[FACE[v - 1]].toLowerCase()} (${v}/5)`, cp = COUPLES[S.caso], st = S.data?.siguiente_paso?.titulo || '';
+  return cp ? t('ctxCouple', cp[0], lab(S.m[0]), cp[1], lab(S.m[1]), st) : t('ctxSingle', lab(S.m[0]));
+};
 function openCita(url) {
-  const mail = parseMail(url), d0 = new Date(); d0.setDate(d0.getDate() + 2); while ([0, 6].includes(d0.getDay())) d0.setDate(d0.getDate() + 1);
+  const mail = parseMail(url); mail.body = (mail.body + '\n\n' + advisorCtx()).trim();
+  const d0 = new Date(); d0.setDate(d0.getDate() + 2); while ([0, 6].includes(d0.getDay())) d0.setDate(d0.getDate() + 1);
   const times = []; for (let h = 9; h <= 17; h++) { times.push(pad(h) + ':00'); if (h < 17) times.push(pad(h) + ':30'); }
   dlg.innerHTML = `<div class="cd"><div class="chd"><h2 id="ctit">${t('citaTitle')}</h2><button class="ib" id="ccl" aria-label="${t('close')}">${I.x}</button></div>
     <p class="mut">${t('citaDesc')}</p>
@@ -488,15 +558,31 @@ async function send(text) {
   } catch (e) { S.msgs.push({ role: 'assistant', content: t('connErr') }); }
   S.wait = false; renderChat();
 }
-const speak = txt => { if (!('speechSynthesis' in window)) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(txt); u.lang = t('speech'); speechSynthesis.speak(u); };
-const setVoz = v => { S.voz = v; $('#vozbtn').classList.toggle('mute', !v); if (!v && 'speechSynthesis' in window) speechSynthesis.cancel(); };
+let audio = null;
+const stopVoice = () => { if (audio) { audio.pause(); audio = null; } if ('speechSynthesis' in window) speechSynthesis.cancel(); };
+const browserSpeak = txt => { if (!('speechSynthesis' in window)) return; const u = new SpeechSynthesisUtterance(txt); u.lang = t('speech'); speechSynthesis.speak(u); };
+async function speak(txt) {
+  stopVoice();
+  if (USE_ELEVEN && !MOCK) {
+    try {
+      const r = await fetch(API + '/tts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ texto: txt.slice(0, 1000), idioma: S.lang }) });
+      if (!r.ok) throw new Error(r.status);
+      const blob = await r.blob(); if (!S.voz) return;       // se silenció mientras llegaba el audio
+      const url = URL.createObjectURL(blob), a = new Audio(url); audio = a;
+      a.onended = () => { URL.revokeObjectURL(url); if (audio === a) audio = null; };
+      await a.play(); return;
+    } catch (e) { audio = null; console.warn('ElevenLabs no disponible, uso la voz del navegador', e); }
+  }
+  if (S.voz) browserSpeak(txt);
+}
+const setVoz = v => { S.voz = v; $('#vozbtn').classList.toggle('mute', !v); if (!v) stopVoice(); };
 function openChat() {
   $('#chat').inert = false; $('#chat').classList.add('open'); $('#scrim').classList.add('open'); document.body.classList.add('chat-open');
   renderChat(); setTimeout(() => $('#cinp').focus({ preventScroll: true }), 380);
 }
 function closeChat() {
   $('#chat').classList.remove('open'); $('#scrim').classList.remove('open'); document.body.classList.remove('chat-open'); $('#chat').inert = true;
-  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  stopVoice();
 }
 $('#scrim').onclick = $('#cx').onclick = closeChat;
 $('#vozbtn').onclick = () => setVoz(!S.voz);
@@ -505,8 +591,8 @@ $('#cinp').onkeydown = e => { if (e.key === 'Enter') $('#snd').click(); };
 
 // Botón de la asistente: se puede arrastrar por la pantalla; un toque abre el chat
 const fab = $('#fab');
-const colL = (innerWidth + Math.min(440, innerWidth)) / 2;
-fab.style.left = Math.min(innerWidth - 74, colL - 76) + 'px'; fab.style.top = (innerHeight - 230) + 'px';
+const lb = $('#lang').getBoundingClientRect();   // por defecto: justo debajo del botón ES/EN (luego se puede arrastrar)
+fab.style.left = Math.max(4, lb.right - 60) + 'px'; fab.style.top = (lb.bottom + 10) + 'px';
 let drag = null;
 fab.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY, l: fab.offsetLeft, t: fab.offsetTop, m: false }; fab.setPointerCapture(e.pointerId); });
 fab.addEventListener('pointermove', e => {

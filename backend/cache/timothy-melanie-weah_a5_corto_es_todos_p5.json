@@ -1,0 +1,204 @@
+{
+  "case_id": "timothy-melanie-weah",
+  "animo": 5,
+  "tono": "muy confiado",
+  "tiempo": "corto",
+  "idioma": "es",
+  "num_tarjetas": 5,
+  "frase_inicial": "Timothy y Melanie: hoy tenéis una puntuación de 60 y hay un camino claro para subirla juntos.",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "La tarjeta con interés alto es lo primero que está bajando vuestra puntuación.",
+      "reverso": "Mantener ese saldo os cuesta mucho. Usar parte del efectivo que ya tenéis para reducirlo para de perder dinero en intereses y elimina de inmediato el principal obstáculo que señala el plan.",
+      "detalle": "Pagar $6,800 en la tarjeta del 18% desde efectivo para reducir la exposición a deuda revolvente; saldo actual de la tarjeta $18,000; quedarán $11,200 en la tarjeta tras el movimiento.",
+      "meta_id": null
+    },
+    {
+      "id": "t2",
+      "frente": "El seguro de vida para los dos es la otra puerta que el plan muestra abierta.",
+      "reverso": "Con dos niños pequeños que dependen de ambos ingresos, aumentar la cobertura protege a Liam y Josh frente a perder años de ingresos. El plan trata esto como un paso separado después de arreglar la tarjeta.",
+      "detalle": "Añadir $235,000 de cobertura de vida para llegar a $485,000 en total; después del pago de la tarjeta la cobertura de vida debe alcanzar $491,800 para despejar el límite de mortalidad.",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "Tenéis más efectivo que el colchón para imprevistos —esto es a la vez una fortaleza y una elección.",
+      "reverso": "Ese efectivo extra puede pagar deuda, comprar protección o empezar a ahorrar para la universidad. Cada elección cambia lo que podréis hacer después, así que elegid el orden que prefiráis.",
+      "detalle": "Efectivo accesible $150,800; efectivo por encima del colchón y metas a corto plazo $60,222.50.",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "El ahorro para la universidad de Liam y Josh no tiene fondos y es fácil de empezar mensualmente.",
+      "reverso": "No hay nada en las cuentas de universidad todavía, así que podéis empezar a ahorrar de forma regular ahora. Compite con pagar deuda y con comprar protección, así que decidid qué va primero.",
+      "detalle": "Brecha educativa $113,508.60; ahorro extra anual necesario el primer año $4,609.22.",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "No estáis de acuerdo sobre el riesgo en la práctica; revisad juntos la mezcla de inversiones.",
+      "reverso": "Timothy prefiere crecimiento y Melanie lo moderado, mientras que vuestras cuentas a largo plazo tienen muchas acciones. Poneros de acuerdo sobre cuánto vaivén podéis aceptar hará que los dos durmáis más tranquilos.",
+      "detalle": "Ahorros invertidos $210,000; cartera con alrededor de 77% en acciones frente a un objetivo moderado del 60%.",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 60,
+    "pilares": [
+      {
+        "pillar": "Ahorros y flujo de caja",
+        "score": 86,
+        "points_shown_in_app": "26/30"
+      },
+      {
+        "pillar": "Deuda",
+        "score": 58,
+        "points_shown_in_app": "12/20"
+      },
+      {
+        "pillar": "Inversiones",
+        "score": 56,
+        "points_shown_in_app": "8/15"
+      },
+      {
+        "pillar": "Liquidez y colchón para imprevistos",
+        "score": 100,
+        "points_shown_in_app": "15/15"
+      },
+      {
+        "pillar": "Seguros y protección",
+        "score": 37,
+        "points_shown_in_app": "7/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Pagar la tarjeta revolvente",
+        "action": "Pagar $6,800 de la tarjeta al 18% desde efectivo para eliminar la exposición a deuda revolvente alta y desbloquear la puerta",
+        "effort": "media",
+        "target_amount": 11200,
+        "score_before": 60,
+        "score_after": 62,
+        "lifts_a_cap": true
+      },
+      {
+        "title": "Añadir seguro de vida",
+        "action": "Añadir $235,000 de seguro de vida para subir la ratio de mortalidad y desbloquear la puerta",
+        "effort": "baja",
+        "target_amount": 485000,
+        "score_before": 60,
+        "score_after": 60,
+        "lifts_a_cap": true
+      },
+      {
+        "title": "Añadir seguro extra por si os reclaman una cantidad muy grande",
+        "action": "Añadir $1M de seguro extra para aumentar la protección frente a responsabilidades",
+        "effort": "baja",
+        "target_amount": 1000000,
+        "score_before": 60,
+        "score_after": 60,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [
+      {
+        "moves": [
+          "Pagar la tarjeta revolvente",
+          "Añadir seguro de vida",
+          "Añadir seguro extra por si os reclaman una cantidad muy grande"
+        ],
+        "score_after": 78,
+        "note": "Después del pago de la tarjeta, el seguro de vida debe llegar a $491,800 para mantener la ratio de mortalidad en la línea de desbloqueo."
+      },
+      {
+        "moves": [
+          "Pagar la tarjeta revolvente",
+          "Añadir seguro de vida"
+        ],
+        "score_after": 73,
+        "note": "Después del pago de la tarjeta, el seguro de vida debe llegar a $491,800 para mantener la ratio de mortalidad en la línea de desbloqueo."
+      },
+      {
+        "moves": [
+          "Pagar la tarjeta revolvente",
+          "Añadir seguro extra por si os reclaman una cantidad muy grande"
+        ],
+        "score_after": 62,
+        "note": "Juntos aumentan la puntuación publicada más que cualquiera de las dos acciones por separado."
+      },
+      {
+        "moves": [
+          "Añadir seguro de vida",
+          "Añadir seguro extra por si os reclaman una cantidad muy grande"
+        ],
+        "score_after": 60,
+        "note": "Juntos aumentan la puntuación publicada más que cualquiera de las dos acciones por separado."
+      }
+    ],
+    "limites": [
+      {
+        "reason": "Saldo revolvente alto con APR elevada",
+        "score_capped_at": 60
+      },
+      {
+        "reason": "Ratio de cobertura por mortalidad por debajo del umbral con dependientes",
+        "score_capped_at": 62
+      }
+    ],
+    "hitos": [
+      {
+        "id": "card_paydown_2026",
+        "anio": 2026,
+        "titulo": "Pay down high-rate card"
+      },
+      {
+        "id": "vehicle_2028",
+        "anio": 2028,
+        "titulo": "Purchase a vehicle"
+      },
+      {
+        "id": "home_2030",
+        "anio": 2030,
+        "titulo": "Purchase a home"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Pago extra de deuda al mes",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
+      },
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Ahorro mensual extra",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Simulador ilustrativo: muestra la dirección del cambio, no una proyección de Sherpas."
+  },
+  "siguiente_paso": {
+    "titulo": "Pay down revolving card",
+    "razon": "Este es el movimiento que el plan marca primero: elimina el coste alto que os lastra y sube vuestra puntuación publicada. Usa efectivo que ya tenéis y mantiene intacto vuestro colchón para imprevistos.",
+    "minutos": 60,
+    "pasos": [
+      "Sentaos juntos con la cuenta de efectivo y comprobad el saldo disponible que aparece en los extractos.",
+      "Autorizad una transferencia única de $6,800 desde la cuenta de efectivo a la tarjeta de crédito para reducir el saldo con interés alto.",
+      "Guardad una captura o nota de la confirmación del pago y poned un recordatorio en el calendario para revisar las opciones de seguro de vida la próxima semana."
+    ],
+    "acciones": {
+      "calendario_url": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Pay%20down%20revolving%20card&dates=20261119/20261120&details=Recordatorio%20de%20tu%20plan%20Sherpas",
+      "asesor_url": "mailto:asesor@example.com?subject=Quiero%20hablar%20de%20mi%20plan&body=Hola%2C%20he%20visto%20mi%20plan%20y%20quiero%20ayuda%20con%20este%20paso%3A%20Pay%20down%20revolving%20card"
+    }
+  },
+  "fallback": false
+}

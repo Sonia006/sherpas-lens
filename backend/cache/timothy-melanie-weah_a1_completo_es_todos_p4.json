@@ -1,0 +1,242 @@
+{
+  "case_id": "timothy-melanie-weah",
+  "animo": 1,
+  "tono": "muy agobiado",
+  "tiempo": "completo",
+  "idioma": "es",
+  "num_tarjetas": 9,
+  "frase_inicial": "Timothy y Melanie: demos hoy un paso pequeño juntos, empezando por algo sencillo.",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "La tarjeta con interés alto necesita atención",
+      "reverso": "Esa tarjeta os está costando dinero cada mes. Pagar con algo de efectivo reducirá lo que perdéis y liberará ingresos para otras metas.",
+      "detalle": "Pagar $6,800 de la tarjeta Chase al 18% desde efectivo para reducir la exposición a deuda revolvente alta; queda $11,200 en la tarjeta según el plan.",
+      "meta_id": null
+    },
+    {
+      "id": "t2",
+      "frente": "La cobertura de vida de la familia es escasa",
+      "reverso": "Si cualquiera de los dos muriera, Liam y Josh perderían una gran parte del ingreso familiar. Añadir seguro de vida protege a los niños y vuestra capacidad para seguir con los planes.",
+      "detalle": "Añadir $235,000 de seguro de vida para que el total sea $485,000; después del pago de la tarjeta la cobertura debería llegar a $491,800 para cumplir el requisito.",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "Tenéis un colchón para imprevistos fuerte",
+      "reverso": "El efectivo que tenéis ya cubre varios meses de lo esencial. Eso os da una fuente segura para arreglos de protección sin poner en riesgo la vida diaria.",
+      "detalle": "Efectivo accesible hoy: $150,800; colchón recomendado: 8–9 meses; efectivo por encima del colchón y metas a corto plazo: $60,222.50.",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "No tenéis seguro extra por si os reclaman una cantidad muy grande",
+      "reverso": "Un reclamo grande podría afectar el dinero que guardáis para los niños. Comprar un seguro extra protege vuestro efectivo y la casa frente a ese riesgo.",
+      "detalle": "Brecha de seguro extra según el plan: $1,000,000; hoy no hay póliza de este tipo.",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "Ahorro para la universidad todavía necesita un plan",
+      "reverso": "Aún no hay nada apartado para la universidad de Liam y Josh. Decidir cuánto de vuestro dinero extra irá a educación os dirá si ahorrar ahora o más adelante.",
+      "detalle": "Brecha de financiación universitaria: $113,508.60; ahorro extra necesario el primer año: $4,609.22.",
+      "meta_id": null
+    },
+    {
+      "id": "t6",
+      "frente": "El ahorro para la jubilación va bien",
+      "reverso": "El plan de jubilación pinta sólido y aprovecha las aportaciones de la empresa. Por ahora, podéis dedicar el efectivo sobrante a protección y a la tarjeta sin cambiar lo que ahorráis para la jubilación.",
+      "detalle": "Tasa combinada de ahorro para la jubilación: 22.8% del ingreso; el plan proyecta que los ahorros duren durante la jubilación.",
+      "meta_id": null
+    },
+    {
+      "id": "t7",
+      "frente": "La mezcla de inversiones es más agresiva de lo que prefiere Melanie",
+      "reverso": "Timothy y Melanie no se sienten igual con las subidas y bajadas. Ponerse de acuerdo sobre cuánto riesgo aceptáis ayudará a dormir mejor y a mantener el plan.",
+      "detalle": "Cartera a largo plazo del hogar alrededor del 77% en acciones; Timothy busca crecimiento, Melanie prefiere moderado.",
+      "meta_id": null
+    },
+    {
+      "id": "t8",
+      "frente": "Tenéis compras a corto plazo previstas",
+      "reverso": "Planeáis un coche nuevo y una casa en los próximos años. Tened esas fechas en cuenta al decidir si usar efectivo ahora o guardar algo para esos pagos.",
+      "detalle": "Vehículo planeado 2028; casa planeada 2030 según las metas.",
+      "meta_id": null
+    },
+    {
+      "id": "t9",
+      "frente": "Hay efectivo sobrante por encima de lo necesario que podéis usar",
+      "reverso": "No os falta un colchón básico. Ese dinero sobrante puede pagar la deuda cara de la tarjeta o empezar el seguro de vida sin tocar el gasto diario.",
+      "detalle": "Efectivo por encima del colchón para imprevistos y la meta de vacaciones: $60,222.50 disponible hoy.",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 60,
+    "pilares": [
+      {
+        "pillar": "Ahorros y flujo de caja",
+        "score": 86,
+        "points_shown_in_app": "26/30"
+      },
+      {
+        "pillar": "Deuda",
+        "score": 58,
+        "points_shown_in_app": "12/20"
+      },
+      {
+        "pillar": "Inversiones",
+        "score": 56,
+        "points_shown_in_app": "8/15"
+      },
+      {
+        "pillar": "Liquidez y colchón para imprevistos",
+        "score": 100,
+        "points_shown_in_app": "15/15"
+      },
+      {
+        "pillar": "Seguros y protección",
+        "score": 37,
+        "points_shown_in_app": "7/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Pagar la tarjeta revolvente",
+        "action": "Pagar $6,800 de la tarjeta al 18% desde efectivo para eliminar la exposición a deuda revolvente alta y desbloquear la puerta",
+        "effort": "media",
+        "target_amount": 11200,
+        "score_before": 60,
+        "score_after": 62,
+        "lifts_a_cap": true
+      },
+      {
+        "title": "Añadir seguro de vida",
+        "action": "Añadir $235,000 de seguro de vida para subir la ratio de mortalidad y desbloquear la puerta",
+        "effort": "baja",
+        "target_amount": 485000,
+        "score_before": 60,
+        "score_after": 60,
+        "lifts_a_cap": true
+      },
+      {
+        "title": "Añadir seguro extra por si os reclaman una cantidad muy grande",
+        "action": "Añadir $1M de seguro extra para aumentar la protección frente a responsabilidades",
+        "effort": "baja",
+        "target_amount": 1000000,
+        "score_before": 60,
+        "score_after": 60,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [
+      {
+        "moves": [
+          "Pagar la tarjeta revolvente",
+          "Añadir seguro de vida",
+          "Añadir seguro extra por si os reclaman una cantidad muy grande"
+        ],
+        "score_after": 78,
+        "note": "Después del pago de la tarjeta, el seguro de vida debe llegar a $491,800 para mantener la ratio de mortalidad en la línea de desbloqueo."
+      },
+      {
+        "moves": [
+          "Pagar la tarjeta revolvente",
+          "Añadir seguro de vida"
+        ],
+        "score_after": 73,
+        "note": "Después del pago de la tarjeta, el seguro de vida debe llegar a $491,800 para mantener la ratio de mortalidad en la línea de desbloqueo."
+      },
+      {
+        "moves": [
+          "Pagar la tarjeta revolvente",
+          "Añadir seguro extra por si os reclaman una cantidad muy grande"
+        ],
+        "score_after": 62,
+        "note": "Juntos aumentan la puntuación publicada más que cualquiera de las dos acciones por separado."
+      },
+      {
+        "moves": [
+          "Añadir seguro de vida",
+          "Añadir seguro extra por si os reclaman una cantidad muy grande"
+        ],
+        "score_after": 60,
+        "note": "Juntos aumentan la puntuación publicada más que cualquiera de las dos acciones por separado."
+      }
+    ],
+    "limites": [
+      {
+        "reason": "Saldo revolvente alto con APR elevada",
+        "score_capped_at": 60
+      },
+      {
+        "reason": "Ratio de cobertura por mortalidad por debajo del umbral con dependientes",
+        "score_capped_at": 62
+      }
+    ],
+    "hitos": [
+      {
+        "id": "vehicle_2028",
+        "anio": 2028,
+        "titulo": "Compra de un vehículo en 2028"
+      },
+      {
+        "id": "house_2030",
+        "anio": 2030,
+        "titulo": "Compra de una casa en 2030"
+      },
+      {
+        "id": "college_liam_2038",
+        "anio": 2038,
+        "titulo": "Liam empieza la universidad en 2038"
+      },
+      {
+        "id": "college_josh_2041",
+        "anio": 2041,
+        "titulo": "Josh empieza la universidad en 2041"
+      },
+      {
+        "id": "melanie_retire_2048",
+        "anio": 2048,
+        "titulo": "Melanie planea jubilarse en 2048"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Pago extra de deuda al mes",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
+      },
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Ahorro mensual extra",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Simulador ilustrativo: muestra la dirección del cambio, no una proyección de Sherpas."
+  },
+  "siguiente_paso": {
+    "titulo": "Pagar la tarjeta con interés alto",
+    "razon": "El plan muestra que pagar $6,800 desde efectivo reduce la exposición a deuda revolvente cara y mejora la puntuación familiar; el efectivo queda bien por encima del colchón para imprevistos después.",
+    "minutos": 20,
+    "pasos": [
+      "Sentaros juntos en la mesa de la cocina con la app del banco o la banca online",
+      "Localizar la cuenta de la tarjeta Chase y el saldo de la cuenta de efectivo",
+      "Hacer un pago único de $6,800 desde la cuenta de efectivo a la tarjeta Chase"
+    ],
+    "acciones": {
+      "calendario_url": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Pagar%20la%20tarjeta%20con%20inter%C3%A9s%20alto&dates=20261119/20261120&details=Recordatorio%20de%20tu%20plan%20Sherpas",
+      "asesor_url": "mailto:asesor@example.com?subject=Quiero%20hablar%20de%20mi%20plan&body=Hola%2C%20he%20visto%20mi%20plan%20y%20quiero%20ayuda%20con%20este%20paso%3A%20Pagar%20la%20tarjeta%20con%20inter%C3%A9s%20alto"
+    }
+  },
+  "fallback": false
+}

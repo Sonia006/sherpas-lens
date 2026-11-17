@@ -1,0 +1,195 @@
+{
+  "case_id": "daniel-emily-johnson",
+  "animo": 2,
+  "tono": "worried",
+  "tiempo": "corto",
+  "idioma": "en",
+  "num_tarjetas": 5,
+  "frase_inicial": "Daniel and Emily: together you already bring in $280,000 a year — and there is a clear, calm path forward.",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "Your short cash cushion leaves daily life exposed",
+      "reverso": "If a paycheck paused tomorrow, the kids’ routine could still keep going for a short time, but you’d likely reach for the high-rate card. Building accessible cash first buys breathing room and avoids adding costly debt.",
+      "detalle": "Accessible cash: $19,000 today; recommended emergency reserve: $106,860–$120,217; shortfall to adjusted min with near-term goals: $92,360.",
+      "meta_id": "casa_2027"
+    },
+    {
+      "id": "t2",
+      "frente": "Life cover is far below what protects your mortgage and children",
+      "reverso": "If one of you died, the remaining partner would face the mortgage, car loan and college costs. Raising life cover in steps can secure the kids’ schooling and the home without changing everything at once.",
+      "detalle": "Daniel life cover: $250,000 (shortfall ~$1,350,000). Emily life cover: $200,000 (shortfall ~$1,000,000). Top move suggests adding $1,166,000 life cover.",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "No umbrella policy means one big claim could reach your savings",
+      "reverso": "A liability claim could touch your home and future earnings. Adding umbrella cover creates a layer that keeps big bills off your savings and from forcing hard trade-offs between goals.",
+      "detalle": "Plan identifies no umbrella; recommended minimum $1,000,000 gap. Combined move (life + umbrella) lifts score to 60.",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "Retirement saving is the largest long-term gap",
+      "reverso": "Right now nothing goes into your workplace retirement accounts, so retirement relies heavily on future income. You can decide the pace: small regular steps now, larger changes later if you both agree.",
+      "detalle": "Required extra retirement saving ~ $34,165/yr; net cash flow this year available $15,032/yr. Employer match availability is unconfirmed.",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "The credit card is the costliest debt dragging your cash",
+      "reverso": "At current payments the card is projected to finish in a few years, but its high cost eats money now. A modest increase in monthly payment would cut interest and free cash for other priorities.",
+      "detalle": "Credit card balance $18,000 at 24.9%, monthly payment $450, interest portion ~$373.50 of current payment.",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 52,
+    "pilares": [
+      {
+        "pillar": "Savings and cash flow",
+        "score": 54,
+        "points_shown_in_app": "16/30"
+      },
+      {
+        "pillar": "Debt",
+        "score": 76,
+        "points_shown_in_app": "15/20"
+      },
+      {
+        "pillar": "Investments",
+        "score": 51,
+        "points_shown_in_app": "8/15"
+      },
+      {
+        "pillar": "Liquidity and emergency fund",
+        "score": 85,
+        "points_shown_in_app": "13/15"
+      },
+      {
+        "pillar": "Insurance and protection",
+        "score": 0,
+        "points_shown_in_app": "0/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Raise mortality coverage",
+        "action": "Add $1,166,000 of life cover to reach the next mortality-coverage anchor",
+        "effort": "low",
+        "target_amount": 1616000,
+        "score_before": 52,
+        "score_after": 57,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Add umbrella cover",
+        "action": "Add $1M of umbrella to raise the liability shield",
+        "effort": "low",
+        "target_amount": 1000000,
+        "score_before": 52,
+        "score_after": 56,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Raise annual savings",
+        "action": "Redirect $15,032/year of free cash flow into savings to raise retirement-directed savings toward the next band",
+        "effort": "medium",
+        "target_amount": 41032.01,
+        "score_before": 52,
+        "score_after": 55,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [
+      {
+        "moves": [
+          "Raise mortality coverage",
+          "Add umbrella cover"
+        ],
+        "score_after": 60,
+        "note": "Together they raise the published score more than either move alone."
+      },
+      {
+        "moves": [
+          "Raise mortality coverage",
+          "Raise annual savings"
+        ],
+        "score_after": 60,
+        "note": "Together they raise the published score more than either move alone."
+      },
+      {
+        "moves": [
+          "Raise mortality coverage",
+          "Add umbrella cover",
+          "Raise annual savings"
+        ],
+        "score_after": 60,
+        "note": "Together they raise the published score more than either move alone."
+      },
+      {
+        "moves": [
+          "Add umbrella cover",
+          "Raise annual savings"
+        ],
+        "score_after": 59,
+        "note": "Together they raise the published score more than either move alone."
+      }
+    ],
+    "limites": [],
+    "hitos": [
+      {
+        "id": "casa_2027",
+        "anio": 2027,
+        "titulo": "Set aside the $4,500 vacation payment due January 2027"
+      },
+      {
+        "id": "college_oliver_2033",
+        "anio": 2033,
+        "titulo": "Oliver starts college in August 2033"
+      },
+      {
+        "id": "retirement_2044",
+        "anio": 2044,
+        "titulo": "Daniel and Emily plan to retire in 2044"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Extra monthly savings",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      },
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Extra monthly debt payment",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Illustrative simulator: it shows the direction of change, not a Sherpas projection."
+  },
+  "siguiente_paso": {
+    "titulo": "Add life cover",
+    "razon": "Protection is the weakest area and matters most for your children and mortgage; the plan shows adding life cover raises your published score and directly reduces the biggest downside if a paycheck stops.",
+    "minutos": 30,
+    "pasos": [
+      "Together, check one life insurance quote or employer policy now (call or open the employer benefits portal).",
+      "Note how much extra cover the policy or quote would add and whether it can start quickly.",
+      "Decide together whether to add that cover now or split it across two smaller steps."
+    ],
+    "acciones": {
+      "calendario_url": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Add%20life%20cover&dates=20261119/20261120&details=Reminder%20for%20your%20Sherpas%20plan",
+      "asesor_url": "mailto:asesor@example.com?subject=I%27d%20like%20to%20talk%20about%20my%20plan&body=Hi%2C%20I%27ve%20seen%20my%20plan%20and%20I%27d%20like%20help%20with%20this%20step%3A%20Add%20life%20cover"
+    }
+  },
+  "fallback": false
+}

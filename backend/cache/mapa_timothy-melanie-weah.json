@@ -1,0 +1,103 @@
+{
+  "pillars": [
+    {
+      "pillar": "Ahorros y flujo de caja",
+      "score": 86,
+      "points_shown_in_app": "26/30"
+    },
+    {
+      "pillar": "Deuda",
+      "score": 58,
+      "points_shown_in_app": "12/20"
+    },
+    {
+      "pillar": "Inversiones",
+      "score": 56,
+      "points_shown_in_app": "8/15"
+    },
+    {
+      "pillar": "Liquidez y colchón para imprevistos",
+      "score": 100,
+      "points_shown_in_app": "15/15"
+    },
+    {
+      "pillar": "Seguros y protección",
+      "score": 37,
+      "points_shown_in_app": "7/20"
+    }
+  ],
+  "top_moves": [
+    {
+      "title": "Pagar la tarjeta revolvente",
+      "action": "Pagar $6,800 de la tarjeta al 18% desde efectivo para eliminar la exposición a deuda revolvente alta y desbloquear la puerta",
+      "effort": "media",
+      "target_amount": 11200,
+      "score_before": 60,
+      "score_after": 62,
+      "lifts_a_cap": true
+    },
+    {
+      "title": "Añadir seguro de vida",
+      "action": "Añadir $235,000 de seguro de vida para subir la ratio de mortalidad y desbloquear la puerta",
+      "effort": "baja",
+      "target_amount": 485000,
+      "score_before": 60,
+      "score_after": 60,
+      "lifts_a_cap": true
+    },
+    {
+      "title": "Añadir seguro extra por si os reclaman una cantidad muy grande",
+      "action": "Añadir $1M de seguro extra para aumentar la protección frente a responsabilidades",
+      "effort": "baja",
+      "target_amount": 1000000,
+      "score_before": 60,
+      "score_after": 60,
+      "lifts_a_cap": false
+    }
+  ],
+  "combined_moves": [
+    {
+      "moves": [
+        "Pagar la tarjeta revolvente",
+        "Añadir seguro de vida",
+        "Añadir seguro extra por si os reclaman una cantidad muy grande"
+      ],
+      "score_after": 78,
+      "note": "Después del pago de la tarjeta, el seguro de vida debe llegar a $491,800 para mantener la ratio de mortalidad en la línea de desbloqueo."
+    },
+    {
+      "moves": [
+        "Pagar la tarjeta revolvente",
+        "Añadir seguro de vida"
+      ],
+      "score_after": 73,
+      "note": "Después del pago de la tarjeta, el seguro de vida debe llegar a $491,800 para mantener la ratio de mortalidad en la línea de desbloqueo."
+    },
+    {
+      "moves": [
+        "Pagar la tarjeta revolvente",
+        "Añadir seguro extra por si os reclaman una cantidad muy grande"
+      ],
+      "score_after": 62,
+      "note": "Juntos aumentan la puntuación publicada más que cualquiera de las dos acciones por separado."
+    },
+    {
+      "moves": [
+        "Añadir seguro de vida",
+        "Añadir seguro extra por si os reclaman una cantidad muy grande"
+      ],
+      "score_after": 60,
+      "note": "Juntos aumentan la puntuación publicada más que cualquiera de las dos acciones por separado."
+    }
+  ],
+  "caps_applied": [
+    {
+      "reason": "Saldo revolvente alto con APR elevada",
+      "score_capped_at": 60
+    },
+    {
+      "reason": "Ratio de cobertura por mortalidad por debajo del umbral con dependientes",
+      "score_capped_at": 62
+    }
+  ]
+}
