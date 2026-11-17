@@ -62,7 +62,7 @@ const T = {
     citaTitle: 'Programar cita con el asesor', citaDesc: 'Elige día y hora, y añádelo a tu calendario o envía un correo al asesor.',
     date: 'Día', time: 'Hora', gcal: 'Añadir a Google Calendar', ics: 'Descargar para Apple / Outlook (.ics)', mailBtn: 'Enviar correo al asesor',
     copyMail: 'Copiar correo', copied: 'Correo copiado ✓', pickDate: 'Elige un día primero.', mailHint: 'Si no se abre tu correo, copia la dirección del asesor y escríbele desde tu app de correo.',
-    pref: 'Me vendría bien:', langAria: 'Idioma', speech: 'es-ES', scrub: 'Desliza sobre la gráfica para ver cada año',
+    pref: 'Me vendría bien:', langAria: 'Idioma', menuAria: 'Menú', menuLang: 'Idioma', menuAsk: 'Asistente IA', menuDark: 'Modo oscuro', speech: 'es-ES', scrub: 'Desliza sobre la gráfica para ver cada año',
     ctxCouple: (a, la, b, lb, st) => `Somos pareja: ${a} se siente ${la} y ${b} se siente ${lb}. Queremos ver juntos un primer paso común (${st}).`, ctxSingle: l => `Hoy me siento ${l}.`,
     welcomeLead: 'Entiende tu plan financiero, paso a paso y sin prisa.', wsteps: ['Cuéntanos cómo te sientes', 'Descubre tu diagnóstico en tarjetas', 'Prueba cambios sobre tu plan'], paceQ: 'Elige tu ritmo', stepQ: n => `Pregunta ${n} de 2`,
     loadMsgs: ['Estamos leyendo tu plan.', 'Buscando lo más importante para ti…', 'Ordenando tus metas y tus riesgos.', 'Poniéndolo en palabras sencillas.', 'Preparando tus tarjetas una a una.', 'Ya casi está, gracias por tu paciencia.']
@@ -98,7 +98,7 @@ const T = {
     citaTitle: 'Book a call with the advisor', citaDesc: 'Pick a day and time, then add it to your calendar or email the advisor.',
     date: 'Day', time: 'Time', gcal: 'Add to Google Calendar', ics: 'Download for Apple / Outlook (.ics)', mailBtn: 'Email the advisor',
     copyMail: 'Copy email', copied: 'Email copied ✓', pickDate: 'Pick a day first.', mailHint: 'If your email app doesn\'t open, copy the advisor\'s address and write from your email app.',
-    pref: 'My preferred time:', langAria: 'Language', speech: 'en-US', scrub: 'Slide across the chart to see each year',
+    pref: 'My preferred time:', langAria: 'Language', menuAria: 'Menu', menuLang: 'Language', menuAsk: 'AI assistant', menuDark: 'Dark mode', speech: 'en-US', scrub: 'Slide across the chart to see each year',
     ctxCouple: (a, la, b, lb, st) => `We are a couple: ${a} feels ${la} and ${b} feels ${lb}. We'd like to look at a common first step together (${st}).`, ctxSingle: l => `Today I feel ${l}.`,
     welcomeLead: 'Understand your financial plan, one step at a time and with no rush.', wsteps: ['Tell us how you feel', 'Discover your diagnosis in cards', 'Try changes on your plan'], paceQ: 'Choose your pace', stepQ: n => `Question ${n} of 2`,
     loadMsgs: ['We are reading your plan.', 'Looking for what matters most to you…', 'Sorting your goals and your risks.', 'Putting it into plain words.', 'Preparing your cards one by one.', 'Almost there, thanks for your patience.']
@@ -257,7 +257,7 @@ function render() {
     const cs = deck(), c = cs[S.i];
     const back = `<div class="bi"><p class="bt">${esc(c.back)}</p>${c.steps?.length ? `<ol>${c.steps.map(p => `<li>${esc(p)}</li>`).join('')}</ol>` : ''}${c.min ? `<p class="mut">${t('minutes', c.min)}</p>` : ''}${c.more ? `<details><summary>${t('deeper')}</summary><p>${esc(c.more)}</p></details>` : ''}</div>`;
     app.innerHTML = `${head(2, t('dx'))}
-    <div class="meta"><span class="mi">${I.flag}</span><div><small>${t('goal')}</small><b>${esc(goal())}</b></div></div>
+    <p class="lede">${esc(d.frase_inicial)}</p>
     ${S.fallback ? `<div class="warn">${t('saved')}</div>` : ''}
     <div class="stack" aria-label="${t('stackAria')}">
       ${S.i > 0 ? `<button class="peek up k-${cs[S.i - 1].kind}" data-a="prev" aria-label="${t('prevCard')}">${I.up}</button>` : ''}
@@ -271,7 +271,7 @@ function render() {
   } else if (S.screen === 3) {
     const m = d.mapa, n = d.siguiente_paso;
     app.innerHTML = `${head(3, t('plan'), true)}
-    <section class="panel"><h2 class="ptitle"><span class="pi">${I.chart}</span>${t('wellbeing')}</h2><p class="psub">${t('pathTo')} ${esc(goal())}</p>
+    <section class="panel"><h2 class="ptitle"><span class="pi">${I.chart}</span>${t('wellbeing')}</h2>
       <svg class="chart" id="chart" viewBox="0 0 340 210" role="img" aria-label="${t('chartAria')}"></svg>
       <div class="leg"><span>${t('legStay')}</span><span class="imp">${t('legChange')}</span></div>
       <p class="scrub">${t('scrub')}</p>
@@ -304,26 +304,31 @@ function updSim() {
   const f = x => { const k = (x - PL) / W; return Y(b) + (Y(nb) - Y(b)) * k * k * (3 - 2 * k); };
   const pts = Array.from({ length: 41 }, (_, i) => { const x = PL + i * W / 40; return x.toFixed(1) + ',' + f(x).toFixed(1); }).join(' ');
   const fy = f(PR), by = Y(b), iy = up ? Math.min(fy, by - 22) : fy;
-  // Hitos: si dos caen en el mismo año (o muy cerca) se separan en horizontal para que ninguno quede tapado
-  const hp = m.hitos.map((h, k) => ({ h, k, x: Math.max(PL, Math.min(PR, X(h.anio))), cx: 0 })).sort((a, c) => a.x - c.x || a.k - c.k), grp = [];
+  // Hitos: los que caen en el mismo año (o casi) se juntan en una sola cápsula numerada sobre la misma línea
+  const hp = m.hitos.map((h, k) => ({ h, k, x: Math.max(PL, Math.min(PR, X(h.anio))) })).sort((a, c) => a.x - c.x || a.k - c.k), grp = [];
   hp.forEach((p, i) => { if (i && p.x - hp[i - 1].x < 22) grp.at(-1).push(p); else grp.push([p]); });
-  grp.forEach(g => { const mid = g.reduce((q, p) => q + p.x, 0) / g.length; g.forEach((p, j) => p.cx = Math.max(PL, Math.min(PR + 12, mid + (j - (g.length - 1) / 2) * 22))); });
-  let lastLab = -99;
-  const hitosSvg = hp.map(({ h, k, x, cx }) => {
-    let lab = '';
-    if (x >= PL + 62 && x - lastLab >= 34) { lastLab = x; lab = `<text x="${x}" y="192" font-size="11" fill="#374151" font-weight="700" text-anchor="${x > PR - 22 ? 'end' : 'middle'}">${h.anio}</text>`; }
-    return `<line x1="${x}" y1="50" x2="${x}" y2="170" stroke="#f08c3c" stroke-dasharray="2 3" stroke-opacity=".75"/>
-      <circle cx="${x}" cy="${by}" r="4.5" fill="#2d4a4f" stroke="#fff" stroke-width="1.5"/>${up ? `<circle cx="${x}" cy="${f(x)}" r="6" fill="#f08c3c" stroke="#fff" stroke-width="2.2"/>` : ''}
-      <circle cx="${cx}" cy="40" r="9" fill="#f08c3c" stroke="#fff" stroke-width="2"/><text x="${cx}" y="44" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">${k + 1}</text>${lab}`;
+  const lines = [...new Set(hp.map(p => p.x.toFixed(1)))].map(Number).map(x => `<line x1="${x}" y1="50" x2="${x}" y2="176" stroke="#f08c3c" stroke-dasharray="2 3" stroke-opacity=".75"/>
+      <circle cx="${x}" cy="${by}" r="4.5" fill="var(--ch-base)" stroke="var(--ch-ring)" stroke-width="1.5"/>${up ? `<circle cx="${x}" cy="${f(x)}" r="6" fill="#f08c3c" stroke="var(--ch-ring)" stroke-width="2.2"/>` : ''}`).join('');
+  const caps = grp.map(g => {
+    const n = g.length, w = n === 1 ? 18 : 22 * n, mid = g.reduce((q, p) => q + p.x, 0) / n, cx = Math.max(PL, Math.min(337 - w / 2, mid));
+    const box = n === 1 ? `<circle cx="${cx}" cy="40" r="9" fill="#f08c3c" stroke="var(--ch-ring)" stroke-width="2"/>` : `<rect x="${cx - w / 2}" y="29" width="${w}" height="22" rx="11" fill="#f08c3c" stroke="var(--ch-ring)" stroke-width="2"/>`;
+    return box + g.map((p, j) => `<text x="${cx - w / 2 + (n === 1 ? 9 : 11) + j * 22}" y="44" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">${p.k + 1}</text>`).join('');
   }).join('');
+  // Eje de años: solo el año (sin "Hoy"), con una marca en el eje bajo cada uno
+  // Se priorizan los años de las metas; el año de partida solo se muestra si no estorba
+  let lastLab = -99;
+  const yrs = hp.map(p => ({ x: p.x, y: p.h.anio, c: '#d9721c' })).filter(q => { if (q.x - lastLab < 34) return false; lastLab = q.x; return true; });
+  if (!yrs.some(q => q.x - PL < 34)) yrs.unshift({ x: PL, y: y0, c: 'var(--ch-txt)' });
+  const axis = yrs.map(q => `<line x1="${q.x}" y1="170" x2="${q.x}" y2="176" stroke="var(--ch-txt)" stroke-width="1.5"/><text x="${q.x}" y="190" font-size="11" fill="${q.c}" font-weight="700" text-anchor="middle">${q.y}</text>`).join('');
+  const hitosSvg = lines + caps + axis;
   const badge = (y, txt, col) => `<g><rect x="${PR + 6}" y="${y - 11}" width="40" height="22" rx="11" fill="${col}"/><text x="${PR + 26}" y="${y + 4}" font-size="12" font-weight="800" fill="#fff" text-anchor="middle">${txt}</text></g>`;
   let cur = '';
   if (S.cur != null) {
     const x = Math.max(PL, Math.min(PR, S.cur)), kk = (x - PL) / W, sc = b + (nb - b) * kk * kk * (3 - 2 * kk), yr = Math.round(y0 + (x - PL) / W * (y1 - y0)), vi = f(x);
     const tw = up ? 96 : 64, tx = Math.max(2, Math.min(338 - tw, x - tw / 2));
-    cur = `<line x1="${x}" y1="50" x2="${x}" y2="170" stroke="#1f2937" stroke-width="1.5" stroke-opacity=".5"/>
-      <circle cx="${x}" cy="${by}" r="5" fill="#2d4a4f" stroke="#fff" stroke-width="2"/>${up ? `<circle cx="${x}" cy="${vi}" r="6" fill="#2f9a8a" stroke="#fff" stroke-width="2"/>` : ''}
-      <rect x="${tx}" y="1" width="${tw}" height="29" rx="9" fill="#1f2937"/>
+    cur = `<line x1="${x}" y1="50" x2="${x}" y2="170" stroke="var(--ch-cur)" stroke-width="1.5" stroke-opacity=".5"/>
+      <circle cx="${x}" cy="${by}" r="5" fill="var(--ch-base)" stroke="var(--ch-ring)" stroke-width="2"/>${up ? `<circle cx="${x}" cy="${vi}" r="6" fill="#2f9a8a" stroke="var(--ch-ring)" stroke-width="2"/>` : ''}
+      <rect x="${tx}" y="1" width="${tw}" height="29" rx="9" fill="var(--ch-tip)"/>
       <text x="${tx + 9}" y="13" font-size="10" font-weight="800" fill="#fff">${yr}</text>
       <circle cx="${tx + 12}" cy="22" r="3.5" fill="#9ca3af"/><text x="${tx + 20}" y="25" font-size="10" fill="#fff">${Math.round(b)}</text>
       ${up ? `<circle cx="${tx + 54}" cy="22" r="3.5" fill="#2f9a8a"/><text x="${tx + 62}" y="25" font-size="10" font-weight="800" fill="#fff">${Math.round(sc)}</text>` : ''}`;
@@ -331,18 +336,17 @@ function updSim() {
   $('#chart').innerHTML = `<defs>
       <linearGradient id="gA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f9a8a" stop-opacity=".5"/><stop offset="1" stop-color="#2f9a8a" stop-opacity=".06"/></linearGradient>
       <linearGradient id="gL" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f9a8a"/><stop offset="1" stop-color="#27b39b"/></linearGradient>
-      <linearGradient id="gM" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dbe9ee"/><stop offset="1" stop-color="#f1f6f8"/></linearGradient></defs>
-    <rect x="${PL}" y="50" width="${W}" height="120" rx="6" fill="#fafcfd"/>
+      <linearGradient id="gM" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--ch-m1)"/><stop offset="1" stop-color="var(--ch-m2)"/></linearGradient></defs>
+    <rect x="${PL}" y="50" width="${W}" height="120" rx="6" fill="var(--ch-bg)"/>
     <polygon points="${PL},170 ${PL},112 80,88 105,110 150,64 190,102 225,82 262,104 ${PR},78 ${PR},170" fill="url(#gM)"/>
-    ${[lo, lo + 25, hi].map(s => `<line x1="${PL}" y1="${Y(s)}" x2="${PR}" y2="${Y(s)}" stroke="#d9e2e7" stroke-dasharray="3 4"/><text x="${PL - 6}" y="${Y(s) + 4}" font-size="10" fill="#6b7280" text-anchor="end">${Math.round(s)}</text>`).join('')}
+    ${[lo, lo + 25, hi].map(s => `<line x1="${PL}" y1="${Y(s)}" x2="${PR}" y2="${Y(s)}" stroke="var(--ch-grid)" stroke-dasharray="3 4"/><text x="${PL - 6}" y="${Y(s) + 4}" font-size="10" fill="#6b7280" text-anchor="end">${Math.round(s)}</text>`).join('')}
     <text x="9" y="110" font-size="11" fill="#6b7280" text-anchor="middle" transform="rotate(-90 9 110)">${t('yAxis')}</text>
     ${up ? `<polygon points="${pts} ${PR},${by} ${PL},${by}" fill="url(#gA)"/>` : ''}
-    <line x1="${PL}" y1="${by}" x2="${PR}" y2="${by}" stroke="#2d4a4f" stroke-width="2.4"/>
+    <line x1="${PL}" y1="${by}" x2="${PR}" y2="${by}" stroke="var(--ch-base)" stroke-width="2.4"/>
     ${up ? `<polyline points="${pts}" fill="none" stroke="url(#gL)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>` : ''}
     <line x1="${PL}" y1="170" x2="${PR}" y2="170" stroke="#9ca3af"/>
-    <text x="${PL}" y="192" font-size="11" fill="#374151" font-weight="700">${t('today')} ${y0}</text>
     ${hitosSvg}
-    ${badge(by, Math.round(b), '#2d4a4f')}${up ? badge(iy, Math.round(nb), '#2f9a8a') : ''}
+    ${badge(by, Math.round(b), 'var(--ch-base)')}${up ? badge(iy, Math.round(nb), '#2f9a8a') : ''}
     ${cur}
     <rect x="${PL}" y="30" width="${W}" height="150" fill="transparent"/>`;
 }
@@ -600,14 +604,23 @@ $('#snd').onclick = () => { send($('#cinp').value); $('#cinp').value = ''; };
 $('#cinp').onkeydown = e => { if (e.key === 'Enter') $('#snd').click(); };
 
 // Botón de la asistente: fijo (arriba, junto a ES/EN); un toque abre el chat
-$('#fab').addEventListener('click', openChat);
+// Menú (tres rayitas): idioma, asistente y modo oscuro
+const mpanel = $('#mpanel'), menuBtn = $('#menu');
+const setMenu = o => { mpanel.hidden = !o; menuBtn.setAttribute('aria-expanded', o); };
+menuBtn.addEventListener('click', e => { e.stopPropagation(); setMenu(mpanel.hidden); });
+document.addEventListener('click', e => { if (!mpanel.hidden && !mpanel.contains(e.target)) setMenu(false); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !mpanel.hidden) { setMenu(false); menuBtn.focus(); } });
+$('#ask').addEventListener('click', () => { setMenu(false); openChat(); });
+const setTheme = d => { document.documentElement.dataset.theme = d ? 'dark' : 'light'; $('#dark').setAttribute('aria-checked', d); try { localStorage.setItem('theme', d ? 'dark' : 'light'); } catch { } };
+$('#dark').addEventListener('click', () => setTheme($('#dark').getAttribute('aria-checked') !== 'true'));
+{ let th = 'light'; try { th = localStorage.getItem('theme') || 'light'; } catch { } setTheme(th === 'dark'); }
 
 // ───── Idioma (interfaz + textos que genera la IA)
 function applyStatic() {
   document.documentElement.lang = S.lang;
   $('.chead h2').textContent = t('chatTitle');
   $('#chat').setAttribute('aria-label', t('assistant'));
-  $('#fab').setAttribute('aria-label', t('openAssistant'));
+  menuBtn.setAttribute('aria-label', t('menuAria')); $('#mlang').textContent = t('menuLang'); $('#mask').textContent = t('menuAsk'); $('#mdark').textContent = t('menuDark'); $('#ask').setAttribute('aria-label', t('openAssistant'));
   $('#vozbtn').setAttribute('aria-label', t('voiceAria'));
   $('#cx').setAttribute('aria-label', t('close'));
   $('#cinp').placeholder = t('chatPh'); $('#cinp').setAttribute('aria-label', t('chatPh'));

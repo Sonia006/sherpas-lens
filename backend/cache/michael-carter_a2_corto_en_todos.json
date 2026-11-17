@@ -1,0 +1,170 @@
+{
+  "case_id": "michael-carter",
+  "animo": 2,
+  "tono": "worried",
+  "tiempo": "corto",
+  "idioma": "en",
+  "num_tarjetas": 5,
+  "frase_inicial": "Michael: you already save $43,000 a year and that gives you a real base — there’s a clear path forward.",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "January 2027 home purchase is the big pivot.",
+      "reverso": "If you set aside the down‑payment money, other plans keep going the same day — but that cash now competes with retirement and your cushion. You choose the pace; one decision at a time.",
+      "detalle": "Down payment to hold in January 2027: $113,300 (one-time).",
+      "meta_id": "casa_2027"
+    },
+    {
+      "id": "t2",
+      "frente": "Your emergency cushion is thinner than it should be.",
+      "reverso": "With about three months of expenses in accessible cash, a shock would likely push you onto the card or force selling investments. We can rebuild this without stopping retirement saving entirely.",
+      "detalle": "Accessible cash today: $30,000 (bank + money market). Recommended reserve: 5–6 months.",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "Retirement at 58 leaves a gap to close.",
+      "reverso": "At the pace now, savings run out before the plan ends. That means some planned spending would be unpaid late in life unless you choose to change timing, save more, or adjust the home purchase.",
+      "detalle": "Savings projected to run out at age 85; unpaid planned spending then: $32,439.",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "Life and liability protection need checking.",
+      "reverso": "Your life cover and umbrella are below recommended levels, so a major accident or loss could hit your cash and plans. We can confirm existing policies and decide what cover, if any, to add against the budget.",
+      "detalle": "Life insurance on file: $180,000. No umbrella recorded; recommended min gap: $1,000,000.",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "The high‑interest card is a small drag you can control.",
+      "reverso": "That card is the most expensive debt and consumes part of monthly cash. Paying it down sooner frees interest and reduces pressure on your monthly budget while you choose larger moves.",
+      "detalle": "Credit card balance: $3,500 at 20% APR; current payment $200/month, projected payoff July 2028.",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 26,
+    "pilares": [
+      {
+        "pillar": "Savings and cash flow",
+        "score": 0,
+        "points_shown_in_app": "0/25"
+      },
+      {
+        "pillar": "Debt",
+        "score": 78,
+        "points_shown_in_app": "8/10"
+      },
+      {
+        "pillar": "Investments",
+        "score": 42,
+        "points_shown_in_app": "11/25"
+      },
+      {
+        "pillar": "Liquidity and emergency fund",
+        "score": 22,
+        "points_shown_in_app": "4/20"
+      },
+      {
+        "pillar": "Insurance and protection",
+        "score": 18,
+        "points_shown_in_app": "4/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Add umbrella cover",
+        "action": "Add $1M of umbrella to raise the liability shield",
+        "effort": "low",
+        "target_amount": 1000000,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Lower the withdrawal rate",
+        "action": "Cutting withdrawals to $10,300/year (6.0%) reaches the sustainable band",
+        "effort": "high",
+        "target_amount": 10300,
+        "score_before": 26,
+        "score_after": 62,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Raise growth allocation toward glide",
+        "action": "Move the invested mix from 74% to 88% growth (glide 98%) for the next horizon-fit band — about $19,900 of the invested book",
+        "effort": "high",
+        "target_amount": 19900,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [],
+    "limites": [],
+    "hitos": [
+      {
+        "id": "casa_2027",
+        "anio": 2027,
+        "titulo": "Purchase a home in January 2027"
+      },
+      {
+        "id": "vacation_2027",
+        "anio": 2027,
+        "titulo": "Take the planned vacation in January 2027"
+      },
+      {
+        "id": "retire_2047",
+        "anio": 2047,
+        "titulo": "Michael's target retirement at age 58"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Extra monthly savings",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      },
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Extra monthly debt payment",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
+      },
+      {
+        "id": "gasto_menos",
+        "etiqueta": "Monthly spending you cut",
+        "unidad": "$",
+        "min": 0,
+        "max": 500,
+        "paso": 25,
+        "puntos_por_unidad": 0.012
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Illustrative simulator: it shows the direction of change, not a Sherpas projection."
+  },
+  "siguiente_paso": {
+    "titulo": "Add umbrella cover",
+    "razon": "The plan flags no umbrella and recommends adding $1,000,000 to raise the liability shield; this protects your liquid assets and net worth from a single large claim before you change bigger things.",
+    "minutos": 20,
+    "pasos": [
+      "Locate your current auto and renter insurance policy documents or carrier names.",
+      "Call your insurer or agent and ask whether an umbrella policy is available and what it would cost.",
+      "Bring their quote to our next conversation so we can compare the premium with your cash plan."
+    ],
+    "acciones": {
+      "calendario_url": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Add%20umbrella%20cover&dates=20261119/20261120&details=Reminder%20for%20your%20Sherpas%20plan",
+      "asesor_url": "mailto:asesor@example.com?subject=I%27d%20like%20to%20talk%20about%20my%20plan&body=Hi%2C%20I%27ve%20seen%20my%20plan%20and%20I%27d%20like%20help%20with%20this%20step%3A%20Add%20umbrella%20cover"
+    }
+  },
+  "fallback": false
+}

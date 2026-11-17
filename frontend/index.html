@@ -8,16 +8,22 @@
 <body>
   <div id="app"></div>
 
-  <!-- Idioma de la interfaz y de la IA -->
-  <div id="lang" role="group" aria-label="Idioma / Language"><button data-l="es" aria-pressed="true">ES</button><button data-l="en" aria-pressed="false">EN</button></div>
+  <!-- Menú (tres rayitas): idioma, asistente y modo oscuro -->
+  <button id="menu" aria-label="Menú" aria-expanded="false" aria-controls="mpanel">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+  <div id="mpanel" hidden>
+    <div class="mrow"><span id="mlang">Idioma</span>
+      <div id="lang" role="group" aria-label="Idioma / Language"><button data-l="es" aria-pressed="true">ES</button><button data-l="en" aria-pressed="false">EN</button></div></div>
+    <button class="mrow mbtn" id="ask">
+      <svg viewBox="0 0 32 32" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="16" cy="14" r="5.5"/><path d="M6 29c1-6 5-8 10-8s9 2 10 8"/><path d="M7.5 14a8.5 8.5 0 0 1 17 0"/><rect x="5" y="13" width="3" height="6" rx="1.5"/><rect x="24" y="13" width="3" height="6" rx="1.5"/><path d="M25.5 19c0 3-3 4-6 4"/></svg>
+      <span id="mask">Asistente IA</span></button>
+    <div class="mrow"><span id="mdark">Modo oscuro</span>
+      <button id="dark" class="sw" role="switch" aria-checked="false" aria-labelledby="mdark"><i></i></button></div>
+  </div>
 
   <!-- Ventana para programar cita con el asesor -->
   <dialog id="cita" aria-labelledby="ctit"></dialog>
-
-  <!-- Botón flotante de la asistente (se puede arrastrar) -->
-  <button id="fab" aria-label="Hablar con la asistente">
-    <svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="16" cy="14" r="5.5"/><path d="M6 29c1-6 5-8 10-8s9 2 10 8"/><path d="M7.5 14a8.5 8.5 0 0 1 17 0"/><rect x="5" y="13" width="3" height="6" rx="1.5"/><rect x="24" y="13" width="3" height="6" rx="1.5"/><path d="M25.5 19c0 3-3 4-6 4"/></svg>
-  </button>
 
   <div id="scrim"></div>
   <section id="chat" aria-label="Asistente" inert>

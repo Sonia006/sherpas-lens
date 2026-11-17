@@ -397,3 +397,84 @@ svg.chart{touch-action:pan-y;cursor:crosshair;margin-top:4px}
 .cta2{padding:11px}.cta2 b{font-size:1.1rem;font-weight:800}
 .peek svg{opacity:.4}
 .brand.big{margin-top:clamp(56px,10dvh,84px)}
+
+
+/* ═════ v6 ═════ */
+:root{--ch-txt:#374151;--ch-bg:#fafcfd;--ch-grid:#d9e2e7;--ch-base:#2d4a4f;--ch-ring:#fff;--ch-cur:#1f2937;--ch-tip:#1f2937;--ch-m1:#dbe9ee;--ch-m2:#f1f6f8;--card:#fff;--card2:#e9eaee;--txt2:#4b5563}
+
+/* Menú de tres rayitas (sustituye al ES/EN y al botón de la asistente) */
+#fab{display:none!important}
+#menu{position:fixed;top:8px;right:max(12px,calc(50% - 208px));width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:var(--card);color:var(--ink);box-shadow:0 2px 8px #0002;z-index:7;display:grid;place-items:center;padding:0}
+body.chat-open #menu,body.chat-open #mpanel{display:none}
+#mpanel{position:fixed;top:60px;right:max(12px,calc(50% - 208px));width:min(270px,calc(100vw - 24px));background:var(--card);border:2px solid var(--line);border-radius:22px;padding:6px;box-shadow:0 12px 32px #0003;z-index:7;transform-origin:top right;animation:mp .2s ease}
+#mpanel[hidden]{display:none}
+@keyframes mp{from{opacity:0;transform:scale(.92) translateY(-6px)}}
+.mrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;font-weight:700;color:var(--ink);width:100%}
+.mrow+.mrow{border-top:1.5px solid var(--line)}
+.mbtn{background:none;border:0;border-radius:0;justify-content:flex-start;text-align:left}
+.mbtn svg{color:var(--teal);flex:none}
+#lang{position:static;box-shadow:none;background:var(--card2);border:0;padding:3px}
+#lang button{color:var(--mut)}
+.sw{position:relative;width:50px;height:30px;border-radius:15px;border:0;background:#cbd2d9;padding:0;transition:background .2s;flex:none}
+.sw i{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 4px #0004;transition:transform .2s}
+.sw[aria-checked=true]{background:var(--teal)}.sw[aria-checked=true] i{transform:translateX(20px)}
+@media print{#menu,#mpanel{display:none!important}}
+
+/* Pantalla 2: frase inicial separada de las tarjetas solo por una línea */
+.lede{margin:10px 4px 0;padding:0 0 12px;border-bottom:1.5px solid var(--line);text-align:center;font-weight:700;font-size:1.02rem;line-height:1.3;color:var(--ink)}
+/* Tarjetas: todos los bordes del mismo grosor */
+.face,.face.back{border-width:3px}
+
+/* ═════ Modo oscuro ═════ */
+html[data-theme=dark]{color-scheme:dark;--ink:#e8eef2;--mut:#a3afbb;--soft:#7d8996;--line:#2f3b45;--bg:#141b21;--card:#1d262d;--card2:#2a343c;--txt2:#c3ccd4;
+  --ch-txt:#c3ccd4;--ch-bg:#18222a;--ch-grid:#2f3b45;--ch-base:#9cc7cc;--ch-ring:#1d262d;--ch-cur:#e8eef2;--ch-tip:#0b1014;--ch-m1:#243742;--ch-m2:#1b2a32}
+html[data-theme=dark] body{background:linear-gradient(160deg,#0b1115,#10171c 45%,#161312)}
+html[data-theme=dark] #app{background:linear-gradient(180deg,#16262b 0,#141b21 260px);box-shadow:0 0 40px #0008}
+html[data-theme=dark] .brand{color:#f1f5f8}
+html[data-theme=dark] .bk,html[data-theme=dark] .hd.round .bk,html[data-theme=dark] .pre .bk{background:var(--card);color:var(--ink);box-shadow:0 2px 8px #0006}
+html[data-theme=dark] .steps i{background:var(--card);border-color:#3b4854}
+html[data-theme=dark] .steps i.done,html[data-theme=dark] .steps i.cur{border-color:var(--teal)}
+html[data-theme=dark] .steps i.cur{background:var(--teal)}
+html[data-theme=dark] .steps b{background:linear-gradient(90deg,var(--teal),#3b4854)}
+html[data-theme=dark] .intro,html[data-theme=dark] .wlead,html[data-theme=dark] .ft,html[data-theme=dark] .hint,html[data-theme=dark] .gain,html[data-theme=dark] .chk,html[data-theme=dark] .wsteps li,html[data-theme=dark] .chips li{color:var(--txt2)}
+html[data-theme=dark] .mood,html[data-theme=dark] .panel,html[data-theme=dark] .wsteps li,html[data-theme=dark] .rit,html[data-theme=dark] .cta.alt,html[data-theme=dark] .m .lnkb{background:var(--card)}
+html[data-theme=dark] .rit{border-color:var(--line);color:var(--mut)}
+html[data-theme=dark] .rit.on{background:#17332f;color:var(--ink);border-color:var(--teal)}
+html[data-theme=dark] .rit .rd,html[data-theme=dark] .track::before,html[data-theme=dark] .dp{background:#3b4854;border-color:#3b4854}
+html[data-theme=dark] .track::before{background:#3b4854}
+html[data-theme=dark] .dp.big{background:var(--card);border-color:#3b4854}
+html[data-theme=dark] .dp.on{background:var(--teal);border:0}
+html[data-theme=dark] .rit.on .rd{border-color:var(--teal);background:none}
+html[data-theme=dark] .cta{background:linear-gradient(135deg,#2d5b60,#2f9a8a);box-shadow:0 8px 20px #0006}
+html[data-theme=dark] .cta2{background:linear-gradient(135deg,#2d5b60,#2f9a8a);box-shadow:0 6px 16px #0006}
+html[data-theme=dark] .cta.alt{color:var(--ink);border-color:var(--ink)}
+html[data-theme=dark] .foot{background:linear-gradient(180deg,#1b252c,#16232a);border-color:var(--line)}
+html[data-theme=dark] .face{background:linear-gradient(180deg,var(--tint,#1d262d),#1d262d 60%)}
+html[data-theme=dark] .face.front{color:var(--ink)}
+html[data-theme=dark] .face.back{background:color-mix(in srgb,var(--acc) 55%,#0b1115)}
+html[data-theme=dark] .k-goal{--tint:#173430}html[data-theme=dark] .k-risk{--tint:#3a2a1b}html[data-theme=dark] .k-step{--tint:#232a4d}
+html[data-theme=dark] .peek{background:#1d262d;border-color:var(--line)}
+html[data-theme=dark] .peek.k-goal,html[data-theme=dark] .peek.k-risk,html[data-theme=dark] .peek.k-step{background:var(--tint)}
+html[data-theme=dark] .side{background:none}
+html[data-theme=dark] .hint{background:color-mix(in srgb,var(--acc) 18%,#1d262d)}
+html[data-theme=dark] .stp button,html[data-theme=dark] .stp output,html[data-theme=dark] .opts select,html[data-theme=dark] .opts input,html[data-theme=dark] .cd input,html[data-theme=dark] .cd select{background:var(--card2);color:var(--ink);border-color:#3b4854}
+html[data-theme=dark] .chips li{background:var(--card2)}
+html[data-theme=dark] .warn{background:#3a3115;color:#f3e2a8}
+html[data-theme=dark] .rng::-webkit-slider-runnable-track{background:linear-gradient(to right,var(--teal) var(--p),#3b4854 var(--p))}
+html[data-theme=dark] .rng::-moz-range-track{background:#3b4854}
+html[data-theme=dark] .rng::-webkit-slider-thumb,html[data-theme=dark] .rng::-moz-range-thumb{background:#e8eef2;border-color:var(--card)}
+html[data-theme=dark] .chk input{accent-color:var(--teal)}
+html[data-theme=dark] #chat,html[data-theme=dark] dialog#cita{background:var(--card);color:var(--ink)}
+html[data-theme=dark] .m.assistant,html[data-theme=dark] .pill,html[data-theme=dark] .av{background:var(--card2);color:var(--ink)}
+html[data-theme=dark] .m.user,html[data-theme=dark] #snd{background:var(--teal);color:#fff}
+html[data-theme=dark] .ib{color:var(--txt2)}html[data-theme=dark] #cx,html[data-theme=dark] #ccl{background:var(--card2);color:var(--ink)}
+html[data-theme=dark] .pill input{color:var(--ink)}
+html[data-theme=dark] .face-b.on{color:var(--ink)}
+html[data-theme=dark] .face-b[data-k=sad].on{color:var(--rose)}html[data-theme=dark] .face-b[data-k=neu].on{color:var(--sun)}html[data-theme=dark] .face-b[data-k=smi].on{color:var(--teal)}
+html[data-theme=dark] .face-b.on svg .fb{fill:#2a343c}
+html[data-theme=dark] .lede{color:var(--ink)}
+html[data-theme=dark] #menu{box-shadow:0 2px 8px #0008}
+html[data-theme=dark] .sw{background:#46525d}html[data-theme=dark] .sw[aria-checked=true]{background:var(--teal)}
+html[data-theme=dark] #lang button[aria-pressed=true]{background:var(--teal);color:#fff}
+html[data-theme=dark] .pdots i{background:#3b4854}html[data-theme=dark] .pdots i.cur,html[data-theme=dark] .pdots i.done{background:var(--teal)}
+html[data-theme=dark] .face.back .side,html[data-theme=dark] .face.back{color:#fff}
