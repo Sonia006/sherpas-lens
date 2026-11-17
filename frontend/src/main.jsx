@@ -4,7 +4,7 @@ const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 // MODO MOCK: true = datos de prueba, NO llama al backend ni gasta tokens. Pon false para usar la IA real.
 const MOCK = true;
 // Idioma por defecto la primera vez (luego se recuerda la elección del botón ES/EN)
-const DEFAULT_LANG = 'es';
+const DEFAULT_LANG = 'en';
 
 const CASOS = {
   'timothy-melanie-weah': 'Timothy y Melanie Weah',
@@ -57,7 +57,7 @@ const T = {
     citaTitle: 'Programar cita con el asesor', citaDesc: 'Elige día y hora, y añádelo a tu calendario o envía un correo al asesor.',
     date: 'Día', time: 'Hora', gcal: 'Añadir a Google Calendar', ics: 'Descargar para Apple / Outlook (.ics)', mailBtn: 'Enviar correo al asesor',
     copyMail: 'Copiar correo', copied: 'Correo copiado ✓', pickDate: 'Elige un día primero.', mailHint: 'Si no se abre tu correo, copia la dirección del asesor y escríbele desde tu app de correo.',
-    pref: 'Me vendría bien:', langAria: 'Idioma', speech: 'es-ES'
+    pref: 'Me vendría bien:', langAria: 'Idioma', speech: 'es-ES', scrub: 'Desliza sobre la gráfica para ver cada año'
   },
   en: {
     stepOf: (n, t) => `${t} - Step ${n} of 3`, dx: 'Diagnosis', plan: 'Interactive plan', back: 'Back',
@@ -88,7 +88,7 @@ const T = {
     citaTitle: 'Book a call with the advisor', citaDesc: 'Pick a day and time, then add it to your calendar or email the advisor.',
     date: 'Day', time: 'Time', gcal: 'Add to Google Calendar', ics: 'Download for Apple / Outlook (.ics)', mailBtn: 'Email the advisor',
     copyMail: 'Copy email', copied: 'Email copied ✓', pickDate: 'Pick a day first.', mailHint: 'If your email app doesn\'t open, copy the advisor\'s address and write from your email app.',
-    pref: 'My preferred time:', langAria: 'Language', speech: 'en-US'
+    pref: 'My preferred time:', langAria: 'Language', speech: 'en-US', scrub: 'Slide across the chart to see each year'
   }
 };
 const t = (k, ...a) => { const v = T[S.lang][k]; return typeof v === 'function' ? v(...a) : v; };
@@ -104,8 +104,19 @@ const I = {
   mail: svg('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>', 16),
   dl: svg('<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>', 16),
   x: svg('<path d="M6 6l12 12M18 6L6 18"/>', 22),
+  target: svg('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/>', 26),
+  shield: svg('<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M12 8v5M12 16v.5"/>', 26),
+  flag: svg('<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>', 24),
+  flagS: svg('<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>', 18),
+  chart: svg('<path d="M4 19V5M4 19h16M8 15l4-5 3 3 5-6"/>', 22),
+  coin: svg('<circle cx="12" cy="12" r="9"/><path d="M14.5 9.5c-.5-1-1.4-1.5-2.5-1.5-1.4 0-2.5.8-2.5 2s1 1.7 2.5 2 2.5.8 2.5 2-1.1 2-2.5 2c-1.1 0-2-.5-2.5-1.5M12 6.5V8m0 8v1.5"/>', 20),
+  card: svg('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/>', 20),
+  cut: svg('<circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M8 7.5L20 18M8 16.5L20 6"/>', 20),
+  clock: svg('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>', 20),
   bot: `<svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="16" cy="14" r="5.5"/><path d="M6 29c1-6 5-8 10-8s9 2 10 8"/><path d="M7.5 14a8.5 8.5 0 0 1 17 0"/><rect x="5" y="13" width="3" height="6" rx="1.5"/><rect x="24" y="13" width="3" height="6" rx="1.5"/><path d="M25.5 19c0 3-3 4-6 4"/></svg>`
 };
+const KI = { goal: I.target, risk: I.shield, step: I.flag };   // icono por tipo de tarjeta
+const LS = { ahorro_mensual: [I.coin, '#2f9a8a'], pago_deuda_extra: [I.card, '#f08c3c'], gasto_menos: [I.cut, '#5b6ee1'], anos_extra_trabajando: [I.clock, '#8b5cf6'] };
 const face = k => `<svg viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" aria-hidden="true"><circle cx="32" cy="32" r="26"/><circle cx="23" cy="27" r="2.6" fill="currentColor" stroke="none"/><circle cx="41" cy="27" r="2.6" fill="currentColor" stroke="none"/>${k === 'sad' ? '<path d="M22 44q10-9 20 0"/>' : k === 'neu' ? '<path d="M23 42h18"/>' : '<path d="M21 38q11 11 22 0"/>'}</svg>`;
 
 // ───── Datos de prueba (solo se usan con MOCK = true). Cada familia tiene su propia meta y sus propias palancas.
@@ -150,8 +161,8 @@ const head = (n, title, round) => `<header class="hd ${round ? 'round' : ''}"><b
   <div class="steps">${[1, 2, 3].map(k => `<i class="${k === n ? 'cur' : k < n ? 'done' : ''}"></i>`).join('<b></b>')}</div></header>`;
 const deck = () => {
   const d = S.data, n = d.siguiente_paso;
-  return [...d.tarjetas.map((c, k) => ({ label: `${(c.tipo || t('goalType')).toUpperCase()} ${k + 1}`, front: c.frente, back: c.reverso, more: c.detalle })),
-    { label: isCouple() ? t('stepBoth') : t('stepLabel'), front: n.titulo, back: n.razon, steps: n.pasos, min: n.minutos }];
+  return [...d.tarjetas.map((c, k) => ({ kind: /vulner|risk/i.test(c.tipo || '') ? 'risk' : 'goal', label: `${(c.tipo || t('goalType')).toUpperCase()} ${k + 1}`, front: c.frente, back: c.reverso, more: c.detalle })),
+    { kind: 'step', label: isCouple() ? t('stepBoth') : t('stepLabel'), front: n.titulo, back: n.razon, steps: n.pasos, min: n.minutos }];
 };
 const goal = () => { const h = S.data.mapa.hitos.at(-1); return h ? `${h.titulo} (${h.anio})` : S.data.frase_inicial; };
 const FACE = [0, 0, 1, 2, 2];  // posición del selector → cara más cercana (se usa solo para el mock)
@@ -160,7 +171,7 @@ const FACE = [0, 0, 1, 2, 2];  // posición del selector → cara más cercana (
 const moodBlock = (who, name) => {
   const pos = S.m[who] - 1, lit = pos % 2 === 0 ? pos / 2 : -1, L = t('moods');
   return `<div class="mood" data-who="${who}">${name ? `<p class="who">${esc(name)}</p>` : ''}
-    <div class="g5">${[['sad', 1], ['neu', 3], ['smi', 5]].map(([k, c], j) => `<button class="face-b ${lit === j ? 'on' : ''}" style="grid-column:${c}" data-a="mood" data-v="${c - 1}" aria-label="${L[j]}">${face(k)}</button>`).join('')}</div>
+    <div class="g5">${[['sad', 1], ['neu', 3], ['smi', 5]].map(([k, c], j) => `<button class="face-b ${lit === j ? 'on' : ''}" data-k="${k}" style="grid-column:${c}" data-a="mood" data-v="${c - 1}" aria-label="${L[j]}">${face(k)}</button>`).join('')}</div>
     <div class="g5 track" role="radiogroup" aria-label="${t('moodAria')}${name ? ': ' + esc(name) : ''}">${[0, 1, 2, 3, 4].map(i => `<button class="dp ${i % 2 === 0 ? 'big' : ''} ${i === pos ? 'on' : ''}" role="radio" aria-checked="${i === pos}" data-a="mood" data-v="${i}" aria-label="${t('pos', i + 1)}"></button>`).join('')}</div>
     <div class="g5 mlab">${[1, 3, 5].map((c, j) => `<span style="grid-column:${c}" class="${lit === j ? 'on' : ''}">${L[j]}</span>`).join('')}</div>
   </div>`;
@@ -195,26 +206,27 @@ function render() {
     const cs = deck(), c = cs[S.i];
     const back = `<h3>${esc(c.label)}</h3><p>${esc(c.back)}</p>${c.steps?.length ? `<ol>${c.steps.map(p => `<li>${esc(p)}</li>`).join('')}</ol>` : ''}${c.min ? `<p class="mut">${t('minutes', c.min)}</p>` : ''}${c.more ? `<details><summary>${t('deeper')}</summary><p>${esc(c.more)}</p></details>` : ''}`;
     app.innerHTML = `${head(2, t('dx'))}
-    <div class="meta"><small>${t('goal')}</small><b>${esc(goal())}</b></div>
+    <div class="meta"><span class="mi">${I.flag}</span><div><small>${t('goal')}</small><b>${esc(goal())}</b></div></div>
     ${S.fallback ? `<div class="warn">${t('saved')}</div>` : ''}
     <div class="stack" aria-label="${t('stackAria')}">
-      ${S.i > 0 ? `<button class="peek up" data-a="prev" aria-label="${t('prevCard')}">${I.up}</button>` : ''}
+      ${S.i > 0 ? `<button class="peek up k-${cs[S.i - 1].kind}" data-a="prev" aria-label="${t('prevCard')}">${I.up}</button>` : ''}
       <div class="fc ${S.flip ? 'flip' : ''} ${S.dir ? 'in-' + S.dir : ''}" data-a="flip" tabindex="0" role="button" aria-label="${esc(c.label)}. ${t('flipAria')}"><div class="inner">
-        <div class="face"><h3>${esc(c.label)}</h3><p class="ft">${esc(c.front)}</p><div class="hint">${I.hand} ${t('hint')}</div></div>
-        <div class="face back">${back}</div></div></div>
-      ${S.i < cs.length - 1 ? `<button class="peek dn" data-a="next" aria-label="${t('nextCard')}"><span>${esc(cs[S.i + 1].label)}</span>${I.dn}</button>` : ''}
+        <div class="face k-${c.kind}"><span class="ic">${KI[c.kind]}</span><h3>${esc(c.label)}</h3><p class="ft">${esc(c.front)}</p><div class="hint">${I.hand} ${t('hint')}</div></div>
+        <div class="face back k-${c.kind}">${back}</div></div></div>
+      ${S.i < cs.length - 1 ? `<button class="peek dn k-${cs[S.i + 1].kind}" data-a="next" aria-label="${t('nextCard')}"><span>${esc(cs[S.i + 1].label)}</span>${I.dn}</button>` : ''}
     </div>
     <div class="foot"><button class="cta2" data-a="sim"><b>${t('nextStep')}</b><span>${t('toViz')}</span></button></div>`;
     S.dir = '';
   } else if (S.screen === 3) {
     const m = d.mapa, n = d.siguiente_paso;
     app.innerHTML = `${head(3, t('plan'), true)}
-    <section class="panel"><h2 class="ptitle">${t('wellbeing')}</h2><p class="psub">${t('pathTo')} ${esc(goal())}</p>
-      <svg class="chart" id="chart" viewBox="0 0 340 200" role="img" aria-label="${t('chartAria')}"></svg>
+    <section class="panel"><h2 class="ptitle"><span class="pi">${I.chart}</span>${t('wellbeing')}</h2><p class="psub">${t('pathTo')} ${esc(goal())}</p>
+      <svg class="chart" id="chart" viewBox="0 0 340 210" role="img" aria-label="${t('chartAria')}"></svg>
       <div class="leg"><span>${t('legStay')}</span><span class="imp">${t('legChange')}</span></div>
-      ${m.hitos.length ? `<ul class="chips">${m.hitos.map(h => `<li><b>${h.anio}</b>${esc(h.titulo)}</li>`).join('')}</ul>` : ''}
+      <p class="scrub">${t('scrub')}</p>
+      ${m.hitos.length ? `<ul class="chips">${m.hitos.map((h, k) => `<li><i class="num">${k + 1}</i><b>${h.anio}</b>${esc(h.titulo)}</li>`).join('')}</ul>` : ''}
       <hr>
-      ${m.palancas.map(p => `<div class="lev"><div class="lrow"><label for="r_${p.id}">${esc(p.etiqueta)}</label><output id="v_${p.id}" for="r_${p.id}"></output></div>
+      ${m.palancas.map(p => `<div class="lev" style="--c:${(LS[p.id] || LS.ahorro_mensual)[1]}"><div class="lrow"><label for="r_${p.id}"><span class="li">${(LS[p.id] || LS.ahorro_mensual)[0]}</span>${esc(p.etiqueta)}</label><output id="v_${p.id}" for="r_${p.id}"></output></div>
         <input class="rng" type="range" id="r_${p.id}" data-id="${p.id}" min="${p.min}" max="${p.max}" step="${p.paso}" value="${S.vals[p.id] || 0}" style="--p:${pct(p, S.vals[p.id] || 0)}%"></div>`).join('')}
     </section>
     <p class="note">${esc(m.aviso)}</p>
@@ -231,26 +243,49 @@ function render() {
 const fmt = (p, v) => p.unidad === '$' ? '$' + v : v + ' ' + p.unidad;
 const pct = (p, v) => p.max === p.min ? 0 : Math.round((v - p.min) / (p.max - p.min) * 100);
 const delta = () => S.data.mapa.palancas.reduce((s, p) => s + (S.vals[p.id] || 0) * p.puntos_por_unidad, 0);
+const PL = 44, PR = 290, W = PR - PL;
 function updSim() {
-  const m = S.data.mapa, dl = Math.round(delta() * 10) / 10, b = m.score_base ?? 50;
+  const m = S.data.mapa, dl = Math.round(delta() * 10) / 10, b = m.score_base ?? 50, up = dl > 0.05;
   m.palancas.forEach(p => { $('#v_' + p.id).textContent = fmt(p, S.vals[p.id] || 0); });
   const y0 = new Date().getFullYear(), y1 = Math.max(y0 + 1, ...m.hitos.map(h => h.anio), m.hitos.length ? 0 : y0 + 10);
   const lo = Math.max(0, Math.min(b - 15, 50)), hi = lo + 50, nb = Math.min(hi - 3, b + dl);
-  const X = y => 44 + (y - y0) / (y1 - y0) * 278, Y = s => 170 - (s - lo) / (hi - lo) * 156;
-  const f = x => { const k = (x - 44) / 278; return Y(b) + (Y(nb) - Y(b)) * k * k * (3 - 2 * k); };
-  const line = Array.from({ length: 41 }, (_, i) => { const x = 44 + i * 278 / 40; return x.toFixed(1) + ',' + f(x).toFixed(1); }).join(' ');
-  const fy = f(322);
-  $('#chart').innerHTML = `<polygon points="44,170 44,118 80,94 105,116 150,68 190,108 225,86 262,110 300,78 322,98 322,170" fill="#e6edf0"/>
-    <polygon points="44,170 44,142 90,120 130,142 180,106 235,138 290,116 322,134 322,170" fill="#d4dfe4"/>
-    ${[lo, lo + 25, hi].map(s => `<line x1="44" y1="${Y(s)}" x2="322" y2="${Y(s)}" stroke="#fff" stroke-opacity=".7"/><text x="38" y="${Y(s) + 4}" font-size="10" fill="#6b7280" text-anchor="end">${Math.round(s)}</text>`).join('')}
-    <text x="9" y="92" font-size="11" fill="#6b7280" text-anchor="middle" transform="rotate(-90 9 92)">${t('yAxis')}</text>
-    <polygon points="${line} 322,${Y(b)} 44,${Y(b)}" fill="#2f9a8a" fill-opacity=".32"/>
-    <line x1="44" y1="${Y(b)}" x2="322" y2="${Y(b)}" stroke="#2d4a4f" stroke-width="2.2"/>
-    <polyline points="${line}" fill="none" stroke="#2f9a8a" stroke-width="3.5" stroke-linecap="round"/>
-    <line x1="44" y1="170" x2="322" y2="170" stroke="#9ca3af"/>
-    <text x="44" y="190" font-size="11" fill="#374151" font-weight="700">${t('today')} ${y0}</text>
-    ${m.hitos.map(h => { const x = X(h.anio), last = x > 300, hide = x < 90; return `<line x1="${x}" y1="${f(x)}" x2="${x}" y2="170" stroke="#f08c3c" stroke-dasharray="2 3" stroke-opacity=".7"/><circle cx="${x}" cy="${Y(b)}" r="4.5" fill="#f08c3c" stroke="#fff" stroke-width="1.5"/>${dl > 0.05 ? `<circle cx="${x}" cy="${f(x)}" r="5.5" fill="#f08c3c" stroke="#fff" stroke-width="2"/>` : ''}${hide ? '' : `<text x="${x}" y="190" font-size="11" fill="#374151" font-weight="700" text-anchor="${last ? 'end' : 'middle'}">${h.anio}</text>`}`; }).join('')}
-    <line x1="322" y1="${fy}" x2="322" y2="${fy - 30}" stroke="#374151" stroke-width="2"/><polygon points="322,${fy - 30} 338,${fy - 24} 322,${fy - 18}" fill="#f08c3c"/>`;
+  const X = y => PL + (y - y0) / (y1 - y0) * W, Y = s => 170 - (s - lo) / (hi - lo) * 120;
+  const f = x => { const k = (x - PL) / W; return Y(b) + (Y(nb) - Y(b)) * k * k * (3 - 2 * k); };
+  const pts = Array.from({ length: 41 }, (_, i) => { const x = PL + i * W / 40; return x.toFixed(1) + ',' + f(x).toFixed(1); }).join(' ');
+  const fy = f(PR), by = Y(b), iy = up ? Math.min(fy, by - 22) : fy;
+  const badge = (y, txt, col) => `<g><rect x="${PR + 6}" y="${y - 11}" width="40" height="22" rx="11" fill="${col}"/><text x="${PR + 26}" y="${y + 4}" font-size="12" font-weight="800" fill="#fff" text-anchor="middle">${txt}</text></g>`;
+  let cur = '';
+  if (S.cur != null) {
+    const x = Math.max(PL, Math.min(PR, S.cur)), kk = (x - PL) / W, sc = b + (nb - b) * kk * kk * (3 - 2 * kk), yr = Math.round(y0 + (x - PL) / W * (y1 - y0)), vi = f(x);
+    const tw = up ? 96 : 64, tx = Math.max(2, Math.min(338 - tw, x - tw / 2));
+    cur = `<line x1="${x}" y1="50" x2="${x}" y2="170" stroke="#1f2937" stroke-width="1.5" stroke-opacity=".5"/>
+      <circle cx="${x}" cy="${by}" r="5" fill="#2d4a4f" stroke="#fff" stroke-width="2"/>${up ? `<circle cx="${x}" cy="${vi}" r="6" fill="#2f9a8a" stroke="#fff" stroke-width="2"/>` : ''}
+      <rect x="${tx}" y="1" width="${tw}" height="29" rx="9" fill="#1f2937"/>
+      <text x="${tx + 9}" y="13" font-size="10" font-weight="800" fill="#fff">${yr}</text>
+      <circle cx="${tx + 12}" cy="22" r="3.5" fill="#9ca3af"/><text x="${tx + 20}" y="25" font-size="10" fill="#fff">${Math.round(b)}</text>
+      ${up ? `<circle cx="${tx + 54}" cy="22" r="3.5" fill="#2f9a8a"/><text x="${tx + 62}" y="25" font-size="10" font-weight="800" fill="#fff">${Math.round(sc)}</text>` : ''}`;
+  }
+  $('#chart').innerHTML = `<defs>
+      <linearGradient id="gA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f9a8a" stop-opacity=".5"/><stop offset="1" stop-color="#2f9a8a" stop-opacity=".06"/></linearGradient>
+      <linearGradient id="gL" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f9a8a"/><stop offset="1" stop-color="#27b39b"/></linearGradient>
+      <linearGradient id="gM" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dbe9ee"/><stop offset="1" stop-color="#f1f6f8"/></linearGradient></defs>
+    <rect x="${PL}" y="50" width="${W}" height="120" rx="6" fill="#fafcfd"/>
+    <polygon points="${PL},170 ${PL},112 80,88 105,110 150,64 190,102 225,82 262,104 ${PR},78 ${PR},170" fill="url(#gM)"/>
+    ${[lo, lo + 25, hi].map(s => `<line x1="${PL}" y1="${Y(s)}" x2="${PR}" y2="${Y(s)}" stroke="#d9e2e7" stroke-dasharray="3 4"/><text x="${PL - 6}" y="${Y(s) + 4}" font-size="10" fill="#6b7280" text-anchor="end">${Math.round(s)}</text>`).join('')}
+    <text x="9" y="110" font-size="11" fill="#6b7280" text-anchor="middle" transform="rotate(-90 9 110)">${t('yAxis')}</text>
+    ${up ? `<polygon points="${pts} ${PR},${by} ${PL},${by}" fill="url(#gA)"/>` : ''}
+    <line x1="${PL}" y1="${by}" x2="${PR}" y2="${by}" stroke="#2d4a4f" stroke-width="2.4"/>
+    ${up ? `<polyline points="${pts}" fill="none" stroke="url(#gL)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>` : ''}
+    <line x1="${PL}" y1="170" x2="${PR}" y2="170" stroke="#9ca3af"/>
+    <text x="${PL}" y="192" font-size="11" fill="#374151" font-weight="700">${t('today')} ${y0}</text>
+    ${m.hitos.map((h, k) => { const x = Math.min(PR, X(h.anio)), last = x > PR - 22, hide = x < 90;
+      return `<line x1="${x}" y1="50" x2="${x}" y2="170" stroke="#f08c3c" stroke-dasharray="2 3" stroke-opacity=".75"/>
+      <circle cx="${x}" cy="40" r="9" fill="#f08c3c" stroke="#fff" stroke-width="2"/><text x="${x}" y="44" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">${k + 1}</text>
+      <circle cx="${x}" cy="${by}" r="4.5" fill="#2d4a4f" stroke="#fff" stroke-width="1.5"/>${up ? `<circle cx="${x}" cy="${f(x)}" r="6" fill="#f08c3c" stroke="#fff" stroke-width="2.2"/>` : ''}
+      ${hide ? '' : `<text x="${x}" y="192" font-size="11" fill="#374151" font-weight="700" text-anchor="${last ? 'end' : 'middle'}">${h.anio}</text>`}`; }).join('')}
+    ${badge(by, Math.round(b), '#2d4a4f')}${up ? badge(iy, Math.round(nb), '#2f9a8a') : ''}
+    ${cur}
+    <rect x="${PL}" y="30" width="${W}" height="150" fill="transparent"/>`;
 }
 
 // ───── Carga del resumen. keep = true (o un estado guardado) vuelve a la misma pantalla/tarjeta, p. ej. al cambiar de idioma
@@ -332,12 +367,23 @@ function moodFromX(block, x) {
   const r = block.querySelector('.track').getBoundingClientRect();
   setMoodPos(block, Math.max(0, Math.min(4, Math.floor((x - r.left) / r.width * 5))));
 }
+const scrub = e => {
+  const sv = e.target.closest?.('#chart'); if (!sv || !S.data) return false;
+  const r = sv.getBoundingClientRect(); S.cur = Math.max(PL, Math.min(PR, (e.clientX - r.left) / r.width * 340)); updSim(); return true;
+};
 app.addEventListener('pointerdown', e => {
+  if (S.screen === 3 && !scrub(e) && S.cur != null) { S.cur = null; updSim(); }
   py = S.screen === 2 && e.target.closest('.stack') ? e.clientY : null;
   const blk = S.screen === 0 && e.target.closest('.mood');
   if (blk) { mdrag = blk; try { blk.setPointerCapture(e.pointerId); } catch { } moodFromX(blk, e.clientX); }
 });
-app.addEventListener('pointermove', e => { if (mdrag) moodFromX(mdrag, e.clientX); });
+app.addEventListener('pointermove', e => {
+  if (mdrag) moodFromX(mdrag, e.clientX);
+  if (S.screen === 3 && (e.pointerType === 'mouse' || e.buttons)) scrub(e);
+});
+app.addEventListener('pointerout', e => {
+  if (S.screen === 3 && e.pointerType === 'mouse' && e.target.closest?.('#chart') && !e.relatedTarget?.closest?.('#chart')) { S.cur = null; updSim(); }
+});
 app.addEventListener('pointercancel', () => { py = null; mdrag = null; });
 app.addEventListener('pointerup', e => {
   mdrag = null;
