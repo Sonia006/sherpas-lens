@@ -18,13 +18,14 @@ import logging
 import os
 import re
 import copy
-from datetime import date, timedelta
+import random
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Literal
 from urllib.parse import quote
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, Header, HTTPException, Path as FPath
+from fastapi import FastAPI, Header, HTTPException, Path as FPath, Response
 from fastapi.middleware.cors import CORSMiddleware
 from openai import AsyncOpenAI
 from pydantic import BaseModel, Field
@@ -40,6 +41,7 @@ LLM_API_KEY = os.getenv("TEAM_KEY") or os.getenv("GROQ_API_KEY") or "missing"
 LLM_MODEL = os.getenv("LLM_MODEL", "gpt-5-mini")
 ADVISOR_EMAIL = os.getenv("ASESOR_EMAIL", "asesor@example.com")
 ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "")
+APP_URL = os.getenv("APP_URL", "")  # enlace a la app que llevan los recordatorios
 PLAN_MODE = os.getenv("PLAN_MODE", "full")  # "full" = informes completos, "lean" = solo secciones clave
 CACHE_DIR = Path(os.getenv("CACHE_DIR", "cache"))
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
@@ -137,13 +139,21 @@ TEXTS = {
         "short_notice": "Simulador ilustrativo.",
         "default_step": "Habla con tu asesor para elegir el primer paso",
         "fallback_step": "Revisa tu plan con un asesor",
-        "calendar_details": "Recordatorio de tu plan Sherpas",
         "mail_subject": "Quiero hablar de mi plan",
         "mail_body": "Hola, he visto mi plan y quiero ayuda con este paso: {title}",
         "fallback_intro": "Tu plan ya está listo: vamos a verlo juntos.",
         "fallback_front": "Tu plan está listo",
         "fallback_back": "Habla con tu asesor para verlo juntos.",
         "chat_error": "Ahora mismo no puedo responder. Tu asesor puede ayudarte con esto.",
+        "family": "la familia",
+        "goal_names": {"VACATION": "Ir de vacaciones", "VEHICLE_PURCHASE": "Comprar un vehículo",
+                       "REAL_ESTATE_PURCHASE": "Comprar una casa", "COLLEGE": "Universidad de {who}",
+                       "RETIREMENT": "Jubilación de {who}"},
+        "ics": {"cal_name": "Mis metas con Sherpas", "open": "Abre tu plan y revisa el siguiente paso.",
+                "when": {365: "falta 1 año", 180: "faltan 6 meses", 30: "falta 1 mes", 7: "falta 1 semana", 0: "es hoy"},
+                "nudges": ["Un pequeño paso hoy te acerca a esta meta.",
+                           "Echa un vistazo a tu plan: ¿sigue siendo la meta de siempre?",
+                           "Cinco minutos con tu plan hoy te lo ponen más fácil mañana."]},
     },
     "en": {
         "mood": {1: "very overwhelmed", 2: "worried", 3: "neutral", 4: "confident", 5: "very confident"},
@@ -157,13 +167,21 @@ TEXTS = {
         "short_notice": "Illustrative simulator.",
         "default_step": "Talk to your advisor to choose the first step",
         "fallback_step": "Review your plan with an advisor",
-        "calendar_details": "Reminder for your Sherpas plan",
         "mail_subject": "I'd like to talk about my plan",
         "mail_body": "Hi, I've seen my plan and I'd like help with this step: {title}",
         "fallback_intro": "Your plan is ready: let's go through it together.",
         "fallback_front": "Your plan is ready",
         "fallback_back": "Talk to your advisor to go through it together.",
         "chat_error": "I can't answer right now. Your advisor can help you with this.",
+        "family": "the family",
+        "goal_names": {"VACATION": "Go on vacation", "VEHICLE_PURCHASE": "Buy a vehicle",
+                       "REAL_ESTATE_PURCHASE": "Buy a home", "COLLEGE": "{who}'s college",
+                       "RETIREMENT": "{who}'s retirement"},
+        "ics": {"cal_name": "My goals with Sherpas", "open": "Open your plan and check the next step.",
+                "when": {365: "1 year to go", 180: "6 months to go", 30: "1 month to go", 7: "1 week to go", 0: "it's today"},
+                "nudges": ["A small step today brings this goal closer.",
+                           "Take a look at your plan: is this still the goal you want?",
+                           "Five minutes with your plan today make tomorrow easier."]},
     },
 }
 
@@ -230,7 +248,6 @@ async def case_context(case_id: str) -> dict:
         "score": find_score(fh),
         "score_block": fh.get("score") if isinstance(fh, dict) else None,
         "_fh": fh,
-        "_persona_md": persona_md,
     }
     _CTX[case_id] = ctx
     return ctx
@@ -310,7 +327,7 @@ class Message(BaseModel):
     role: Literal["user", "assistant"]
     content: str = Field(max_length=2000)
 
-# 
+
 class ChatRequest(BaseModel):
     case_id: str = Field(pattern=CASE_PATTERN)
     animo: int = Field(default=3, ge=1, le=5)
@@ -332,7 +349,7 @@ LANGUAGE_RULE = {
     "es": "IDIOMA DE SALIDA: escribe TODOS los valores de texto del JSON en español. No traduzcas las claves del JSON.",
     "en": "OUTPUT LANGUAGE: write EVERY text value of the JSON in English, even though the instructions above are in Spanish. "
           "Do not translate the JSON keys and do not leave any Spanish words (write names like 'Timothy and Melanie'). "
-          "Apply the same plain-language rules: no jargon, no money amounts outside 'detalle'.",
+          "Apply the same plain-language rules: no jargon.",
 }
 
 COMMON_RULES = """REGLAS ESTRICTAS
@@ -354,16 +371,6 @@ COMMON_RULES = """REGLAS ESTRICTAS
 - Explica el "qué hay que hacer" y el "por qué" de forma directa, para que una familia sin estudios financieros lo entienda al primer vistazo.
 </nivel_de_lenguaje>
 
-<cifras>
-Las cifras apagan la atención. La frase inicial, los frentes, los reversos y el siguiente paso NO llevan importes, porcentajes, ratios ni puntuaciones. Di lo mismo así:
-- Comparación: "bastante más de lo que haría falta", "casi todo lo que tenéis está en la casa".
-- Tiempo corriente: "unos cuantos meses de gastos", "hasta que los niños vayan a la universidad".
-- Personas y metas: "para que Liam y Josh sigan con su vida", "para la casa de 2030".
-- Consecuencia: "si llega un imprevisto, acabaría en la tarjeta".
-Se permiten años, fechas del plan y edades de los hijos. Los importes solo pueden ir en "detalle": máximo dos, con moneda, periodo y dueño.
-No calcules cifras nuevas. Si dos cifras del plan no coinciden o miden cosas distintas (efectivo total frente a accesible, por ejemplo), no cites ninguna; si importa para actuar, el primer paso es confirmar ese dato.
-</cifras>
-
 <lenguaje>
 - PROHIBIDA la jerga financiera o bancaria: exposición, ratio, activos, liquidez, cobertura, rentabilidad, "optimizar". No uses ningún término técnico (401(k), 529, umbrella...).
 - Traduce a lenguaje de andar por casa. Ejemplos: "colchón para imprevistos" (fondo de emergencia); "seguro extra por si te reclaman una cantidad muy grande (umbrella)"; "el plan de ahorro para la jubilación de tu empresa (401(k))"; "el ahorro para la universidad de los niños (529)"; "la parte de la casa que ya es vuestra" (equity); "la tarjeta es la deuda que más cuesta de mantener"; "tenéis más ahorro parado de lo que haría falta; parte podría trabajar para vosotros" (exceso de reserva). Los ratios de deuda no se mencionan: di solo si la deuda aprieta o no.
@@ -377,6 +384,18 @@ No calcules cifras nuevas. Si dos cifras del plan no coinciden o miden cosas dis
 - Si en una pareja los perfiles de riesgo difieren, nómbralo con naturalidad y sin tomar partido.
 - El siguiente paso es una acción pequeña que pueda empezar hoy (qué hacer, dónde, con quién).
 </psicologia>
+"""
+
+# Reglas solo para las tarjetas del resumen (el chat si puede dar importes si se los piden)
+CARD_RULES = """<cifras>
+Las cifras apagan la atención. La frase inicial, los frentes, los reversos y el siguiente paso NO llevan importes, porcentajes, ratios ni puntuaciones. Di lo mismo así:
+- Comparación: "bastante más de lo que haría falta", "casi todo lo que tenéis está en la casa".
+- Tiempo corriente: "unos cuantos meses de gastos", "hasta que los niños vayan a la universidad".
+- Personas y metas: "para que Liam y Josh sigan con su vida", "para la casa de 2030".
+- Consecuencia: "si llega un imprevisto, acabaría en la tarjeta".
+Se permiten años, fechas del plan y edades de los hijos. Los importes solo pueden ir en "detalle": máximo dos, con moneda, periodo y dueño.
+No calcules cifras nuevas. Si dos cifras del plan no coinciden o miden cosas distintas (efectivo total frente a accesible, por ejemplo), no cites ninguna; si importa para actuar, el primer paso es confirmar ese dato.
+</cifras>
 
 <contenido>
 - Recorre todas las áreas del plan y elige tarjetas distintas según su importancia para ESTA familia. Un área sin problema aporta una fortaleza; no inventes un problema para completar una categoría.
@@ -400,7 +419,6 @@ Las tarjetas se leen una detrás de otra: si todas suenan igual, la persona deja
 - Si el plan trae un dato dudoso, contradictorio o que parece un error, no lo conviertas en tarjeta ni en cifra; omítelo.
 - Relee cada tarjeta como la leería alguien sin conocimientos: si hay que adivinar qué significa, reescríbela más simple.
 </sentido>
-
 """
 
 SCHEMA = json.dumps({
@@ -411,7 +429,7 @@ SCHEMA = json.dumps({
         "detalle": "Supuestos o cifras para el experto (max. 40 palabras; único sitio con importes, máx. dos), o cadena vacia",
         "meta_id": "id de uno de los hitos o null",
     }],
-    "hitos": [{"id": "casa_2027", "anio": 2027, "titulo": "Meta con las palabras de la familia"}],
+    "hitos": [{"id": "casa_2027", "anio": 2027, "titulo": "Meta con las palabras de la familia (MÁXIMO 3 palabras)"}],
     "palancas": ["ids elegidos de la lista permitida"],
     "siguiente_paso": {
         "titulo": "Un verbo y UNA accion concreta y prioritaria",
@@ -446,6 +464,7 @@ Hoy el cliente se siente: {label} (animo {req.animo_efectivo}/5, no lo menciones
 TONO: {tone}
 
 {COMMON_RULES}
+{CARD_RULES}
 {couple}
 {LANGUAGE_RULE[req.idioma]}"""
     user = f"""<plan>
@@ -457,20 +476,15 @@ TONO: {tone}
 </perfil>
 
 FRASE INICIAL (frase_inicial): es lo primero que ve el cliente y debe hacerle querer seguir.
-- Empieza con los nombres de pila de la familia y dos puntos. Ejemplo de FORMA (no de cifras):
-  "Marta y David: tal como estais, cubris el 78% de la vida que quereis. Con tres pasos, mucho mas."
-- Incluye UNA cifra real que aparezca en el plan (puntuacion, edad, fecha, importe...). Si el plan trae tanto
-  la situacion actual como la mejorada, puedes contrastarlas; si solo trae una, usa solo esa y cierra con
-  una promesa sin cifra ("y hay un camino claro").
-- Maximo 25 palabras, sin explicaciones ni jerga, sin signos de exclamacion.
-- Si el cliente esta agobiado (animo 1-2), no abras con una cifra negativa: empieza por algo que ya hacen bien.
+- Empieza con los nombres de pila de la familia y dos puntos, y di lo que está en juego sin cifras. Ejemplo de FORMA: "Marta y David: la casa de 2030 y la universidad de los niños caben en el mismo plan."
+- Respeta el límite de palabras del tono. Sin explicaciones, sin jerga y sin signos de exclamación.
+- Si el cliente está agobiado (ánimo 1-2), empieza por algo que ya hacen bien, solo si el plan lo respalda.
 
-SIGUIENTE PASO (siguiente_paso): elige uno de los movimientos de score.top_moves del plan y usa su accion y sus cifras tal cual.
-- Si el plan trae score.combined_moves, usa esas puntuaciones (score_after) para contrastar el antes y el despues; no inventes otras.
-- Una cantidad que el plan ya paga o tiene (por ejemplo, un pago mensual actual) es la situacion de hoy, nunca un extra.
+SIGUIENTE PASO (siguiente_paso): elige uno de los movimientos de score.top_moves del plan y cuéntalo con palabras de andar por casa. Ni el título, ni la razón ni los pasos llevan importes ni porcentajes (los importes van en el detalle de las tarjetas).
+- Una cantidad que el plan ya paga o tiene (por ejemplo, un pago mensual actual) es la situación de hoy, nunca un extra.
 
 Genera el resumen con EXACTAMENTE {n} tarjetas (idea corta al frente, explicacion al reverso).
-Ordena las tarjetas de lo mas importante a lo menos. Anade 3-5 hitos con fechas reales del plan.
+Ordena las tarjetas de lo mas importante a lo menos. Anade 3-5 hitos (con no mas de 3 palabras) con fechas reales del plan.
 Elige 2-3 palancas SOLO de esta lista:
 {levers_list}
 
@@ -483,11 +497,8 @@ Devuelve EXCLUSIVAMENTE un JSON valido con esta forma:
 
 
 # Normalizacion: nunca nos fiamos del JSON de la IA tal cual
-def calendar_link(title: str, language: str) -> str:
-    d = date.today() + timedelta(days=2)
-    return ("https://calendar.google.com/calendar/render?action=TEMPLATE"
-            f"&text={quote(title)}&dates={d:%Y%m%d}/{d + timedelta(days=1):%Y%m%d}"
-            f"&details={quote(TEXTS[language]['calendar_details'])}")
+def reminders_link(case_id: str, language: str) -> str:
+    return f"/recordatorios/{case_id}.ics?idioma={language}"
 
 
 def advisor_link(title: str, language: str) -> str:
@@ -545,7 +556,7 @@ def normalize(raw: dict, req: SummaryRequest, n: int, score, score_block=None) -
         "razon": str(step.get("razon") or "").strip(),
         "minutos": minutes,
         "pasos": [str(p).strip() for p in (step.get("pasos") or [])][:5],
-        "acciones": {"calendario_url": calendar_link(step_title, req.idioma), "asesor_url": advisor_link(step_title, req.idioma)},
+        "acciones": {"recordatorios_url": reminders_link(req.case_id, req.idioma), "asesor_url": advisor_link(step_title, req.idioma)},
     }
 
     block = score_block if isinstance(score_block, dict) else {}
@@ -591,7 +602,7 @@ def fallback_summary(req: SummaryRequest) -> dict:
                  "hitos": [], "palancas": build_levers(DEFAULT_LEVERS, req.idioma),
                  "ilustrativo": True, "aviso": texts["short_notice"]},
         "siguiente_paso": {"titulo": step, "razon": "", "minutos": None, "pasos": [],
-                           "acciones": {"calendario_url": calendar_link(step, req.idioma), "asesor_url": advisor_link(step, req.idioma)}},
+                           "acciones": {"recordatorios_url": reminders_link(req.case_id, req.idioma), "asesor_url": advisor_link(step, req.idioma)}},
         "fallback": True,
     }
 
@@ -630,7 +641,8 @@ GLOSSARY = ("emergency fund / cash reserve = colchón para imprevistos; life ins
             "umbrella insurance = seguro extra por si os reclaman una cantidad muy grande; "
             "401(k) = plan de ahorro para la jubilación de la empresa; 529 = ahorro para la universidad de los niños; "
             "home equity = la parte de la casa que ya es vuestra; credit card debt = la deuda de la tarjeta; "
-            "goal = meta; next step = siguiente paso")
+            "goal = meta; next step = siguiente paso"
+            "cash account = cuenta de efectivo; per year = al año; per month = al mes")
 
 TRANSLATE_RULES = """You adapt a short financial-plan summary from English into {language}. This is NOT a literal translation: rewrite each text the way a warm, clear person would say it in a kitchen conversation with a family that has no financial training.
 
@@ -642,10 +654,13 @@ HOW TO ADAPT
 - Short sentences and everyday verbs (pagar, apartar, comprobar, elegir, mantener). No bank or finance jargon, no acronyms.
 - Register: tú for one person, vosotros for two or more.
 - Use this vocabulary every time: {glossary}.
+- Keep "hitos" titles ultra-short: maximum 3 words per title.
+- "hitos": each item has an "id" (keep it unchanged) and a "titulo" that you MUST translate into {language}
+  (e.g. "Buy a home" -> "Comprar una casa", "Emma's college" -> "Universidad de Emma"). Keep it to 3 words max.
+  Only people's names stay as they are.
 
-KEEP EXACTLY: names, years, dates, numbers, currency symbols and amounts (write $6,800 as "$6,800"), account names, JSON keys, and the order and number of items. Empty strings stay empty.
-LENGTH: the translation runs longer by default. Keep each text within about 10% of the word count of the English original: cut filler, never meaning.
-Do not add, remove or soften facts, and do not add notes or explanations."""
+KEEP EXACTLY: people's names, bank names (e.g. Chase), years, dates, numbers, currency symbols and amounts (write $6,800 as "$6,800"), JSON keys, and the order and number of items. Empty strings stay empty.
+TRANSLATE EVERYTHING ELSE, including "detalle": it is expert text full of figures and plan labels, but every word that is not a name, number or symbol must be in {language}. Translate generic account types ("Cash account" -> "cuenta de efectivo"), units ("/yr" -> "al año") and plan terms. A "detalle" left in English is an error."""
 
 LANGUAGE_NAMES = {"es": "Spanish (informal 'tú', plain everyday words)", "en": "English"}
 
@@ -656,7 +671,7 @@ async def translate_summary(base: dict, req: SummaryRequest, ctx: dict) -> dict:
     src = {
         "frase_inicial": base["frase_inicial"],
         "tarjetas": [{k: t[k] for k in ("frente", "reverso", "detalle")} for t in base["tarjetas"]],
-        "hitos": [h["titulo"] for h in base["mapa"]["hitos"]],
+        "hitos": [{"id": h["id"], "titulo": h["titulo"]} for h in base["mapa"]["hitos"]],
         "siguiente_paso": {k: step[k] for k in ("titulo", "razon", "pasos")},
     }
     system = TRANSLATE_RULES.format(language=LANGUAGE_NAMES[lang], mood=texts["mood"][req.animo_efectivo], glossary=GLOSSARY)
@@ -675,6 +690,7 @@ async def translate_summary(base: dict, req: SummaryRequest, ctx: dict) -> dict:
             out = json.loads(resp.choices[0].message.content)
             sp = out["siguiente_paso"]
             if (len(out["tarjetas"]) != len(src["tarjetas"]) or len(out["hitos"]) != len(src["hitos"])
+                    or [h.get("id") for h in out["hitos"]] != [h["id"] for h in src["hitos"]]
                     or len(sp["pasos"]) != len(step["pasos"]) or not str(out["frase_inicial"]).strip()):
                 raise ValueError("La traduccion no conserva la estructura")
             break
@@ -689,16 +705,18 @@ async def translate_summary(base: dict, req: SummaryRequest, ctx: dict) -> dict:
     block = block if isinstance(block, dict) else {}
     result = copy.deepcopy(base)
     result.update(idioma=lang, tono=texts["mood"][req.animo_efectivo], frase_inicial=str(out["frase_inicial"]).strip())
+
     for c, t in zip(result["tarjetas"], out["tarjetas"]):
         for k in ("frente", "reverso", "detalle"):
             c[k] = str(t.get(k) or "").strip()
-    for h, title in zip(result["mapa"]["hitos"], out["hitos"]):
-        h["titulo"] = str(title).strip()
+    for h, t in zip(result["mapa"]["hitos"], out["hitos"]):
+        h["titulo"] = str(t.get("titulo") or h["titulo"]).strip()
     title = str(sp.get("titulo") or texts["default_step"]).strip()
+
     result["siguiente_paso"].update(
         titulo=title, razon=str(sp.get("razon") or "").strip(),
         pasos=[str(p).strip() for p in sp["pasos"]],
-        acciones={"calendario_url": calendar_link(title, lang), "asesor_url": advisor_link(title, lang)})
+        acciones={"recordatorios_url": reminders_link(req.case_id, lang), "asesor_url": advisor_link(title, lang)})
     result["mapa"].update(
         pilares=block.get("pillars") or [], movimientos=block.get("top_moves") or [],
         combinaciones=block.get("combined_moves") or [], limites=block.get("caps_applied") or [],
@@ -735,7 +753,7 @@ async def build_summary(req: SummaryRequest) -> dict:
                 response_format={"type": "json_object"},
             )
             raw = json.loads(resp.choices[0].message.content)
-            result = normalize(raw, req, n, ctx["score"], await map_texts(req.case_id, ctx["score_block"], req.idioma))
+            result = normalize(raw, req, n, ctx["score"], ctx["score_block"])
             save_cache(key, result)
             return result
         except Exception as e:  # JSON roto, timeout, 429...
@@ -755,7 +773,86 @@ async def generate_summary(req: SummaryRequest):
         log.error("Usando reserva: %s", e)
         return {"status": "fallback", "error": str(e)[:300], "resultado": fallback_summary(req)}
 
+# Recordatorios: un .ics con las metas reales del plan (un clic y el calendario avisa solo)
+def plan_goals(fh) -> list[dict]:
+    goals = []
+    for g in ((fh or {}).get("goals") or {}).get("chartGoals") or [] if isinstance(fh, dict) else []:
+        try:
+            day = datetime.fromisoformat(g["date"].replace("Z", "+00:00")).date()
+        except (KeyError, ValueError, AttributeError):
+            continue
+        goals.append({"date": day, "type": g.get("subType") or g.get("goalType"), "name": str(g.get("name") or "")})
+    return goals
 
+def goal_label(g: dict, lang: str) -> str:
+    texts = TEXTS[lang]
+    template = texts["goal_names"].get(g["type"])
+    if not template:
+        return g["name"]
+    name = g["name"]
+    who = name[:-len("'s Retirement")] if name.endswith("'s Retirement") else name.split(" ", 1)[1] if " " in name else ""
+    return template.format(who=who or texts["family"])
+
+def _ics_text(s: str) -> str:
+    return s.replace("\\", "\\\\").replace(";", "\\;").replace(",", "\\,").replace("\n", "\\n")
+
+def _fold(line: str) -> str:  # las lineas de un .ics no pasan de 75 bytes
+    parts, cur = [], ""
+    for ch in line:
+        if len((cur + ch).encode()) > (74 if parts else 75):
+            parts.append(cur)
+            cur = ch
+        else:
+            cur += ch
+    parts.append(cur)
+    return "\r\n ".join(parts)
+
+NUDGE_ANCHOR = date(2026, 1, 5)  # los avisos sueltos caen siempre en una rejilla de 10 dias contada desde esta fecha
+
+def build_ics(case_id: str, goals: list[dict], lang: str) -> str:
+    ics = TEXTS[lang]["ics"]
+    today = date.today()
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    events = []
+
+    def add(uid, day, hour, summary, desc):
+        start = datetime(day.year, day.month, day.day, hour)
+        events.append(["BEGIN:VEVENT", f"UID:{uid}@sherpas-lens", f"DTSTAMP:{stamp}",
+                       f"DTSTART:{start:%Y%m%dT%H%M%S}", f"DTEND:{start + timedelta(minutes=15):%Y%m%dT%H%M%S}",
+                       f"SUMMARY:{_ics_text(summary)}", f"DESCRIPTION:{_ics_text(desc)}"]
+                      + ([f"URL:{APP_URL}"] if APP_URL else [])
+                      + ["BEGIN:VALARM", "ACTION:DISPLAY", f"DESCRIPTION:{_ics_text(summary)}", "TRIGGER:PT0S",
+                         "END:VALARM", "END:VEVENT"])
+
+    upcoming = [g for g in goals if g["date"] >= today]
+    for g in upcoming:  # avisos en las fechas reales de cada meta
+        label = goal_label(g, lang)
+        for days, when in ics["when"].items():
+            day = g["date"] - timedelta(days=days)
+            if day >= today:
+                add(f"{case_id}-{g['date']}-{days}-{_slug(label)}", day, 9, f"{label}: {when}", ics["open"])
+    start = today + timedelta(days=(-(today - NUDGE_ANCHOR).days) % 10)
+    for i in range(8 if upcoming else 0):  # avisos sueltos, repartidos entre las metas
+        day = start + timedelta(days=i * 10)
+        r = random.Random(f"{case_id}-{day}")
+        g = upcoming[r.randrange(len(upcoming))]
+        add(f"{case_id}-nudge-{day}", day, r.randint(9, 19), f"{goal_label(g, lang)} · {g['date'].year}", r.choice(ics["nudges"]))
+
+    lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Sherpas Lens//EN", "CALSCALE:GREGORIAN",
+             f"X-WR-CALNAME:{_ics_text(ics['cal_name'])}", "REFRESH-INTERVAL;VALUE=DURATION:P1D", "X-PUBLISHED-TTL:P1D"]
+    for ev in events:
+        lines += ev
+    lines.append("END:VCALENDAR")
+    return "\r\n".join(_fold(l) for l in lines) + "\r\n"
+
+
+@app.get("/recordatorios/{case_id}.ics")
+async def reminders(case_id: str = FPath(pattern=CASE_PATTERN), idioma: Literal["es", "en"] = "en"):
+    goals = plan_goals((await case_context(case_id))["_fh"])
+    if not goals:
+        raise HTTPException(404, "El plan no tiene metas con fecha")
+    return Response(build_ics(case_id, goals, idioma), media_type="text/calendar",
+                    headers={"Content-Disposition": f'attachment; filename="{case_id}.ics"'})
 
 # Chat con el plan
 @app.post("/chat")
@@ -770,6 +867,7 @@ TONO: {tone}
 
 {COMMON_RULES}
 - Responde SOLO con lo que dice el plan. Menciona de donde sale ("segun tu plan...").
+- Si preguntan por una cifra o un termino, dales el dato del plan y explicalo con palabras normales; no calcules cifras nuevas.
 - Maximo 80 palabras. Frases cortas.{couple}
 - Si la pregunta no se puede responder con el plan, o pide asesoramiento fiscal/legal/de inversion concreto,
   o toca algo delicado (muerte, salud, divorcio, mucha angustia), di que no puedes decidirlo por el
