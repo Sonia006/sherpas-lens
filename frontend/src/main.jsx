@@ -53,7 +53,7 @@ const T = {
     activate: 'Activar plan de ahorro →', pdf: 'Descargar informe completo (PDF)',
     assistant: 'Asistente', openAssistant: 'Hablar con la asistente', chatTitle: 'Pregunta sobre tu plan', voiceAria: 'Leer respuestas en voz alta', close: 'Cerrar',
     chatPh: 'Escribe tu duda...', mic: 'Hablar', send: 'Enviar',
-    welcome: 'Pregúntame lo que quieras sobre tu plan. También puedes hablarme con el micrófono.', thinking: 'Pensando…', thinkingAria: 'La asistente está pensando',
+    welcome: 'Pregúntame lo que quieras sobre tu plan.', thinking: 'Pensando…', thinkingAria: 'La asistente está pensando',
     mockReply: 'Respuesta de prueba: aquí contestaría la IA, sin gastar tokens.', connErr: 'No consigo conectar ahora mismo. Inténtalo de nuevo en un momento.',
     talkAdvisor: 'Hablar con un asesor',
     wTitle: 'Tu plan financiero, paso a paso', wBody: 'Dos preguntas rápidas y verás lo más importante de tu plan.', wStart: 'Empezar', next: 'Continuar',
@@ -89,7 +89,7 @@ const T = {
     activate: 'Start my savings plan →', pdf: 'Download full report (PDF)',
     assistant: 'Assistant', openAssistant: 'Talk to the assistant', chatTitle: 'Ask about your plan', voiceAria: 'Read answers aloud', close: 'Close',
     chatPh: 'Type your question...', mic: 'Speak', send: 'Send',
-    welcome: 'Ask me anything about your plan. You can also talk to me with the microphone.', thinking: 'Thinking…', thinkingAria: 'The assistant is thinking',
+    welcome: 'Ask me anything about your plan.', thinking: 'Thinking…', thinkingAria: 'The assistant is thinking',
     mockReply: 'Test reply: the AI would answer here, without spending tokens.', connErr: 'I can\'t connect right now. Please try again in a moment.',
     talkAdvisor: 'Talk to an advisor',
     wTitle: 'Your financial plan, step by step', wBody: 'Two quick questions, then you\'ll see what matters most in your plan.', wStart: 'Let\'s start', next: 'Continue',
@@ -266,7 +266,7 @@ function render() {
         <div class="face back k-${c.kind}"><span class="side">${t('sideB')}</span>${back}</div></div></div>
       ${S.i < cs.length - 1 ? `<button class="peek dn k-${cs[S.i + 1].kind}" data-a="next" aria-label="${t('nextCard')}">${I.dn}</button>` : ''}
     </div>
-    <div class="foot"><button class="cta2" data-a="sim"><b>${t('nextStep')}</b><span>${t('toViz')}</span></button></div>`;
+    <div class="foot"><button class="cta2" data-a="sim"><b>${t('toViz')}</b></button></div>`;
     S.dir = '';
   } else if (S.screen === 3) {
     const m = d.mapa, n = d.siguiente_paso;
@@ -559,23 +559,33 @@ async function send(text) {
   S.wait = false; renderChat();
 }
 let audio = null;
-const stopVoice = () => { if (audio) { audio.pause(); audio = null; } if ('speechSynthesis' in window) speechSynthesis.cancel(); };
-const browserSpeak = txt => { if (!('speechSynthesis' in window)) return; const u = new SpeechSynthesisUtterance(txt); u.lang = t('speech'); speechSynthesis.speak(u); };
+const stopVoice = () => { if (audio) { audio.pause(); audio = null; } if ('speechSynthesis' in window) speechSynthesis.cancel(); $('#vozbtn').classList.remove('busy'); };
+// Plan B si el servidor de voz no responde: la voz más natural que tenga el navegador para el idioma
+function bestVoice() {
+  if (!('speechSynthesis' in window)) return null;
+  const lang = t('speech'), score = v => (/natural|neural|online/i.test(v.name) ? 4 : 0) + (/google|microsoft|apple|siri|premium|enhanced/i.test(v.name) ? 2 : 0) + (v.lang === lang ? 1 : 0);
+  return speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().startsWith(lang.slice(0, 2))).sort((x, y) => score(y) - score(x))[0] || null;
+}
+const browserSpeak = txt => { if (!('speechSynthesis' in window)) return; const u = new SpeechSynthesisUtterance(txt); u.lang = t('speech'); u.rate = .96; const v = bestVoice(); if (v) u.voice = v; speechSynthesis.speak(u); };
 async function speak(txt) {
   stopVoice();
   if (USE_ELEVEN && !MOCK) {
+    $('#vozbtn').classList.add('busy');
     try {
       const r = await fetch(API + '/tts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ texto: txt.slice(0, 1000), idioma: S.lang }) });
       if (!r.ok) throw new Error(r.status);
       const blob = await r.blob(); if (!S.voz) return;       // se silenció mientras llegaba el audio
       const url = URL.createObjectURL(blob), a = new Audio(url); audio = a;
       a.onended = () => { URL.revokeObjectURL(url); if (audio === a) audio = null; };
+      $('#vozbtn').classList.remove('busy');
       await a.play(); return;
-    } catch (e) { audio = null; console.warn('ElevenLabs no disponible, uso la voz del navegador', e); }
+    } catch (e) { audio = null; console.warn('Voz natural no disponible, uso la del navegador', e); }
+    $('#vozbtn').classList.remove('busy');
   }
   if (S.voz) browserSpeak(txt);
 }
 const setVoz = v => { S.voz = v; $('#vozbtn').classList.toggle('mute', !v); if (!v) stopVoice(); };
+const lastAnswer = () => [...S.msgs].reverse().find(m => m.role === 'assistant')?.content || t('welcome');
 function openChat() {
   $('#chat').inert = false; $('#chat').classList.add('open'); $('#scrim').classList.add('open'); document.body.classList.add('chat-open');
   renderChat(); setTimeout(() => $('#cinp').focus({ preventScroll: true }), 380);
@@ -585,36 +595,12 @@ function closeChat() {
   stopVoice();
 }
 $('#scrim').onclick = $('#cx').onclick = closeChat;
-$('#vozbtn').onclick = () => setVoz(!S.voz);
+$('#vozbtn').onclick = () => { if (S.voz) return setVoz(false); setVoz(true); speak(lastAnswer()); };   // al activarlo lee ya la última respuesta; las siguientes también
 $('#snd').onclick = () => { send($('#cinp').value); $('#cinp').value = ''; };
 $('#cinp').onkeydown = e => { if (e.key === 'Enter') $('#snd').click(); };
 
-// Botón de la asistente: se puede arrastrar por la pantalla; un toque abre el chat
-const fab = $('#fab');
-const lb = $('#lang').getBoundingClientRect();   // por defecto: justo debajo del botón ES/EN (luego se puede arrastrar)
-fab.style.left = Math.max(4, lb.right - 60) + 'px'; fab.style.top = (lb.bottom + 10) + 'px';
-let drag = null;
-fab.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY, l: fab.offsetLeft, t: fab.offsetTop, m: false }; fab.setPointerCapture(e.pointerId); });
-fab.addEventListener('pointermove', e => {
-  if (!drag) return;
-  const dx = e.clientX - drag.x, dy = e.clientY - drag.y; if (Math.hypot(dx, dy) > 6) drag.m = true;
-  if (drag.m) {
-    fab.style.left = Math.max(4, Math.min(innerWidth - fab.offsetWidth - 4, drag.l + dx)) + 'px';
-    fab.style.top = Math.max(4, Math.min(innerHeight - fab.offsetHeight - 4, drag.t + dy)) + 'px';
-  }
-});
-fab.addEventListener('pointerup', () => { if (drag && !drag.m) openChat(); drag = null; });
-fab.addEventListener('click', e => { if (e.detail === 0) openChat(); });
-
-let rec = null;
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-if (!SR) $('#mic').hidden = true;
-else {
-  rec = new SR(); rec.interimResults = false;
-  rec.onresult = e => { setVoz(true); send(e.results[0][0].transcript); };
-  rec.onend = () => $('#mic').classList.remove('rec');
-  $('#mic').onclick = () => { rec.lang = t('speech'); $('#mic').classList.add('rec'); try { rec.start(); } catch (e) { rec.stop(); } };
-}
+// Botón de la asistente: fijo (arriba, junto a ES/EN); un toque abre el chat
+$('#fab').addEventListener('click', openChat);
 
 // ───── Idioma (interfaz + textos que genera la IA)
 function applyStatic() {
@@ -625,7 +611,7 @@ function applyStatic() {
   $('#vozbtn').setAttribute('aria-label', t('voiceAria'));
   $('#cx').setAttribute('aria-label', t('close'));
   $('#cinp').placeholder = t('chatPh'); $('#cinp').setAttribute('aria-label', t('chatPh'));
-  $('#mic').setAttribute('aria-label', t('mic')); $('#snd').setAttribute('aria-label', t('send'));
+  $('#snd').setAttribute('aria-label', t('send'));
   $('#lang').setAttribute('aria-label', t('langAria'));
   document.querySelectorAll('#lang [data-l]').forEach(b => b.setAttribute('aria-pressed', b.dataset.l === S.lang));
 }

@@ -374,3 +374,26 @@ svg.chart{touch-action:pan-y;cursor:crosshair;margin-top:4px}
 @keyframes dFade{from{opacity:0;transform:translateY(-6px)}}
 
 @media(prefers-reduced-motion:reduce){.shint span,.mood .dp.on,.face.back details p{animation:none!important}.center .lead{transition:none}}
+
+
+/* ═════ v5 ═════ */
+/* Botón de la asistente: fijo en la barra superior, junto a ES/EN */
+#fab{left:auto;right:calc(max(12px,calc(50% - 208px)) + 92px);top:6px;width:44px;height:44px;cursor:pointer;touch-action:manipulation;box-shadow:0 3px 10px #0003}
+#fab:active{cursor:pointer;transform:scale(.95)}
+#fab svg{width:26px;height:26px}
+/* megáfono mientras se prepara la voz */
+#vozbtn.busy{animation:vpulse 1s ease-in-out infinite}
+@keyframes vpulse{50%{opacity:.35}}
+
+/* Etiquetas del selector: todas en la misma fila (antes la rejilla las repartía en diagonal) */
+.mlab span{grid-row:1!important}
+.shint{font-weight:400;font-size:.8rem}
+
+/* Cabecera de las dos últimas pantallas: más aire arriba */
+.hd{padding-top:50px}.hd .bk{top:50px}
+
+/* Pantalla 2: botón más pequeño y flechas de las cartas más suaves */
+.foot{padding:12px 22px 18px}
+.cta2{padding:11px}.cta2 b{font-size:1.1rem;font-weight:800}
+.peek svg{opacity:.4}
+.brand.big{margin-top:clamp(56px,10dvh,84px)}
