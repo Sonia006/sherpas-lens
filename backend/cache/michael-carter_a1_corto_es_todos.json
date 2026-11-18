@@ -1,0 +1,170 @@
+{
+  "case_id": "michael-carter",
+  "animo": 1,
+  "tono": "muy agobiado",
+  "tiempo": "corto",
+  "idioma": "es",
+  "num_tarjetas": 5,
+  "frase_inicial": "Michael: vamos paso a paso — una pequeña revisión de dinero primero",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "Efectivo para la casa y colchón",
+      "reverso": "Si separas lo del pago inicial y lo de las vacaciones, el dinero de cada día no se mezcla entre la casa y las facturas.",
+      "detalle": "$113,300 for home down payment Jan 2027; $3,500 vacation Jan 2027. Current cash $30,000.",
+      "meta_id": "casa_2027"
+    },
+    {
+      "id": "t2",
+      "frente": "La jubilación puede quedar corta",
+      "reverso": "Al ritmo que ahorráis ahora, parte del gasto planeado no quedará cubierto más adelante, así que hay que decidir primero qué proteger: la jubilación o la casa.",
+      "detalle": "Retirement gap: plan estimates additional $20,231/year needed; savings projected to run out at age 85.",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "Protecciones: vida y responsabilidad",
+      "reverso": "El seguro de vida y la falta de un seguro extra os dejan menos protegidos; comprobar las pólizas que ya tenéis es un siguiente paso simple.",
+      "detalle": "Current life cover $180,000; recommended range much higher. No umbrella shown in data.",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "La tarjeta cara os cuesta",
+      "reverso": "Esa tarjeta es la deuda más cara; pagarla de forma constante evita que los intereses se acumulen mientras preparáis el efectivo para la casa.",
+      "detalle": "Credit card balance $3,500 at 20% APR, $200 monthly payment, projected payoff Jul 2028.",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "Hábito de ahorro sólido",
+      "reverso": "Ya ahorráis de forma constante y cogéis la aportación del empleador; ese hábito os servirá para reconstruir el efectivo o para subir la jubilación cuando decidáis prioridades.",
+      "detalle": "Annual savings $43,000 including $7,000 employer match; 401(k) contributions $17,000 of $24,500 limit.",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 26,
+    "pilares": [
+      {
+        "pillar": "Ahorros y flujo de efectivo",
+        "score": 0,
+        "points_shown_in_app": "0/25"
+      },
+      {
+        "pillar": "Deuda",
+        "score": 78,
+        "points_shown_in_app": "8/10"
+      },
+      {
+        "pillar": "Inversiones",
+        "score": 42,
+        "points_shown_in_app": "11/25"
+      },
+      {
+        "pillar": "Liquidez y colchón para imprevistos",
+        "score": 22,
+        "points_shown_in_app": "4/20"
+      },
+      {
+        "pillar": "Seguros y protección",
+        "score": 18,
+        "points_shown_in_app": "4/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Añadir seguro extra",
+        "action": "Añadir $1M de seguro extra por si os reclaman una cantidad muy grande",
+        "effort": "bajo",
+        "target_amount": 1000000,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Bajar la tasa de retirada",
+        "action": "Reducir las retiradas a $10,300 al año (6.0%) para entrar en la banda sostenible",
+        "effort": "alto",
+        "target_amount": 10300,
+        "score_before": 26,
+        "score_after": 62,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Aumentar la asignación a crecimiento según la guía",
+        "action": "Mover la mezcla invertida de 74% a 88% en crecimiento (guía 98%) para la siguiente banda adecuada al horizonte — unos $19,900 del libro invertido",
+        "effort": "alto",
+        "target_amount": 19900,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [],
+    "limites": [],
+    "hitos": [
+      {
+        "id": "casa_2027",
+        "anio": 2027,
+        "titulo": "Comprar una casa"
+      },
+      {
+        "id": "vacation_2027",
+        "anio": 2027,
+        "titulo": "Vacaciones"
+      },
+      {
+        "id": "retire_2047",
+        "anio": 2047,
+        "titulo": "Jubilarse"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Pago extra de deuda al mes",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
+      },
+      {
+        "id": "gasto_menos",
+        "etiqueta": "Gasto mensual que recortas",
+        "unidad": "$",
+        "min": 0,
+        "max": 500,
+        "paso": 25,
+        "puntos_por_unidad": 0.012
+      },
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Ahorro mensual extra",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Simulador ilustrativo: muestra la dirección del cambio, no una proyección de Sherpas."
+  },
+  "siguiente_paso": {
+    "titulo": "Añadir seguro extra",
+    "razon": "Un seguro extra por si os reclaman una cantidad muy grande aumenta la protección de vuestros ingresos y bienes y es una forma de bajo esfuerzo para reducir riesgos antes de comprar la casa.",
+    "minutos": 10,
+    "pasos": [
+      "Busca un documento reciente del seguro de auto o de inquilino o la página para entrar en la cuenta",
+      "Llama o chatea con un agente de seguros y pregunta si ahora se puede añadir un seguro extra",
+      "Apunta la prima mensual que te citen para compararla con vuestro presupuesto"
+    ],
+    "acciones": {
+      "recordatorios_url": "/recordatorios/michael-carter.ics?idioma=es",
+      "asesor_url": "mailto:asesor@example.com?subject=Quiero%20hablar%20de%20mi%20plan&body=Hola%2C%20he%20visto%20mi%20plan%20y%20quiero%20ayuda%20con%20este%20paso%3A%20A%C3%B1adir%20seguro%20extra"
+    }
+  },
+  "fallback": false
+}

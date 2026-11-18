@@ -1,0 +1,60 @@
+{
+  "pillars": [
+    {
+      "pillar": "Ahorros y flujo de efectivo",
+      "score": 0,
+      "points_shown_in_app": "0/25"
+    },
+    {
+      "pillar": "Deuda",
+      "score": 78,
+      "points_shown_in_app": "8/10"
+    },
+    {
+      "pillar": "Inversiones",
+      "score": 42,
+      "points_shown_in_app": "11/25"
+    },
+    {
+      "pillar": "Liquidez y colchón para imprevistos",
+      "score": 22,
+      "points_shown_in_app": "4/20"
+    },
+    {
+      "pillar": "Seguros y protección",
+      "score": 18,
+      "points_shown_in_app": "4/20"
+    }
+  ],
+  "top_moves": [
+    {
+      "title": "Añadir seguro extra",
+      "action": "Añadir $1M de seguro extra por si os reclaman una cantidad muy grande",
+      "effort": "bajo",
+      "target_amount": 1000000,
+      "score_before": 26,
+      "score_after": 31,
+      "lifts_a_cap": false
+    },
+    {
+      "title": "Bajar la tasa de retirada",
+      "action": "Reducir las retiradas a $10,300 al año (6.0%) para entrar en la banda sostenible",
+      "effort": "alto",
+      "target_amount": 10300,
+      "score_before": 26,
+      "score_after": 62,
+      "lifts_a_cap": false
+    },
+    {
+      "title": "Aumentar la asignación a crecimiento según la guía",
+      "action": "Mover la mezcla invertida de 74% a 88% en crecimiento (guía 98%) para la siguiente banda adecuada al horizonte — unos $19,900 del libro invertido",
+      "effort": "alto",
+      "target_amount": 19900,
+      "score_before": 26,
+      "score_after": 31,
+      "lifts_a_cap": false
+    }
+  ],
+  "combined_moves": [],
+  "caps_applied": []
+}

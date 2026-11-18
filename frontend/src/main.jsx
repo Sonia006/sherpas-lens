@@ -9,6 +9,23 @@ const MOCK = false;
 const USE_ELEVEN = true;
 // Idioma por defecto la primera vez (luego se recuerda la elección del botón ES/EN)
 const DEFAULT_LANG = 'en';
+// Enlace "Para más información" del final de la pantalla 3: lleva a la web de Sherpas de cada familia (con su plan).
+// Pega aquí el enlace de cada caso. Si falta alguno, va a la web general de Sherpas.
+const SHERPAS_URL = 'https://www.sherpaswealth.com';
+const PLAN_URLS = {
+  'timothy-melanie-weah': 'https://app.sherpaswealth.com/plan/shared/RcCtgoNkGmD6dvGtYVKWLGefdCTFdc4JP_jH9Jbz2jo',
+  'michael-carter': 'https://app.sherpaswealth.com/plan/shared/ZshH0AUJjZnvwKIYtP5wYKyvI6Nc1nsGwQlDncXLfek',
+  'daniel-emily-johnson': 'https://app.sherpaswealth.com/plan/shared/FjVPq_UEwSMxaye8aOWj3osJWWSE3cDnYWcxm1X7I78',
+  'samantha-lewis': 'https://app.sherpaswealth.com/plan/shared/vyV2h64-qSet-sJuwkAHxw-iUaYV88Lkwsg29L2Y5y8'
+};
+const planUrl = () => PLAN_URLS[S.caso] || SHERPAS_URL;
+// Informe en PDF de cada familia (los genera Sherpas). Van en la carpeta public/informes/. Si un caso no tiene, el botón no se muestra.
+const REPORTS = {
+  'timothy-melanie-weah': 'timothy-melanie-weah.pdf',
+  'michael-carter': 'michael-carter.pdf',
+  'daniel-emily-johnson': 'daniel-emily-johnson.pdf'
+};
+const reportUrl = () => REPORTS[S.caso] ? `${import.meta.env.BASE_URL}informes/${REPORTS[S.caso]}` : '';
 
 const CASOS = {
   'timothy-melanie-weah': 'Timothy y Melanie Weah',
@@ -62,7 +79,7 @@ const T = {
     wellbeing: 'Bienestar financiero', pathTo: 'Camino hacia:', chartAria: 'Bienestar financiero de hoy a tu meta, seguir igual frente a hacer cambios',
     legStay: 'Si sigues igual', legChange: 'Con tus cambios', yAxis: 'Bienestar (0-100)', today: 'Hoy',
     moreInfo: 'Para más información:', book: 'Programar cita con asesor', nextHead: '¿Qué hacer ahora?',
-    activate: 'Activar plan de ahorro →', pdf: 'Descargar informe completo (PDF)',
+    activate: 'Activar plan de ahorro', pdf: 'Descargar informe completo (PDF, en inglés)', more: 'Para más información',
     assistant: 'Asistente', openAssistant: 'Hablar con la asistente', chatTitle: 'Pregunta sobre tu plan', voiceAria: 'Leer respuestas en voz alta', close: 'Cerrar',
     chatPh: 'Escribe tu duda...', mic: 'Hablar', send: 'Enviar',
     welcome: 'Pregúntame lo que quieras sobre tu plan.', thinking: 'Pensando…', thinkingAria: 'La asistente está pensando',
@@ -99,7 +116,7 @@ const T = {
     wellbeing: 'Financial wellbeing', pathTo: 'Path to:', chartAria: 'Financial wellbeing from today to your goal, staying the same versus making changes',
     legStay: 'If nothing changes', legChange: 'With your changes', yAxis: 'Wellbeing (0-100)', today: 'Today',
     moreInfo: 'For more information:', book: 'Book a call with an advisor', nextHead: 'What to do now?',
-    activate: 'Start my savings plan →', pdf: 'Download full report (PDF)',
+    activate: 'Start my savings plan', pdf: 'Download full report (PDF)', more: 'For more information',
     assistant: 'Assistant', openAssistant: 'Talk to the assistant', chatTitle: 'Ask about your plan', voiceAria: 'Read answers aloud', close: 'Close',
     chatPh: 'Type your question...', mic: 'Speak', send: 'Send',
     welcome: 'Ask me anything about your plan.', thinking: 'Thinking…', thinkingAria: 'The assistant is thinking',
@@ -310,11 +327,12 @@ function render() {
         <input class="rng" type="range" id="r_${p.id}" data-id="${p.id}" min="${p.min}" max="${p.max}" step="${p.paso}" value="${S.vals[p.id] || 0}" style="--p:${pct(p, S.vals[p.id] || 0)}%"></div>`).join('')}
     </section>
     <p class="note">${esc(m.aviso)}</p>
-    <section class="panel next"><h3>${t('nextHead')}</h3><p class="nt">${esc(n.titulo)}</p>
-      <div class="chk">${n.pasos.map(p => `<label><input type="checkbox"> ${esc(p)}</label>`).join('')}</div>
+    <section class="panel next"><h3>${t('nextHead')}</h3>
+      <ul class="bul">${n.pasos.map(p => `<li>${esc(p)}</li>`).join('')}</ul>
       <a class="cta sm" href="${esc(abs(n.acciones.recordatorios_url || n.acciones.calendario_url))}" ${/^https?:\/\/calendar\./.test(n.acciones.recordatorios_url || '') ? 'target="_blank" rel="noopener"' : ''}>${t('activate')}</a>
-      <button class="dl" data-a="pdf">${t('pdf')} ${I.dl}</button></section>
-    <div class="opt"><p>${t('optional')}</p><button class="cta sm alt" data-a="cita">${t('book')} ${I.mail}</button></div>`;
+      ${reportUrl() ? `<a class="dl" href="${esc(reportUrl())}" download="sherpas-${S.caso}.pdf">${t('pdf')} ${I.dl}</a>` : ''}</section>
+    <div class="opt"><button class="cta sm alt" data-a="cita">${t('book')} ${I.mail}</button></div>
+    <a class="more" href="${esc(planUrl())}" target="_blank" rel="noopener">${t('more')}</a>`;
     updSim();
   }
 }
@@ -431,8 +449,7 @@ const act = {
   next: () => { if (S.screen === 2 && S.i < deck().length - 1) { S.i++; S.flip = false; S.dir = 'up'; render(); } },
   prev: () => { if (S.screen === 2 && S.i > 0) { S.i--; S.flip = false; S.dir = 'dn'; render(); } },
   sim: () => { S.screen = 3; render(); window.scrollTo(0, 0); },
-  cita: () => openCita(S.data.siguiente_paso.acciones.asesor_url),
-  pdf: () => window.print()
+  cita: () => openCita(S.data.siguiente_paso.acciones.asesor_url)
 };
 app.addEventListener('click', e => {
   if (S.swipe || e.target.closest('details') || e.target.closest('a')) return;
