@@ -1,0 +1,161 @@
+{
+  "case_id": "michael-carter",
+  "animo": 3,
+  "tono": "neutral",
+  "tiempo": "corto",
+  "idioma": "es",
+  "num_tarjetas": 5,
+  "frase_inicial": "Michael: tu compra de casa en enero de 2027, jubilarte a los 58 y el efectivo para cubrir ambas cosas tienen que encajar en el mismo plan",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "La compra en enero de 2027 aprieta a corto plazo",
+      "reverso": "Si apartas dinero para la casa y para las vacaciones anuales con el efectivo que tenéis ahora, no os quedaría colchón para los meses. Así aumentan las probabilidades de tener que vender inversiones o pedir prestado si surge un imprevisto.",
+      "detalle": "Entrada para guardar hasta la compra en Jan 2027: $113,300 (Michael). Próximo pago de vacaciones Jan 2027: $3,500 (Michael).",
+      "meta_id": "casa_2027"
+    },
+    {
+      "id": "t2",
+      "frente": "Jubilarte a los 58 deja un hueco en gastos futuros",
+      "reverso": "El plan actual muestra que ahorros e inversiones se agotan antes de que termine el plan, así que parte del gasto previsto tras la jubilación no se podría pagar a menos que aumentes lo que ahorras, trabajes más tiempo o gastes menos en la jubilación.",
+      "detalle": "Los ahorros se acaban a los 85 años; gasto previsto sin cubrir al final del plan: $32,439 (Michael).",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "El colchón para imprevistos es pequeño",
+      "reverso": "Ahora tenéis ahorrado para unos tres meses de gastos básicos. Eso es menos de los 5–6 meses recomendados, así que una pérdida de empleo o una factura grande probablemente os obligaría a usar tarjetas o inversiones.",
+      "detalle": "Efectivo accesible hoy: $30,000 (Michael); mínimo recomendado de colchón para imprevistos: $46,530 (Michael).",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "Falta protección de vida y responsabilidad",
+      "reverso": "El seguro de vida actual y la ausencia de un seguro extra dejan la economía familiar expuesta a facturas grandes o a quedarse sin ingresos. También es importante comprobar la cobertura del BMW.",
+      "detalle": "Seguro de vida: $180,000; mínimo recomendado: $900,000. No hay registrado seguro extra por si os reclaman una cantidad muy grande (recomendado $1,000,000).",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "La deuda de la tarjeta es la más cara",
+      "reverso": "Esa tarjeta con interés alto es pequeña pero cara. Pagándola más rápido reducirías lo que perdéis en intereses, pero compite con ahorrar el efectivo para la casa y con el ahorro para la jubilación.",
+      "detalle": "Saldo Amex $3,500 al 20% APR; pago mensual actual $200 (Michael).",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 26,
+    "pilares": [
+      {
+        "pillar": "Ahorros y flujo de efectivo",
+        "score": 0,
+        "points_shown_in_app": "0/25"
+      },
+      {
+        "pillar": "Deuda",
+        "score": 78,
+        "points_shown_in_app": "8/10"
+      },
+      {
+        "pillar": "Inversiones",
+        "score": 42,
+        "points_shown_in_app": "11/25"
+      },
+      {
+        "pillar": "Liquidez y colchón para imprevistos",
+        "score": 22,
+        "points_shown_in_app": "4/20"
+      },
+      {
+        "pillar": "Seguros y protección",
+        "score": 18,
+        "points_shown_in_app": "4/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Añadir seguro extra",
+        "action": "Añadir $1M de seguro extra por si os reclaman una cantidad muy grande",
+        "effort": "bajo",
+        "target_amount": 1000000,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Bajar la tasa de retirada",
+        "action": "Reducir las retiradas a $10,300 al año (6.0%) para entrar en la banda sostenible",
+        "effort": "alto",
+        "target_amount": 10300,
+        "score_before": 26,
+        "score_after": 62,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Aumentar la asignación a crecimiento según la guía",
+        "action": "Mover la mezcla invertida de 74% a 88% en crecimiento (guía 98%) para la siguiente banda adecuada al horizonte — unos $19,900 del libro invertido",
+        "effort": "alto",
+        "target_amount": 19900,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [],
+    "limites": [],
+    "hitos": [
+      {
+        "id": "casa_2027",
+        "anio": 2027,
+        "titulo": "Comprar casa"
+      },
+      {
+        "id": "vacation_2027",
+        "anio": 2027,
+        "titulo": "Vacaciones"
+      },
+      {
+        "id": "retire_2047",
+        "anio": 2047,
+        "titulo": "Jubilarse"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Ahorro mensual extra",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      },
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Pago extra de deuda al mes",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Simulador ilustrativo: muestra la dirección del cambio, no una proyección de Sherpas."
+  },
+  "siguiente_paso": {
+    "titulo": "Añadir seguro extra",
+    "razon": "Poner una cobertura extra de responsabilidad es la forma más rápida dentro del plan para subir vuestra protección y proteger el efectivo y la futura casa de una reclamación grande. No arregla los huecos de efectivo o jubilación, pero evita que un solo problema grande os deje sin todo.",
+    "minutos": 30,
+    "pasos": [
+      "Comprobar el seguro de coche actual para el BMW y ver si los límites de responsabilidad ya son mayores de lo que aparece",
+      "Pedir presupuestos para un seguro extra que cubra al menos el mínimo recomendado",
+      "Decidir si la prima mensual entra en vuestro presupuesto y, si sí, contactar con la aseguradora para añadir la póliza"
+    ],
+    "acciones": {
+      "recordatorios_url": "/recordatorios/michael-carter.ics?idioma=es",
+      "asesor_url": "mailto:asesor@example.com?subject=Quiero%20hablar%20de%20mi%20plan&body=Hola%2C%20he%20visto%20mi%20plan%20y%20quiero%20ayuda%20con%20este%20paso%3A%20A%C3%B1adir%20seguro%20extra"
+    }
+  },
+  "fallback": false
+}

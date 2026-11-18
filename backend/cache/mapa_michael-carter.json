@@ -21,15 +21,24 @@
       "points_shown_in_app": "4/20"
     },
     {
+<<<<<<< HEAD
       "pillar": "Seguro y protección",
+=======
+      "pillar": "Seguros y protección",
+>>>>>>> 92afeef5a74f46991d0bb562a3448f76495ce24f
       "score": 18,
       "points_shown_in_app": "4/20"
     }
   ],
   "top_moves": [
     {
+<<<<<<< HEAD
       "title": "Añadir seguro extra por si os reclaman una cantidad muy grande",
       "action": "Añadir $1M de seguro extra por si os reclaman una cantidad muy grande para aumentar la protección por responsabilidad",
+=======
+      "title": "Añadir seguro extra",
+      "action": "Añadir $1M de seguro extra por si os reclaman una cantidad muy grande",
+>>>>>>> 92afeef5a74f46991d0bb562a3448f76495ce24f
       "effort": "bajo",
       "target_amount": 1000000,
       "score_before": 26,
@@ -38,7 +47,11 @@
     },
     {
       "title": "Bajar la tasa de retirada",
+<<<<<<< HEAD
       "action": "Reducir las retiradas a $10,300/al año (6.0%) para alcanzar la banda sostenible",
+=======
+      "action": "Reducir las retiradas a $10,300 al año (6.0%) para entrar en la banda sostenible",
+>>>>>>> 92afeef5a74f46991d0bb562a3448f76495ce24f
       "effort": "alto",
       "target_amount": 10300,
       "score_before": 26,
@@ -46,8 +59,13 @@
       "lifts_a_cap": false
     },
     {
+<<<<<<< HEAD
       "title": "Aumentar la asignación hacia crecimiento según la guía",
       "action": "Mover la mezcla invertida de 74% a 88% en crecimiento (guía 98%) para la siguiente banda adecuada al horizonte — unos $19,900 del capital invertido",
+=======
+      "title": "Aumentar la asignación a crecimiento según la guía",
+      "action": "Mover la mezcla invertida de 74% a 88% en crecimiento (guía 98%) para la siguiente banda adecuada al horizonte — unos $19,900 del libro invertido",
+>>>>>>> 92afeef5a74f46991d0bb562a3448f76495ce24f
       "effort": "alto",
       "target_amount": 19900,
       "score_before": 26,

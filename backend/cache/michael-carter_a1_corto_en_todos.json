@@ -1,0 +1,170 @@
+{
+  "case_id": "michael-carter",
+  "animo": 1,
+  "tono": "very overwhelmed",
+  "tiempo": "corto",
+  "idioma": "en",
+  "num_tarjetas": 5,
+  "frase_inicial": "Michael: vamos paso a paso — one small money check first",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "Cash for the January home and cushion",
+      "reverso": "If you hold the down‑payment and vacation money separately, your everyday cash stops being pulled between the house and bills.",
+      "detalle": "$113,300 for home down payment Jan 2027; $3,500 vacation Jan 2027. Current cash $30,000.",
+      "meta_id": "casa_2027"
+    },
+    {
+      "id": "t2",
+      "frente": "Retirement may run short",
+      "reverso": "Today’s saving pace leaves some planned spending unpaid later, so we should choose what to protect first: retirement or the home.",
+      "detalle": "Retirement gap: plan estimates additional $20,231/year needed; savings projected to run out at age 85.",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "Life and liability protection need attention",
+      "reverso": "Your life cover and lack of extra liability leave your income and assets less shielded; confirming existing policies is a simple next check.",
+      "detalle": "Current life cover $180,000; recommended range much higher. No umbrella shown in data.",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "High‑cost credit card is costing you",
+      "reverso": "That card is the most expensive debt; keeping its payments steady avoids interest piling up while you sort cash for the home.",
+      "detalle": "Credit card balance $3,500 at 20% APR, $200 monthly payment, projected payoff Jul 2028.",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "Your saving habit is a strength",
+      "reverso": "You already save steadily and capture the employer match; that habit is the tool to rebuild cash or boost retirement once priorities are set.",
+      "detalle": "Annual savings $43,000 including $7,000 employer match; 401(k) contributions $17,000 of $24,500 limit.",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 26,
+    "pilares": [
+      {
+        "pillar": "Savings and cash flow",
+        "score": 0,
+        "points_shown_in_app": "0/25"
+      },
+      {
+        "pillar": "Debt",
+        "score": 78,
+        "points_shown_in_app": "8/10"
+      },
+      {
+        "pillar": "Investments",
+        "score": 42,
+        "points_shown_in_app": "11/25"
+      },
+      {
+        "pillar": "Liquidity and emergency fund",
+        "score": 22,
+        "points_shown_in_app": "4/20"
+      },
+      {
+        "pillar": "Insurance and protection",
+        "score": 18,
+        "points_shown_in_app": "4/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Add umbrella cover",
+        "action": "Add $1M of umbrella to raise the liability shield",
+        "effort": "low",
+        "target_amount": 1000000,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Lower the withdrawal rate",
+        "action": "Cutting withdrawals to $10,300/year (6.0%) reaches the sustainable band",
+        "effort": "high",
+        "target_amount": 10300,
+        "score_before": 26,
+        "score_after": 62,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Raise growth allocation toward glide",
+        "action": "Move the invested mix from 74% to 88% growth (glide 98%) for the next horizon-fit band — about $19,900 of the invested book",
+        "effort": "high",
+        "target_amount": 19900,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [],
+    "limites": [],
+    "hitos": [
+      {
+        "id": "casa_2027",
+        "anio": 2027,
+        "titulo": "Buy home"
+      },
+      {
+        "id": "vacation_2027",
+        "anio": 2027,
+        "titulo": "Vacation"
+      },
+      {
+        "id": "retire_2047",
+        "anio": 2047,
+        "titulo": "Retire"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Extra monthly debt payment",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
+      },
+      {
+        "id": "gasto_menos",
+        "etiqueta": "Monthly spending you cut",
+        "unidad": "$",
+        "min": 0,
+        "max": 500,
+        "paso": 25,
+        "puntos_por_unidad": 0.012
+      },
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Extra monthly savings",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Illustrative simulator: it shows the direction of change, not a Sherpas projection."
+  },
+  "siguiente_paso": {
+    "titulo": "Add umbrella",
+    "razon": "An extra liability policy raises the protection that your income and assets currently lack and is a low‑effort way to reduce exposure before the house purchase.",
+    "minutos": 10,
+    "pasos": [
+      "Find one recent auto or renter policy document or login page",
+      "Call or chat with an insurance agent and ask if an extra umbrella can be added now",
+      "Note the quoted monthly premium to compare with your budget"
+    ],
+    "acciones": {
+      "recordatorios_url": "/recordatorios/michael-carter.ics?idioma=en",
+      "asesor_url": "mailto:asesor@example.com?subject=I%27d%20like%20to%20talk%20about%20my%20plan&body=Hi%2C%20I%27ve%20seen%20my%20plan%20and%20I%27d%20like%20help%20with%20this%20step%3A%20Add%20umbrella"
+    }
+  },
+  "fallback": false
+}

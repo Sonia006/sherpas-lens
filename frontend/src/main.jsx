@@ -1,12 +1,31 @@
 import './index.css';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// Los enlaces que devuelve el backend pueden ser relativos (/recordatorios/...): se completan con la URL del backend
+const abs = u => (u && u.startsWith('/') ? API.replace(/\/$/, '') + u : u);
 // MODO MOCK: true = datos de prueba, NO llama al backend ni gasta tokens. Pon false para usar la IA real.
 const MOCK = false;
 // Voz de la IA con ElevenLabs a través del backend (/tts). Si falla o no está configurado, usa la voz del navegador.
 const USE_ELEVEN = true;
 // Idioma por defecto la primera vez (luego se recuerda la elección del botón ES/EN)
 const DEFAULT_LANG = 'en';
+// Enlace "Para más información" del final de la pantalla 3: lleva a la web de Sherpas de cada familia (con su plan).
+// Pega aquí el enlace de cada caso. Si falta alguno, va a la web general de Sherpas.
+const SHERPAS_URL = 'https://www.sherpaswealth.com';
+const PLAN_URLS = {
+  'timothy-melanie-weah': 'https://app.sherpaswealth.com/plan/shared/RcCtgoNkGmD6dvGtYVKWLGefdCTFdc4JP_jH9Jbz2jo',
+  'michael-carter': 'https://app.sherpaswealth.com/plan/shared/ZshH0AUJjZnvwKIYtP5wYKyvI6Nc1nsGwQlDncXLfek',
+  'daniel-emily-johnson': 'https://app.sherpaswealth.com/plan/shared/FjVPq_UEwSMxaye8aOWj3osJWWSE3cDnYWcxm1X7I78',
+  'samantha-lewis': 'https://app.sherpaswealth.com/plan/shared/vyV2h64-qSet-sJuwkAHxw-iUaYV88Lkwsg29L2Y5y8'
+};
+const planUrl = () => PLAN_URLS[S.caso] || SHERPAS_URL;
+// Informe en PDF de cada familia (los genera Sherpas). Van en la carpeta public/informes/. Si un caso no tiene, el botón no se muestra.
+const REPORTS = {
+  'timothy-melanie-weah': 'timothy-melanie-weah.pdf',
+  'michael-carter': 'michael-carter.pdf',
+  'daniel-emily-johnson': 'daniel-emily-johnson.pdf'
+};
+const reportUrl = () => REPORTS[S.caso] ? `${import.meta.env.BASE_URL}informes/${REPORTS[S.caso]}` : '';
 
 const CASOS = {
   'timothy-melanie-weah': 'Timothy y Melanie Weah',
@@ -22,6 +41,12 @@ const saved = (() => { try { return localStorage.getItem('lang'); } catch { retu
 // (antes) 0 inicio · 1 cargando · 2 flashcards · 3 plan interactivo · -1 error
 // m[i]: ánimo de cada persona (1 = muy agobiado ... 5 = muy confiado). Posición del selector = m - 1.
 const S = { lang: ['es', 'en'].includes(saved) ? saved : DEFAULT_LANG, screen: -2, caso: 'michael-carter', persona: '', mode: null, who: null, m: [3, 3], tiempo: 'corto', data: null, i: 0, flip: false, dir: '', vals: {}, msgs: [], voz: false, wait: false, err: '', opts: false };
+// Enlaces personalizados para el jurado: /?caso=michael-carter&lang=es  (S.locked oculta el selector de familia)
+(() => {
+  const qs = new URLSearchParams(location.search), c = qs.get('caso'), l = qs.get('lang');
+  if (c && CASOS[c]) { S.caso = c; S.locked = true; }
+  if (l && ['es', 'en'].includes(l)) S.lang = l;
+})();
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const app = $('#app');
@@ -54,7 +79,7 @@ const T = {
     wellbeing: 'Bienestar financiero', pathTo: 'Camino hacia:', chartAria: 'Bienestar financiero de hoy a tu meta, seguir igual frente a hacer cambios',
     legStay: 'Si sigues igual', legChange: 'Con tus cambios', yAxis: 'Bienestar (0-100)', today: 'Hoy',
     moreInfo: 'Para más información:', book: 'Programar cita con asesor', nextHead: '¿Qué hacer ahora?',
-    activate: 'Activar plan de ahorro →', pdf: 'Descargar informe completo (PDF)',
+    activate: 'Activar plan de ahorro', pdf: 'Descargar informe completo (PDF, en inglés)', more: 'Para más información',
     assistant: 'Asistente', openAssistant: 'Hablar con la asistente', chatTitle: 'Pregunta sobre tu plan', voiceAria: 'Leer respuestas en voz alta', close: 'Cerrar',
     chatPh: 'Escribe tu duda...', mic: 'Hablar', send: 'Enviar',
     welcome: 'Pregúntame lo que quieras sobre tu plan.', thinking: 'Pensando…', thinkingAria: 'La asistente está pensando',
@@ -91,7 +116,7 @@ const T = {
     wellbeing: 'Financial wellbeing', pathTo: 'Path to:', chartAria: 'Financial wellbeing from today to your goal, staying the same versus making changes',
     legStay: 'If nothing changes', legChange: 'With your changes', yAxis: 'Wellbeing (0-100)', today: 'Today',
     moreInfo: 'For more information:', book: 'Book a call with an advisor', nextHead: 'What to do now?',
-    activate: 'Start my savings plan →', pdf: 'Download full report (PDF)',
+    activate: 'Start my savings plan', pdf: 'Download full report (PDF)', more: 'For more information',
     assistant: 'Assistant', openAssistant: 'Talk to the assistant', chatTitle: 'Ask about your plan', voiceAria: 'Read answers aloud', close: 'Close',
     chatPh: 'Type your question...', mic: 'Speak', send: 'Send',
     welcome: 'Ask me anything about your plan.', thinking: 'Thinking…', thinkingAria: 'The assistant is thinking',
@@ -173,7 +198,7 @@ const mockResult = () => {
     },
     siguiente_paso: { titulo: c.paso[L], razon: pick('Es lo que más acerca tu meta con el menor esfuerzo hoy.', 'It brings your goal closest with the least effort today.'), minutos: 15,
       pasos: [pick('Abre la app de tu banco', 'Open your bank app'), pick('Programa una transferencia mensual', 'Schedule a monthly transfer')],
-      acciones: { calendario_url: 'https://calendar.google.com', asesor_url: 'mailto:asesor@example.com?subject=' + encodeURIComponent(pick('Quiero hablar de mi plan', 'I\'d like to talk about my plan')) + '&body=' + encodeURIComponent(pick('Hola, he visto mi plan y quiero ayuda con este paso: ', 'Hi, I\'ve seen my plan and I\'d like help with this step: ') + c.paso[L]) } }
+      acciones: { recordatorios_url: 'https://calendar.google.com', asesor_url: 'mailto:asesor@example.com?subject=' + encodeURIComponent(pick('Quiero hablar de mi plan', 'I\'d like to talk about my plan')) + '&body=' + encodeURIComponent(pick('Hola, he visto mi plan y quiero ayuda con este paso: ', 'Hi, I\'ve seen my plan and I\'d like help with this step: ') + c.paso[L]) } }
   };
 };
 
@@ -233,12 +258,13 @@ function render() {
       <ol class="wsteps">${t('wsteps').map((x, i) => `<li><span class="wn">${i + 1}</span>${x}</li>`).join('')}</ol>
       <div class="spacer"></div>
       <button class="cta" data-a="begin">${t('wStart')}</button>
-      <details class="opts" ${S.opts ? 'open' : ''}><summary>${t('demo')}</summary>
-        <label for="caso">${t('family')}</label>
-        <select id="caso">${Object.entries(CASOS).map(([k, v]) => `<option value="${k}" ${k === S.caso ? 'selected' : ''}>${v}</option>`).join('')}</select>
-        ${cp ? '' : `<label for="persona">${t('who')}</label>
-        <input type="text" id="persona" maxlength="40" placeholder="${t('whoPh')}" value="${esc(S.persona)}">`}
-      </details>`;
+      ${(() => {
+        const sel = S.locked ? '' : `<label for="caso">${t('family')}</label>
+          <select id="caso">${Object.entries(CASOS).map(([k, v]) => `<option value="${k}" ${k === S.caso ? 'selected' : ''}>${v}</option>`).join('')}</select>`;
+        const who = cp ? '' : `<label for="persona">${t('who')}</label>
+          <input type="text" id="persona" maxlength="40" placeholder="${t('whoPh')}" value="${esc(S.persona)}">`;
+        return sel || who ? `<details class="opts" ${S.opts ? 'open' : ''}><summary>${t('demo')}</summary>${sel}${who}</details>` : '';
+      })()}`;
   } else if (S.screen === 0) {
     const cp = isCouple() ? COUPLES[S.caso] : null, n = hasPair() ? 2 : 1, tot = hasPair() ? 3 : 2;
     app.innerHTML = `${pre(n, tot)}
@@ -301,11 +327,12 @@ function render() {
         <input class="rng" type="range" id="r_${p.id}" data-id="${p.id}" min="${p.min}" max="${p.max}" step="${p.paso}" value="${S.vals[p.id] || 0}" style="--p:${pct(p, S.vals[p.id] || 0)}%"></div>`).join('')}
     </section>
     <p class="note">${esc(m.aviso)}</p>
-    <section class="panel next"><h3>${t('nextHead')}</h3><p class="nt">${esc(n.titulo)}</p>
-      <div class="chk">${n.pasos.map(p => `<label><input type="checkbox"> ${esc(p)}</label>`).join('')}</div>
-      <a class="cta sm" href="${esc(n.acciones.calendario_url)}" target="_blank" rel="noopener">${t('activate')}</a>
-      <button class="dl" data-a="pdf">${t('pdf')} ${I.dl}</button></section>
-    <div class="opt"><p>${t('optional')}</p><button class="cta sm alt" data-a="cita">${t('book')} ${I.mail}</button></div>`;
+    <section class="panel next"><h3>${t('nextHead')}</h3>
+      <ul class="bul">${n.pasos.map(p => `<li>${esc(p)}</li>`).join('')}</ul>
+      <a class="cta sm" href="${esc(abs(n.acciones.recordatorios_url || n.acciones.calendario_url))}" ${/^https?:\/\/calendar\./.test(n.acciones.recordatorios_url || '') ? 'target="_blank" rel="noopener"' : ''}>${t('activate')}</a>
+      ${reportUrl() ? `<a class="dl" href="${esc(reportUrl())}" download="sherpas-${S.caso}.pdf">${t('pdf')} ${I.dl}</a>` : ''}</section>
+    <div class="opt"><button class="cta sm alt" data-a="cita">${t('book')} ${I.mail}</button></div>
+    <a class="more" href="${esc(planUrl())}" target="_blank" rel="noopener">${t('more')}</a>`;
     updSim();
   }
 }
@@ -422,8 +449,7 @@ const act = {
   next: () => { if (S.screen === 2 && S.i < deck().length - 1) { S.i++; S.flip = false; S.dir = 'up'; render(); } },
   prev: () => { if (S.screen === 2 && S.i > 0) { S.i--; S.flip = false; S.dir = 'dn'; render(); } },
   sim: () => { S.screen = 3; render(); window.scrollTo(0, 0); },
-  cita: () => openCita(S.data.siguiente_paso.acciones.asesor_url),
-  pdf: () => window.print()
+  cita: () => openCita(S.data.siguiente_paso.acciones.asesor_url)
 };
 app.addEventListener('click', e => {
   if (S.swipe || e.target.closest('details') || e.target.closest('a')) return;
