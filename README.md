@@ -26,20 +26,6 @@ The AI writes the words and picks "what if?" levers from a closed list. It does 
  
 ---
  
-## Try it
- 
-Open one case per family (after running the app locally, see below):
- 
-| Family | English | Español |
-|---|---|---|
-| Michael Carter | [open](http://localhost:5173/?caso=michael-carter&lang=en) | [abrir](http://localhost:5173/?caso=michael-carter&lang=es) |
-| Samantha Lewis | [open](http://localhost:5173/?caso=samantha-lewis&lang=en) | [abrir](http://localhost:5173/?caso=samantha-lewis&lang=es) |
-| Timothy & Melanie Weah | [open](http://localhost:5173/?caso=timothy-melanie-weah&lang=en) | [abrir](http://localhost:5173/?caso=timothy-melanie-weah&lang=es) |
-| Daniel & Emily Johnson | [open](http://localhost:5173/?caso=daniel-emily-johnson&lang=en) | [abrir](http://localhost:5173/?caso=daniel-emily-johnson&lang=es) |
- 
-Tip: the Weahs are a couple, so they show the two-moods flow best.
- 
----
  
 ## Run the MVP locally
  
