@@ -53,6 +53,11 @@ LEVERS = {
 }
 DEFAULT_LEVERS = ["ahorro_mensual", "anos_extra_trabajando"]
 
+# Rango del slider segun la familia. Fraccion del ingreso mensual que como maximo ofrece cada palanca.
+CAPS = {"ahorro_mensual": 1.0, "pago_deuda_extra": 1.0, "gasto_menos": 0.5}
+# Ajustes manuales por caso (mandan sobre CAPS), p. ej. {"samantha-lewis": {"ahorro_mensual": 1500}}
+CASE_MAX: dict[str, dict[str, int]] = {}
+
 TEXTS = {
     "es": {
         "mood": {1: "muy agobiado", 2: "preocupado", 3: "neutral", 4: "seguro", 5: "muy confiado"},
@@ -112,6 +117,19 @@ TEXTS = {
     },
 }
 
-def build_levers(ids, language):
+def build_levers(ids, language, free_month=None, case_id=None):
+    """Palancas del simulador. Si se conoce el dinero libre al mes (o hay ajuste manual), el maximo se adapta a la familia."""
     labels = TEXTS[language]["levers"]
-    return [{"id": i, **LEVERS[i], "etiqueta": labels[i][0], "unidad": labels[i][1]} for i in ids]
+    out = []
+    for i in ids:
+        lv = dict(LEVERS[i])
+        base_max, step = lv["max"], lv["paso"]
+        manual = CASE_MAX.get(case_id or "", {}).get(i)
+        if manual:
+            lv["max"] = int(manual)
+        elif free_month and free_month > 0 and i in CAPS:
+            lv["max"] = max(step * 2, int(free_month * CAPS[i] // step * step))
+        if lv["max"] != base_max:  # el recorrido completo del slider sigue valiendo los mismos puntos
+            lv["puntos_por_unidad"] = round(lv["puntos_por_unidad"] * base_max / lv["max"], 5)
+        out.append({"id": i, **lv, "etiqueta": labels[i][0], "unidad": labels[i][1]})
+    return out

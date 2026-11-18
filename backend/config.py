@@ -17,6 +17,7 @@ LLM_MODEL = os.getenv("LLM_MODEL", "gpt-5-mini")
 ADVISOR_EMAIL = os.getenv("ASESOR_EMAIL", "asesor@example.com")
 ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "")
 APP_URL = os.getenv("APP_URL", "")  # enlace a la app que llevan los recordatorios
+API_URL = os.getenv("API_URL", "").rstrip("/")
 PLAN_MODE = os.getenv("PLAN_MODE", "full")  # "full" = informes completos, "lean" = solo secciones clave
 CACHE_DIR = Path(os.getenv("CACHE_DIR", "cache"))
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
