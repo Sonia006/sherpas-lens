@@ -1,0 +1,204 @@
+{
+  "case_id": "timothy-melanie-weah",
+  "animo": 5,
+  "tono": "very confident",
+  "tiempo": "corto",
+  "idioma": "en",
+  "num_tarjetas": 5,
+  "frase_inicial": "Timothy and Melanie: your spare cash, a high-rate card and thin life cover are deciding how safe your family will be.",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "Big cash cushion is already working for you",
+      "reverso": "You have a healthy bank buffer that would pay the bills if something short-term goes wrong. That same cash gives you choices about debt, protection and the kids' education without touching retirement savings.",
+      "detalle": "Accessible cash: $150,800 today (held by Melanie).",
+      "meta_id": null
+    },
+    {
+      "id": "t2",
+      "frente": "The high-interest card is the thing dragging your score",
+      "reverso": "Carrying that card at a high rate costs you every month and keeps the plan capped until fixed. Using part of your cushion to cut it changes your position quickly and reduces wasted interest.",
+      "detalle": "Current balance: $18,000 at 18% (Chase CC).",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "Life insurance for both of you is the other limiter",
+      "reverso": "Neither Timothy nor Melanie has enough life cover for two young kids to keep things running if an earner were lost. Adding cover protects Liam and Josh and lifts the plan once the card is handled.",
+      "detalle": "Add $235,000 of life cover to reach $485,000 total; after card paydown total needed becomes $491,800.",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "No umbrella policy puts a lot of savings at risk",
+      "reverso": "Home and car insurance exist, but a big liability claim would tap your liquid savings. An umbrella policy shields the money you’re holding for the kids and big goals.",
+      "detalle": "Recommended umbrella: $1,000,000 gap; no current umbrella policy.",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "College saving is unfunded and competes with protection",
+      "reverso": "Nothing is in the kids' college accounts yet, so extra yearly saving is needed. That money competes with paying the card and buying life cover, so pick an order that fits what matters most to both of you.",
+      "detalle": "Total college gap: $113,508.60; extra yearly saving needed first year: $4,609.22.",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 60,
+    "pilares": [
+      {
+        "pillar": "Savings and cash flow",
+        "score": 86,
+        "points_shown_in_app": "26/30"
+      },
+      {
+        "pillar": "Debt",
+        "score": 58,
+        "points_shown_in_app": "12/20"
+      },
+      {
+        "pillar": "Investments",
+        "score": 56,
+        "points_shown_in_app": "8/15"
+      },
+      {
+        "pillar": "Liquidity and emergency fund",
+        "score": 100,
+        "points_shown_in_app": "15/15"
+      },
+      {
+        "pillar": "Insurance and protection",
+        "score": 37,
+        "points_shown_in_app": "7/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Pay down revolving card",
+        "action": "Pay $6,800 on the 18% card from cash to remove high revolving exposure and clear the gate",
+        "effort": "medium",
+        "target_amount": 11200,
+        "score_before": 60,
+        "score_after": 62,
+        "lifts_a_cap": true
+      },
+      {
+        "title": "Add life cover",
+        "action": "Add $235,000 of life cover to raise the mortality ratio and clear the gate",
+        "effort": "low",
+        "target_amount": 485000,
+        "score_before": 60,
+        "score_after": 60,
+        "lifts_a_cap": true
+      },
+      {
+        "title": "Add umbrella cover",
+        "action": "Add $1M of umbrella to raise the liability shield",
+        "effort": "low",
+        "target_amount": 1000000,
+        "score_before": 60,
+        "score_after": 60,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [
+      {
+        "moves": [
+          "Pay down revolving card",
+          "Add life cover",
+          "Add umbrella cover"
+        ],
+        "score_after": 78,
+        "note": "After the card paydown, life cover must reach $491,800 to keep the mortality ratio at the gate line."
+      },
+      {
+        "moves": [
+          "Pay down revolving card",
+          "Add life cover"
+        ],
+        "score_after": 73,
+        "note": "After the card paydown, life cover must reach $491,800 to keep the mortality ratio at the gate line."
+      },
+      {
+        "moves": [
+          "Pay down revolving card",
+          "Add umbrella cover"
+        ],
+        "score_after": 62,
+        "note": "Together they raise the published score more than either move alone."
+      },
+      {
+        "moves": [
+          "Add life cover",
+          "Add umbrella cover"
+        ],
+        "score_after": 60,
+        "note": "Together they raise the published score more than either move alone."
+      }
+    ],
+    "limites": [
+      {
+        "reason": "High revolving balance with high APR",
+        "score_capped_at": 60
+      },
+      {
+        "reason": "Mortality coverage ratio below threshold with dependents",
+        "score_capped_at": 62
+      }
+    ],
+    "hitos": [
+      {
+        "id": "vacation_2027",
+        "anio": 2027,
+        "titulo": "Vacation"
+      },
+      {
+        "id": "vehicle_2028",
+        "anio": 2028,
+        "titulo": "New car"
+      },
+      {
+        "id": "home_2030",
+        "anio": 2030,
+        "titulo": "New home"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Extra monthly debt payment",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
+      },
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Extra monthly savings",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Illustrative simulator: it shows the direction of change, not a Sherpas projection."
+  },
+  "siguiente_paso": {
+    "titulo": "Pay down card",
+    "razon": "Clearing the high-rate card is the quickest move that the plan models to unclog your published score and stop interest draining your cash cushion.",
+    "minutos": 30,
+    "pasos": [
+      "Check the current Chase statement to confirm the exact balance and any recent charges",
+      "Move to your bank app and schedule a one-off payment from the cash account to cover part of the card (covering the recommended amount from the plan)",
+      "Keep the emergency reserve untouched and confirm the new card balance and monthly payment after the transfer"
+    ],
+    "acciones": {
+      "recordatorios_url": "/recordatorios/timothy-melanie-weah.ics?idioma=en",
+      "asesor_url": "mailto:asesor@example.com?subject=I%27d%20like%20to%20talk%20about%20my%20plan&body=Hi%2C%20I%27ve%20seen%20my%20plan%20and%20I%27d%20like%20help%20with%20this%20step%3A%20Pay%20down%20card"
+    }
+  },
+  "fallback": false
+}

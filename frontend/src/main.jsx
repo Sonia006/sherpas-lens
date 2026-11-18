@@ -1,6 +1,8 @@
 import './index.css';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// Los enlaces que devuelve el backend pueden ser relativos (/recordatorios/...): se completan con la URL del backend
+const abs = u => (u && u.startsWith('/') ? API.replace(/\/$/, '') + u : u);
 // MODO MOCK: true = datos de prueba, NO llama al backend ni gasta tokens. Pon false para usar la IA real.
 const MOCK = false;
 // Voz de la IA con ElevenLabs a través del backend (/tts). Si falla o no está configurado, usa la voz del navegador.
@@ -22,6 +24,12 @@ const saved = (() => { try { return localStorage.getItem('lang'); } catch { retu
 // (antes) 0 inicio · 1 cargando · 2 flashcards · 3 plan interactivo · -1 error
 // m[i]: ánimo de cada persona (1 = muy agobiado ... 5 = muy confiado). Posición del selector = m - 1.
 const S = { lang: ['es', 'en'].includes(saved) ? saved : DEFAULT_LANG, screen: -2, caso: 'michael-carter', persona: '', mode: null, who: null, m: [3, 3], tiempo: 'corto', data: null, i: 0, flip: false, dir: '', vals: {}, msgs: [], voz: false, wait: false, err: '', opts: false };
+// Enlaces personalizados para el jurado: /?caso=michael-carter&lang=es  (S.locked oculta el selector de familia)
+(() => {
+  const qs = new URLSearchParams(location.search), c = qs.get('caso'), l = qs.get('lang');
+  if (c && CASOS[c]) { S.caso = c; S.locked = true; }
+  if (l && ['es', 'en'].includes(l)) S.lang = l;
+})();
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const app = $('#app');
@@ -173,7 +181,7 @@ const mockResult = () => {
     },
     siguiente_paso: { titulo: c.paso[L], razon: pick('Es lo que más acerca tu meta con el menor esfuerzo hoy.', 'It brings your goal closest with the least effort today.'), minutos: 15,
       pasos: [pick('Abre la app de tu banco', 'Open your bank app'), pick('Programa una transferencia mensual', 'Schedule a monthly transfer')],
-      acciones: { calendario_url: 'https://calendar.google.com', asesor_url: 'mailto:asesor@example.com?subject=' + encodeURIComponent(pick('Quiero hablar de mi plan', 'I\'d like to talk about my plan')) + '&body=' + encodeURIComponent(pick('Hola, he visto mi plan y quiero ayuda con este paso: ', 'Hi, I\'ve seen my plan and I\'d like help with this step: ') + c.paso[L]) } }
+      acciones: { recordatorios_url: 'https://calendar.google.com', asesor_url: 'mailto:asesor@example.com?subject=' + encodeURIComponent(pick('Quiero hablar de mi plan', 'I\'d like to talk about my plan')) + '&body=' + encodeURIComponent(pick('Hola, he visto mi plan y quiero ayuda con este paso: ', 'Hi, I\'ve seen my plan and I\'d like help with this step: ') + c.paso[L]) } }
   };
 };
 
@@ -233,12 +241,13 @@ function render() {
       <ol class="wsteps">${t('wsteps').map((x, i) => `<li><span class="wn">${i + 1}</span>${x}</li>`).join('')}</ol>
       <div class="spacer"></div>
       <button class="cta" data-a="begin">${t('wStart')}</button>
-      <details class="opts" ${S.opts ? 'open' : ''}><summary>${t('demo')}</summary>
-        <label for="caso">${t('family')}</label>
-        <select id="caso">${Object.entries(CASOS).map(([k, v]) => `<option value="${k}" ${k === S.caso ? 'selected' : ''}>${v}</option>`).join('')}</select>
-        ${cp ? '' : `<label for="persona">${t('who')}</label>
-        <input type="text" id="persona" maxlength="40" placeholder="${t('whoPh')}" value="${esc(S.persona)}">`}
-      </details>`;
+      ${(() => {
+        const sel = S.locked ? '' : `<label for="caso">${t('family')}</label>
+          <select id="caso">${Object.entries(CASOS).map(([k, v]) => `<option value="${k}" ${k === S.caso ? 'selected' : ''}>${v}</option>`).join('')}</select>`;
+        const who = cp ? '' : `<label for="persona">${t('who')}</label>
+          <input type="text" id="persona" maxlength="40" placeholder="${t('whoPh')}" value="${esc(S.persona)}">`;
+        return sel || who ? `<details class="opts" ${S.opts ? 'open' : ''}><summary>${t('demo')}</summary>${sel}${who}</details>` : '';
+      })()}`;
   } else if (S.screen === 0) {
     const cp = isCouple() ? COUPLES[S.caso] : null, n = hasPair() ? 2 : 1, tot = hasPair() ? 3 : 2;
     app.innerHTML = `${pre(n, tot)}
@@ -303,7 +312,7 @@ function render() {
     <p class="note">${esc(m.aviso)}</p>
     <section class="panel next"><h3>${t('nextHead')}</h3><p class="nt">${esc(n.titulo)}</p>
       <div class="chk">${n.pasos.map(p => `<label><input type="checkbox"> ${esc(p)}</label>`).join('')}</div>
-      <a class="cta sm" href="${esc(n.acciones.calendario_url)}" target="_blank" rel="noopener">${t('activate')}</a>
+      <a class="cta sm" href="${esc(abs(n.acciones.recordatorios_url || n.acciones.calendario_url))}" ${/^https?:\/\/calendar\./.test(n.acciones.recordatorios_url || '') ? 'target="_blank" rel="noopener"' : ''}>${t('activate')}</a>
       <button class="dl" data-a="pdf">${t('pdf')} ${I.dl}</button></section>
     <div class="opt"><p>${t('optional')}</p><button class="cta sm alt" data-a="cita">${t('book')} ${I.mail}</button></div>`;
     updSim();

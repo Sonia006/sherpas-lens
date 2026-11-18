@@ -1,0 +1,161 @@
+{
+  "case_id": "michael-carter",
+  "animo": 3,
+  "tono": "neutral",
+  "tiempo": "corto",
+  "idioma": "en",
+  "num_tarjetas": 5,
+  "frase_inicial": "Michael: your January 2027 home purchase, retirement at 58 and the cash to cover both need to fit in the same plan",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "January 2027 home purchase is the near-term squeeze",
+      "reverso": "If you set money aside for the house and the yearly vacation from the cash you now hold, you would have no months of cushion left. That raises the chance a shock forces you to sell investments or borrow.",
+      "detalle": "Down payment to hold for purchase in Jan 2027: $113,300 (Michael). Vacation next payment Jan 2027: $3,500 (Michael).",
+      "meta_id": "casa_2027"
+    },
+    {
+      "id": "t2",
+      "frente": "Retiring at 58 leaves a gap in later spending",
+      "reverso": "Your current plan shows savings and investments running out before the plan ends, so some planned spending after retirement would go unpaid unless you change how much you save, work longer or spend less in retirement.",
+      "detalle": "Savings run out at age 85; planned unpaid spending at end of plan: $32,439 (Michael).",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "Cash cushion is thinner than it should be",
+      "reverso": "You have about three months of essential expenses saved today. That is shorter than the 5–6 months recommended, so a job interruption or big bill would likely hit your cards or investments.",
+      "detalle": "Accessible cash today: $30,000 (Michael); recommended emergency reserve min: $46,530 (Michael).",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "Life and liability protection leave the household exposed",
+      "reverso": "Your life insurance and lack of extra liability cover mean your income and savings could be at risk for big bills or if your income stopped. Confirming auto cover on the BMW matters too.",
+      "detalle": "Life insurance: $180,000; recommended minimum: $900,000. No umbrella policy recorded (recommended $1,000,000).",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "Credit card interest is your most expensive debt",
+      "reverso": "That high-rate card is small but costly. Paying it down faster reduces interest drain, but it competes with building the cash you need for the house and retirement saving.",
+      "detalle": "Amex balance $3,500 at 20% APR; current monthly payment $200 (Michael).",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 26,
+    "pilares": [
+      {
+        "pillar": "Savings and cash flow",
+        "score": 0,
+        "points_shown_in_app": "0/25"
+      },
+      {
+        "pillar": "Debt",
+        "score": 78,
+        "points_shown_in_app": "8/10"
+      },
+      {
+        "pillar": "Investments",
+        "score": 42,
+        "points_shown_in_app": "11/25"
+      },
+      {
+        "pillar": "Liquidity and emergency fund",
+        "score": 22,
+        "points_shown_in_app": "4/20"
+      },
+      {
+        "pillar": "Insurance and protection",
+        "score": 18,
+        "points_shown_in_app": "4/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Add umbrella cover",
+        "action": "Add $1M of umbrella to raise the liability shield",
+        "effort": "low",
+        "target_amount": 1000000,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Lower the withdrawal rate",
+        "action": "Cutting withdrawals to $10,300/year (6.0%) reaches the sustainable band",
+        "effort": "high",
+        "target_amount": 10300,
+        "score_before": 26,
+        "score_after": 62,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Raise growth allocation toward glide",
+        "action": "Move the invested mix from 74% to 88% growth (glide 98%) for the next horizon-fit band — about $19,900 of the invested book",
+        "effort": "high",
+        "target_amount": 19900,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [],
+    "limites": [],
+    "hitos": [
+      {
+        "id": "casa_2027",
+        "anio": 2027,
+        "titulo": "Buy home"
+      },
+      {
+        "id": "vacation_2027",
+        "anio": 2027,
+        "titulo": "Vacation"
+      },
+      {
+        "id": "retire_2047",
+        "anio": 2047,
+        "titulo": "Retire"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Extra monthly savings",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      },
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Extra monthly debt payment",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Illustrative simulator: it shows the direction of change, not a Sherpas projection."
+  },
+  "siguiente_paso": {
+    "titulo": "Add umbrella",
+    "razon": "Adding extra liability cover is the quickest way in the plan to raise your protection score and guard your liquid savings and future home from a large claim. It does not solve the cash or retirement gaps, but it stops one big risk from wiping out what you have.",
+    "minutos": 30,
+    "pasos": [
+      "Check current auto insurance for the BMW to confirm whether liability limits are already higher than shown",
+      "Get quotes for an extra liability policy to cover at least the recommended minimum",
+      "Decide whether a monthly premium fits your budget and, if yes, contact the insurer to add the policy"
+    ],
+    "acciones": {
+      "recordatorios_url": "/recordatorios/michael-carter.ics?idioma=en",
+      "asesor_url": "mailto:asesor@example.com?subject=I%27d%20like%20to%20talk%20about%20my%20plan&body=Hi%2C%20I%27ve%20seen%20my%20plan%20and%20I%27d%20like%20help%20with%20this%20step%3A%20Add%20umbrella"
+    }
+  },
+  "fallback": false
+}
