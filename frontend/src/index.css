@@ -478,3 +478,19 @@ html[data-theme=dark] .sw{background:#46525d}html[data-theme=dark] .sw[aria-chec
 html[data-theme=dark] #lang button[aria-pressed=true]{background:var(--teal);color:#fff}
 html[data-theme=dark] .pdots i{background:#3b4854}html[data-theme=dark] .pdots i.cur,html[data-theme=dark] .pdots i.done{background:var(--teal)}
 html[data-theme=dark] .face.back .side,html[data-theme=dark] .face.back{color:#fff}
+
+
+/* ═════ v7: volver fijo + pantalla "¿juntos o solo?" ═════ */
+/* Flecha de volver: misma altura y mismo tamaño que el botón de las tres rayitas, una a cada lado */
+#back{position:fixed;top:8px;left:max(12px,calc(50% - 208px));width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:var(--card);color:var(--ink);box-shadow:0 2px 8px #0002;z-index:7;display:grid;place-items:center;padding:0}
+#back[hidden]{display:none}
+body.chat-open #back{display:none}
+html[data-theme=dark] #back{box-shadow:0 2px 8px #0008}
+@media print{#back{display:none!important}}
+/* la fila de puntos de progreso queda centrada con los dos botones (8px + 22px = 30px) */
+.pre{height:60px}
+/* pantalla ¿juntos o solo? */
+.rit.sm{padding:14px 20px;margin-bottom:10px}
+.rit.sm svg{width:26px;height:26px}
+.lab2{margin:6px 6px 12px;text-align:center;color:var(--mut);font-weight:700;font-size:1.05rem}
+.cta:disabled{opacity:.45;box-shadow:none;cursor:not-allowed}

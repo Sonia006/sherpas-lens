@@ -21,11 +21,15 @@ const saved = (() => { try { return localStorage.getItem('lang'); } catch { retu
 // screen: -2 bienvenida · 0 ánimo · 4 ritmo · 1 cargando ...
 // (antes) 0 inicio · 1 cargando · 2 flashcards · 3 plan interactivo · -1 error
 // m[i]: ánimo de cada persona (1 = muy agobiado ... 5 = muy confiado). Posición del selector = m - 1.
-const S = { lang: ['es', 'en'].includes(saved) ? saved : DEFAULT_LANG, screen: -2, caso: 'michael-carter', persona: '', m: [3, 3], tiempo: 'corto', data: null, i: 0, flip: false, dir: '', vals: {}, msgs: [], voz: false, wait: false, err: '', opts: false };
+const S = { lang: ['es', 'en'].includes(saved) ? saved : DEFAULT_LANG, screen: -2, caso: 'michael-carter', persona: '', mode: null, who: null, m: [3, 3], tiempo: 'corto', data: null, i: 0, flip: false, dir: '', vals: {}, msgs: [], voz: false, wait: false, err: '', opts: false };
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const app = $('#app');
-const isCouple = () => !!COUPLES[S.caso];
+const hasPair = () => !!COUPLES[S.caso];                                   // el enlace es de una pareja
+const isCouple = () => hasPair() && S.mode === 'together';                 // pareja que lo hace junta (dos selectores)
+const soloName = () => hasPair() && S.mode === 'solo' && S.who != null ? COUPLES[S.caso][S.who] : '';   // quien lo hace solo, dentro de una pareja
+const persona = () => soloName() || (hasPair() ? null : S.persona.trim() || null);
+const resetMood = () => { S.m = [3, 3]; S.touched = false; };
 const eff = () => isCouple() ? Math.min(S.m[0], S.m[1]) : S.m[0];   // el tono se adapta a quien se siente peor
 const pick = (es, en) => S.lang === 'en' ? en : es;
 
@@ -37,7 +41,7 @@ const T = {
     introCouple: 'Cada uno, decid cómo os sentís hoy con vuestras finanzas. Buscaremos un primer paso bueno para los dos:',
     moods: ['Preocupado', 'Tranquilo', 'Confiado'], moodAria: 'Cómo te sientes hoy', pos: i => `Posición ${i} de 5`,
     pace: 'Elige tu ritmo:', paceAria: 'Ritmo', direct: 'Recorrido directo y sencillo', full: 'Todo el plan completo',
-    start: 'Comenzar recorrido ➔', tag: 'fácil y rápido', demo: 'Opciones de la demo', family: 'Familia',
+    start: 'Comenzar recorrido ➔', demo: 'Opciones de la demo', family: 'Familia',
     who: '¿Quién eres? (opcional)', whoPh: 'Por ejemplo, Melanie',
     loading: 'Preparando tu recorrido', reading: 'Estamos leyendo tu plan.',
     errTitle: 'No hemos podido cargar tu plan', errBody: a => `Comprueba que el backend está encendido en ${a} y vuelve a intentarlo.`,
@@ -63,8 +67,9 @@ const T = {
     date: 'Día', time: 'Hora', gcal: 'Añadir a Google Calendar', ics: 'Descargar para Apple / Outlook (.ics)', mailBtn: 'Enviar correo al asesor',
     copyMail: 'Copiar correo', copied: 'Correo copiado ✓', pickDate: 'Elige un día primero.', mailHint: 'Si no se abre tu correo, copia la dirección del asesor y escríbele desde tu app de correo.',
     pref: 'Me vendría bien:', langAria: 'Idioma', menuAria: 'Menú', menuLang: 'Idioma', menuAsk: 'Asistente IA', menuDark: 'Modo oscuro', speech: 'es-ES', scrub: 'Desliza sobre la gráfica para ver cada año',
-    ctxCouple: (a, la, b, lb, st) => `Somos pareja: ${a} se siente ${la} y ${b} se siente ${lb}. Queremos ver juntos un primer paso común (${st}).`, ctxSingle: l => `Hoy me siento ${l}.`,
-    welcomeLead: 'Entiende tu plan financiero, paso a paso y sin prisa.', wsteps: ['Cuéntanos cómo te sientes', 'Descubre tu diagnóstico en tarjetas', 'Prueba cambios sobre tu plan'], paceQ: 'Elige tu ritmo', stepQ: n => `Pregunta ${n} de 2`,
+    ctxCouple: (a, la, b, lb, st) => `Somos pareja: ${a} se siente ${la} y ${b} se siente ${lb}. Queremos ver juntos un primer paso común (${st}).`, ctxSingle: l => `Hoy me siento ${l}.`, ctxWho: n => `Soy ${n}, de una pareja, y lo hago por mi cuenta.`,
+    welcomeLead: 'Entiende tu plan financiero, paso a paso y sin prisa.', wsteps: ['Cuéntanos cómo te sientes', 'Descubre tu diagnóstico en tarjetas', 'Prueba cambios sobre tu plan'], paceQ: 'Elige tu ritmo', stepQ: (n, tot) => `Pregunta ${n} de ${tot}`,
+    modeQ: '¿Lo hacéis juntos o solo uno de vosotros?', modeAria: 'Cómo lo vais a hacer', modeBoth: 'Los dos juntos', modeSolo: 'Solo yo', whoAreYou: '¿Quién eres?',
     loadMsgs: ['Estamos leyendo tu plan.', 'Buscando lo más importante para ti…', 'Ordenando tus metas y tus riesgos.', 'Poniéndolo en palabras sencillas.', 'Preparando tus tarjetas una a una.', 'Ya casi está, gracias por tu paciencia.']
   },
   en: {
@@ -73,7 +78,7 @@ const T = {
     introCouple: 'Each of you, tell us how you feel about your finances today. We\'ll find a first step that works for both:',
     moods: ['Worried', 'Calm', 'Confident'], moodAria: 'How you feel today', pos: i => `Position ${i} of 5`,
     pace: 'Choose your pace:', paceAria: 'Pace', direct: 'Quick and simple journey', full: 'The complete plan',
-    start: 'Start the journey ➔', tag: 'quick and easy', demo: 'Demo options', family: 'Family',
+    start: 'Start the journey ➔', demo: 'Demo options', family: 'Family',
     who: 'Who are you? (optional)', whoPh: 'For example, Melanie',
     loading: 'Preparing your journey', reading: 'We are reading your plan.',
     errTitle: 'We couldn\'t load your plan', errBody: a => `Check that the backend is running at ${a} and try again.`,
@@ -99,8 +104,9 @@ const T = {
     date: 'Day', time: 'Time', gcal: 'Add to Google Calendar', ics: 'Download for Apple / Outlook (.ics)', mailBtn: 'Email the advisor',
     copyMail: 'Copy email', copied: 'Email copied ✓', pickDate: 'Pick a day first.', mailHint: 'If your email app doesn\'t open, copy the advisor\'s address and write from your email app.',
     pref: 'My preferred time:', langAria: 'Language', menuAria: 'Menu', menuLang: 'Language', menuAsk: 'AI assistant', menuDark: 'Dark mode', speech: 'en-US', scrub: 'Slide across the chart to see each year',
-    ctxCouple: (a, la, b, lb, st) => `We are a couple: ${a} feels ${la} and ${b} feels ${lb}. We'd like to look at a common first step together (${st}).`, ctxSingle: l => `Today I feel ${l}.`,
-    welcomeLead: 'Understand your financial plan, one step at a time and with no rush.', wsteps: ['Tell us how you feel', 'Discover your diagnosis in cards', 'Try changes on your plan'], paceQ: 'Choose your pace', stepQ: n => `Question ${n} of 2`,
+    ctxCouple: (a, la, b, lb, st) => `We are a couple: ${a} feels ${la} and ${b} feels ${lb}. We'd like to look at a common first step together (${st}).`, ctxSingle: l => `Today I feel ${l}.`, ctxWho: n => `I'm ${n}, part of a couple, doing this on my own.`,
+    welcomeLead: 'Understand your financial plan, one step at a time and with no rush.', wsteps: ['Tell us how you feel', 'Discover your diagnosis in cards', 'Try changes on your plan'], paceQ: 'Choose your pace', stepQ: (n, tot) => `Question ${n} of ${tot}`,
+    modeQ: 'Are you doing this together, or just one of you?', modeAria: 'How you are doing it', modeBoth: 'Both of us together', modeSolo: 'Just me', whoAreYou: 'Who are you?',
     loadMsgs: ['We are reading your plan.', 'Looking for what matters most to you…', 'Sorting your goals and your risks.', 'Putting it into plain words.', 'Preparing your cards one by one.', 'Almost there, thanks for your patience.']
   }
 };
@@ -113,6 +119,8 @@ const I = {
   up: svg('<path d="M6 15l6-6 6 6"/>', 30), dn: svg('<path d="M6 9l6 6 6-6"/>', 30),
   bolt: svg('<path d="M13 3L5 14h6l-1 7 8-11h-6z" fill="currentColor"/>', 32),
   lines: svg('<path d="M5 7h14M8 12h11M5 17h14"/>', 32),
+  user: svg('<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4.5-6 8-6s7 1.5 8 6"/>', 32),
+  users: svg('<circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.8"/><path d="M2.5 20c.8-4 3.5-5.5 6.5-5.5s5.7 1.5 6.5 5.5M16 14.5c2.6 0 4.8 1.2 5.5 4.5"/>', 32),
   hand: svg('<path d="M9 11V5a1.5 1.5 0 0 1 3 0v5m0-1a1.5 1.5 0 0 1 3 0v2m0-1a1.5 1.5 0 0 1 3 0v4a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-3l-2-4a1.5 1.5 0 0 1 2.5-1.5L9 15"/>', 22),
   mail: svg('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>', 16),
   dl: svg('<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>', 16),
@@ -170,10 +178,10 @@ const mockResult = () => {
 };
 
 // ───── Pantallas
-const pre = n => `<div class="pre"><button class="bk" data-a="back" aria-label="${t('back')}">${I.back}</button><div class="pdots" role="img" aria-label="${t('stepQ', n)}"><i class="${n === 1 ? 'cur' : 'done'}"></i><i class="${n === 2 ? 'cur' : ''}"></i></div></div>`;
+// La flecha de volver ya no va dentro de cada pantalla: es el botón fijo #back (mismo eje que el menú de las tres rayitas)
+const pre = (n, tot = 2) => `<div class="pre"><div class="pdots" role="img" aria-label="${t('stepQ', n, tot)}">${Array.from({ length: tot }, (_, k) => `<i class="${k + 1 === n ? 'cur' : k + 1 < n ? 'done' : ''}"></i>`).join('')}</div></div>`;
 const arrow = d => svg(`<path d="${d}"/>`, 22);
-const topbar = () => `<div class="tb"><button class="bk" data-a="back" aria-label="${t('back')}">${I.back}</button></div>`;
-const head = (n, title, round) => `<header class="hd ${round ? 'round' : ''}"><button class="bk" data-a="back" aria-label="${t('back')}">${I.back}</button><h1 class="brand">SHERPAS</h1><p class="sub">${t('stepOf', n, title)}</p>
+const head = (n, title, round) => `<header class="hd ${round ? 'round' : ''}"><h1 class="brand">SHERPAS</h1><p class="sub">${t('stepOf', n, title)}</p>
   <div class="steps">${[1, 2, 3].map(k => `<i class="${k === n ? 'cur' : k < n ? 'done' : ''}"></i>`).join('<b></b>')}</div></header>`;
 const deck = () => {
   const d = S.data, n = d.siguiente_paso;
@@ -208,13 +216,14 @@ function startLoadMsgs() {
 
 function render() {
   const d = S.data;
-  const ORD = { '-2': 0, 0: 1, 4: 2, 1: 3, '-1': 3, 2: 4, 3: 5 };
+  const ORD = { '-2': 0, 5: 1, 0: 2, 4: 3, 1: 4, '-1': 4, 2: 5, 3: 6 };
   if (S.screen !== S.shown) {   // cambio de pantalla: entra con fundido y deslizamiento (adelante o atrás)
     const fwd = (ORD[S.screen] ?? 0) >= (ORD[S.shown] ?? 0);
     app.classList.remove('go-f', 'go-b'); void app.offsetWidth; app.classList.add(fwd ? 'go-f' : 'go-b');
     clearTimeout(S.goT); S.goT = setTimeout(() => app.classList.remove('go-f', 'go-b'), 700); S.shown = S.screen;
   }
-  const fit = [-2, 0, 4, 2].includes(S.screen);
+  const fit = [-2, 5, 0, 4, 2].includes(S.screen);
+  $('#back').hidden = ![5, 0, 4, 2, 3].includes(S.screen);
   app.classList.toggle('fit', fit); app.classList.toggle('s2', S.screen === 2);
   if (S.screen !== 1) stopLoadMsgs();
   if (S.screen === -2) {
@@ -231,23 +240,34 @@ function render() {
         <input type="text" id="persona" maxlength="40" placeholder="${t('whoPh')}" value="${esc(S.persona)}">`}
       </details>`;
   } else if (S.screen === 0) {
-    const cp = COUPLES[S.caso];
-    app.innerHTML = `${pre(1)}
+    const cp = isCouple() ? COUPLES[S.caso] : null, n = hasPair() ? 2 : 1, tot = hasPair() ? 3 : 2;
+    app.innerHTML = `${pre(n, tot)}
       <p class="intro ${cp ? 'cpl' : ''}">${cp ? t('introCouple') : t('intro')}</p>
-      <div class="${cp ? 'couple' : ''}">${cp ? cp.map((n, i) => moodBlock(i, n)).join('') : moodBlock(0, '')}</div>
+      <div class="${cp ? 'couple' : ''}">${cp ? cp.map((x, i) => moodBlock(i, x)).join('') : moodBlock(0, soloName())}</div>
       <p class="shint ${S.touched ? 'touched' : ''}"><span class="l">${arrow('M15 6l-6 6 6 6')}</span>${t('slide')}<span class="r">${arrow('M9 6l6 6-6 6')}</span></p>
       <div class="spacer"></div>
       <button class="cta" data-a="toPace">${t('next')}</button>`;
+  } else if (S.screen === 5) {   // solo en enlaces de pareja: ¿los dos juntos o solo uno? y, si es uno, ¿quién?
+    const nm = COUPLES[S.caso] || [], ok = S.mode === 'together' || (S.mode === 'solo' && S.who != null);
+    app.innerHTML = `${pre(1, 3)}
+      <p class="intro">${t('modeQ')}</p>
+      <div role="radiogroup" aria-label="${t('modeAria')}">
+        <button class="rit ${S.mode === 'together' ? 'on' : ''}" role="radio" aria-checked="${S.mode === 'together'}" data-a="mode" data-v="together"><span class="rd"></span>${t('modeBoth')} ${I.users}</button>
+        <button class="rit ${S.mode === 'solo' ? 'on' : ''}" role="radio" aria-checked="${S.mode === 'solo'}" data-a="mode" data-v="solo"><span class="rd"></span>${t('modeSolo')} ${I.user}</button>
+      </div>
+      ${S.mode === 'solo' ? `<p class="lab2">${t('whoAreYou')}</p>
+      <div role="radiogroup" aria-label="${t('whoAreYou')}">${nm.map((x, i) => `<button class="rit sm ${S.who === i ? 'on' : ''}" role="radio" aria-checked="${S.who === i}" data-a="who" data-v="${i}"><span class="rd"></span>${esc(x)} ${I.user}</button>`).join('')}</div>` : ''}
+      <div class="spacer"></div>
+      <button class="cta" data-a="toMood" ${ok ? '' : 'disabled'}>${t('next')}</button>`;
   } else if (S.screen === 4) {
-    app.innerHTML = `${pre(2)}
+    app.innerHTML = `${pre(hasPair() ? 3 : 2, hasPair() ? 3 : 2)}
       <p class="intro">${t('paceQ')}</p>
       <div role="radiogroup" aria-label="${t('paceAria')}">
         <button class="rit ${S.tiempo === 'corto' ? 'on' : ''}" role="radio" aria-checked="${S.tiempo === 'corto'}" data-a="tiempo" data-v="corto"><span class="rd"></span>${t('direct')} ${I.bolt}</button>
         <button class="rit ${S.tiempo === 'completo' ? 'on' : ''}" role="radio" aria-checked="${S.tiempo === 'completo'}" data-a="tiempo" data-v="completo"><span class="rd"></span>${t('full')} ${I.lines}</button>
       </div>
       <div class="spacer"></div>
-      <button class="cta" data-a="go">${t('start')}</button>
-      <p class="tag">${t('tag')}</p>`;
+      <button class="cta" data-a="go">${t('start')}</button>`;
   } else if (S.screen === 1) {
     app.innerHTML = `<div class="center"><div class="spin"></div><h2>${t('loading')}</h2><p class="lead" id="lmsg" aria-live="polite">${t('loadMsgs')[0]}</p></div>`;
     startLoadMsgs();
@@ -365,7 +385,7 @@ async function load(keep) {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           case_id: S.caso, animo: S.m[0], animo_pareja: couple ? S.m[1] : null, nombres: couple ? COUPLES[S.caso] : null,
-          tiempo: S.tiempo, persona: couple ? null : (S.persona.trim() || null), idioma: lang
+          tiempo: S.tiempo, persona: persona(), idioma: lang
         })
       });
       if (!r.ok) throw new Error('El backend respondió ' + r.status + ' ' + (await r.text()).slice(0, 200));
@@ -391,10 +411,13 @@ function setMoodPos(block, v) {
 const act = {
   mood: b => setMoodPos(b.closest('.mood'), +b.dataset.v),
   tiempo: b => { S.tiempo = b.dataset.v; document.querySelectorAll('.rit').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-checked', x === b); }); },
-  begin: () => { S.screen = 0; render(); },
+  begin: () => { S.screen = hasPair() ? 5 : 0; render(); },
+  mode: b => { if (S.mode !== b.dataset.v) { S.mode = b.dataset.v; S.who = null; resetMood(); } render(); },
+  who: b => { if (S.who !== +b.dataset.v) { S.who = +b.dataset.v; resetMood(); } render(); },
+  toMood: () => { if (!S.mode || (S.mode === 'solo' && S.who == null)) return; S.screen = 0; render(); },
   toPace: () => { S.screen = 4; render(); },
   go: () => load(),
-  back: () => { const to = { 0: -2, 4: 0, 3: 2, 2: 4, '-1': 4 }[S.screen]; if (to == null) return; S.screen = to; S.flip = false; render(); },
+  back: () => { const to = { 5: -2, 0: hasPair() ? 5 : -2, 4: 0, 3: 2, 2: 4, '-1': 4 }[S.screen]; if (to == null) return; S.screen = to; S.flip = false; render(); },
   flip: b => { S.flip = !S.flip; b.classList.toggle('flip', S.flip); },
   next: () => { if (S.screen === 2 && S.i < deck().length - 1) { S.i++; S.flip = false; S.dir = 'up'; render(); } },
   prev: () => { if (S.screen === 2 && S.i > 0) { S.i--; S.flip = false; S.dir = 'dn'; render(); } },
@@ -406,6 +429,7 @@ app.addEventListener('click', e => {
   if (S.swipe || e.target.closest('details') || e.target.closest('a')) return;
   const b = e.target.closest('[data-a]'); if (b) act[b.dataset.a](b);
 });
+$('#back').addEventListener('click', () => act.back());
 app.addEventListener('keydown', e => {
   if ((e.key === 'Enter' || e.key === ' ') && e.target.dataset.a === 'flip') { e.preventDefault(); act.flip(e.target); }
   const blk = e.target.closest?.('.mood');
@@ -422,7 +446,7 @@ app.addEventListener('input', e => {
   }
 });
 app.addEventListener('change', e => {
-  if (e.target.id === 'caso') { S.caso = e.target.value; S.opts = true; render(); $('#caso')?.focus(); }   // cambia entre 1 y 2 selectores
+  if (e.target.id === 'caso') { S.caso = e.target.value; S.mode = null; S.who = null; resetMood(); S.opts = true; render(); $('#caso')?.focus(); }   // cambia entre 1 y 2 selectores
 });
 app.addEventListener('toggle', e => {
   if (e.target.matches?.('details.opts')) S.opts = e.target.open;
@@ -481,8 +505,8 @@ function parseMail(url) {
   return { to: decodeURIComponent(a), subject: qp.get('subject') || '', body: qp.get('body') || '' };
 }
 const advisorCtx = () => {   // lo que el asesor necesita saber: si son pareja y cómo se sienten
-  const L = t('moods'), lab = v => `${L[FACE[v - 1]].toLowerCase()} (${v}/5)`, cp = COUPLES[S.caso], st = S.data?.siguiente_paso?.titulo || '';
-  return cp ? t('ctxCouple', cp[0], lab(S.m[0]), cp[1], lab(S.m[1]), st) : t('ctxSingle', lab(S.m[0]));
+  const L = t('moods'), lab = v => `${L[FACE[v - 1]].toLowerCase()} (${v}/5)`, cp = isCouple() ? COUPLES[S.caso] : null, st = S.data?.siguiente_paso?.titulo || '';
+  return cp ? t('ctxCouple', cp[0], lab(S.m[0]), cp[1], lab(S.m[1]), st) : (soloName() ? t('ctxWho', soloName()) + ' ' : '') + t('ctxSingle', lab(S.m[0]));
 };
 function openCita(url) {
   const mail = parseMail(url); mail.body = (mail.body + '\n\n' + advisorCtx()).trim();
@@ -552,7 +576,7 @@ async function send(text) {
       const couple = isCouple();
       const r = await fetch(API + '/chat', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ case_id: S.caso, animo: S.m[0], animo_pareja: couple ? S.m[1] : null, nombres: couple ? COUPLES[S.caso] : null, persona: couple ? null : (S.persona.trim() || null), idioma: S.lang, mensajes: hist })
+        body: JSON.stringify({ case_id: S.caso, animo: S.m[0], animo_pareja: couple ? S.m[1] : null, nombres: couple ? COUPLES[S.caso] : null, persona: persona(), idioma: S.lang, mensajes: hist })
       });
       if (!r.ok) throw new Error(r.status);
       j = await r.json();
@@ -620,6 +644,7 @@ function applyStatic() {
   document.documentElement.lang = S.lang;
   $('.chead h2').textContent = t('chatTitle');
   $('#chat').setAttribute('aria-label', t('assistant'));
+  $('#back').setAttribute('aria-label', t('back'));
   menuBtn.setAttribute('aria-label', t('menuAria')); $('#mlang').textContent = t('menuLang'); $('#mask').textContent = t('menuAsk'); $('#mdark').textContent = t('menuDark'); $('#ask').setAttribute('aria-label', t('openAssistant'));
   $('#vozbtn').setAttribute('aria-label', t('voiceAria'));
   $('#cx').setAttribute('aria-label', t('close'));
