@@ -1,45 +1,45 @@
 {
   "case_id": "timothy-melanie-weah",
-  "animo": 5,
-  "tono": "very confident",
+  "animo": 3,
+  "tono": "neutral",
   "tiempo": "corto",
   "idioma": "en",
   "num_tarjetas": 5,
-  "frase_inicial": "Timothy and Melanie: your spare cash, a high-rate card and thin life cover are deciding how safe your family will be.",
+  "frase_inicial": "Timothy and Melanie: your spare cash, a high-rate card and little life cover are all competing for the same money.",
   "tarjetas": [
     {
       "id": "t1",
-      "frente": "Big cash cushion is already working for you",
-      "reverso": "You have a healthy bank buffer that would pay the bills if something short-term goes wrong. That same cash gives you choices about debt, protection and the kids' education without touching retirement savings.",
-      "detalle": "Accessible cash: $150,800 today (held by Melanie).",
+      "frente": "High-rate credit card is holding your score back",
+      "reverso": "Carrying that card at a high interest rate costs you more than keeping the cash idle. Paying part from what you already have would remove the immediate drag and still leave a large cushion for emergencies.",
+      "detalle": "Pay $6,800 from cash toward the 18% Chase card to lower the revolving balance; balance afterward would be $11,200.",
       "meta_id": null
     },
     {
       "id": "t2",
-      "frente": "The high-interest card is the thing dragging your score",
-      "reverso": "Carrying that card at a high rate costs you every month and keeps the plan capped until fixed. Using part of your cushion to cut it changes your position quickly and reduces wasted interest.",
-      "detalle": "Current balance: $18,000 at 18% (Chase CC).",
+      "frente": "Life cover is thin while two kids depend on both incomes",
+      "reverso": "If one earner died, the family would lose a large share of income and still face debt and future college costs. Adding straightforward term life cover for each of you closes that gap first for the children.",
+      "detalle": "Add $235,000 life cover to reach $485,000 total (plan notes further increase to $491,800 after card paydown).",
       "meta_id": null
     },
     {
       "id": "t3",
-      "frente": "Life insurance for both of you is the other limiter",
-      "reverso": "Neither Timothy nor Melanie has enough life cover for two young kids to keep things running if an earner were lost. Adding cover protects Liam and Josh and lifts the plan once the card is handled.",
-      "detalle": "Add $235,000 of life cover to reach $485,000 total; after card paydown total needed becomes $491,800.",
+      "frente": "You have much more cash than the emergency reserve needs",
+      "reverso": "About a year of essentials sits in cash, well above the recommended cushion. That excess is a resource: it can be split to reduce expensive debt and to buy protection without risking day-to-day safety.",
+      "detalle": "Accessible cash listed as $150,800; cash above reserve and short-term goals listed as $60,222.50.",
       "meta_id": null
     },
     {
       "id": "t4",
-      "frente": "No umbrella policy puts a lot of savings at risk",
-      "reverso": "Home and car insurance exist, but a big liability claim would tap your liquid savings. An umbrella policy shields the money you’re holding for the kids and big goals.",
-      "detalle": "Recommended umbrella: $1,000,000 gap; no current umbrella policy.",
+      "frente": "College for Liam and Josh is unfunded today",
+      "reverso": "Nothing is set aside for college, so future payments will compete with other priorities. A small yearly saving plan would make the goal practical alongside debt paydown and insurance.",
+      "detalle": "College funding gap shown as $113,508.60 total; extra first-year saving needed $4,609.22.",
       "meta_id": null
     },
     {
       "id": "t5",
-      "frente": "College saving is unfunded and competes with protection",
-      "reverso": "Nothing is in the kids' college accounts yet, so extra yearly saving is needed. That money competes with paying the card and buying life cover, so pick an order that fits what matters most to both of you.",
-      "detalle": "Total college gap: $113,508.60; extra yearly saving needed first year: $4,609.22.",
+      "frente": "No umbrella liability cover leaves your savings exposed",
+      "reverso": "Home and car insurance exist, but a large liability claim could reach the savings you hold for the kids. A simple extra liability policy would shield those assets without touching your emergency cushion.",
+      "detalle": "Plan shows no umbrella policy; recommended minimum $1,000,000 gap.",
       "meta_id": null
     }
   ],
@@ -148,19 +148,19 @@
     ],
     "hitos": [
       {
-        "id": "vacation_2027",
-        "anio": 2027,
-        "titulo": "Vacation"
-      },
-      {
         "id": "vehicle_2028",
         "anio": 2028,
-        "titulo": "New car"
+        "titulo": "Vehicle 2028"
       },
       {
         "id": "home_2030",
         "anio": 2030,
-        "titulo": "New home"
+        "titulo": "Home 2030"
+      },
+      {
+        "id": "college_liam_2038",
+        "anio": 2038,
+        "titulo": "Liam College"
       }
     ],
     "palancas": [
@@ -169,18 +169,18 @@
         "etiqueta": "Extra monthly debt payment",
         "unidad": "$",
         "min": 0,
-        "max": 1000,
+        "max": 3050,
         "paso": 50,
-        "puntos_por_unidad": 0.008
+        "puntos_por_unidad": 0.00262
       },
       {
         "id": "ahorro_mensual",
         "etiqueta": "Extra monthly savings",
         "unidad": "$",
         "min": 0,
-        "max": 1000,
+        "max": 3050,
         "paso": 50,
-        "puntos_por_unidad": 0.01
+        "puntos_por_unidad": 0.00328
       }
     ],
     "ilustrativo": true,
@@ -188,12 +188,12 @@
   },
   "siguiente_paso": {
     "titulo": "Pay down card",
-    "razon": "Clearing the high-rate card is the quickest move that the plan models to unclog your published score and stop interest draining your cash cushion.",
+    "razon": "The plan flags the 18% credit card as the immediate cap on your score and shows you have cash above the emergency reserve to cover a partial payment while keeping a healthy cushion.",
     "minutos": 30,
     "pasos": [
-      "Check the current Chase statement to confirm the exact balance and any recent charges",
-      "Move to your bank app and schedule a one-off payment from the cash account to cover part of the card (covering the recommended amount from the plan)",
-      "Keep the emergency reserve untouched and confirm the new card balance and monthly payment after the transfer"
+      "Log into the checking account where you hold the extra cash",
+      "Move the payment amount to the credit card account or set up one-time payment",
+      "Confirm the card balance after payment and keep the monthly $300 schedule until you replan"
     ],
     "acciones": {
       "recordatorios_url": "/recordatorios/timothy-melanie-weah.ics?idioma=en",

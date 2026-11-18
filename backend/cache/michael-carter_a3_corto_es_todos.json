@@ -5,41 +5,41 @@
   "tiempo": "corto",
   "idioma": "es",
   "num_tarjetas": 5,
-  "frase_inicial": "Michael: tu compra de casa en enero de 2027, jubilarte a los 58 y el efectivo para cubrir ambas cosas tienen que encajar en el mismo plan",
+  "frase_inicial": "Michael: tu elección de casa en enero, la jubilación a los 58 y el efectivo que necesitas chocan en el mismo presupuesto",
   "tarjetas": [
     {
       "id": "t1",
-      "frente": "La compra en enero de 2027 aprieta a corto plazo",
-      "reverso": "Si apartas dinero para la casa y para las vacaciones anuales con el efectivo que tenéis ahora, no os quedaría colchón para los meses. Así aumentan las probabilidades de tener que vender inversiones o pedir prestado si surge un imprevisto.",
-      "detalle": "Entrada para guardar hasta la compra en Jan 2027: $113,300 (Michael). Próximo pago de vacaciones Jan 2027: $3,500 (Michael).",
+      "frente": "Casa en enero 2027 y vacaciones juntas",
+      "reverso": "Si apartas dinero para las dos cosas, se iría el efectivo del banco. Entonces cualquier imprevisto te obligaría a vender inversiones o pedir prestado en vez de seguir con los planes.",
+      "detalle": "Entrada y gastos puntuales para la casa: $113,300 (Michael, Jan 2027); próximo pago de las vacaciones: $3,500 (al año desde Jan 2027).",
       "meta_id": "casa_2027"
     },
     {
       "id": "t2",
-      "frente": "Jubilarte a los 58 deja un hueco en gastos futuros",
-      "reverso": "El plan actual muestra que ahorros e inversiones se agotan antes de que termine el plan, así que parte del gasto previsto tras la jubilación no se podría pagar a menos que aumentes lo que ahorras, trabajes más tiempo o gastes menos en la jubilación.",
-      "detalle": "Los ahorros se acaban a los 85 años; gasto previsto sin cubrir al final del plan: $32,439 (Michael).",
+      "frente": "Jubilación a los 58 falta dinero",
+      "reverso": "Tu sueldo y ahorros probablemente no lleguen hasta la edad prevista, así que sin cambios algunos gastos planificados quedarían sin pagar en la vida larga. Esto viene de retirar ahora más de lo que la cartera puede sostener.",
+      "detalle": "La brecha proyectada en la jubilación implica necesitar unos $20,231 más por año para cerrarla; los ahorros se acaban a los 85 dejando $32,439 sin pagar.",
       "meta_id": null
     },
     {
       "id": "t3",
-      "frente": "El colchón para imprevistos es pequeño",
-      "reverso": "Ahora tenéis ahorrado para unos tres meses de gastos básicos. Eso es menos de los 5–6 meses recomendados, así que una pérdida de empleo o una factura grande probablemente os obligaría a usar tarjetas o inversiones.",
-      "detalle": "Efectivo accesible hoy: $30,000 (Michael); mínimo recomendado de colchón para imprevistos: $46,530 (Michael).",
+      "frente": "Colchón para imprevistos es pequeño",
+      "reverso": "Ahora mismo el efectivo accesible solo cubre unos meses de lo básico. Eso significa que una factura grande o una bajada de ingresos empujaría gastos a la tarjeta o os obligaría a vender inversiones.",
+      "detalle": "Efectivo accesible hoy: $30,000 (Michael). Meses cubiertos antes de los objetivos a corto plazo: 3.2 meses.",
       "meta_id": null
     },
     {
       "id": "t4",
-      "frente": "Falta protección de vida y responsabilidad",
-      "reverso": "El seguro de vida actual y la ausencia de un seguro extra dejan la economía familiar expuesta a facturas grandes o a quedarse sin ingresos. También es importante comprobar la cobertura del BMW.",
-      "detalle": "Seguro de vida: $180,000; mínimo recomendado: $900,000. No hay registrado seguro extra por si os reclaman una cantidad muy grande (recomendado $1,000,000).",
+      "frente": "Protección de vida y responsabilidad tiene huecos",
+      "reverso": "Tu seguro de vida y la falta de un seguro extra dejan tu sueldo y ahorros expuestos si pasa algo grave o si una reclamación supera el seguro del coche o del alquiler.",
+      "detalle": "Seguro de vida: $180,000 vs recomendado $900,000–$1,800,000; seguro extra recomendado mínimo: $1,000,000 de cobertura.",
       "meta_id": null
     },
     {
       "id": "t5",
       "frente": "La deuda de la tarjeta es la más cara",
-      "reverso": "Esa tarjeta con interés alto es pequeña pero cara. Pagándola más rápido reducirías lo que perdéis en intereses, pero compite con ahorrar el efectivo para la casa y con el ahorro para la jubilación.",
-      "detalle": "Saldo Amex $3,500 al 20% APR; pago mensual actual $200 (Michael).",
+      "reverso": "Esa tarjeta cobra más por cada dólar que debes. Pagarla antes reduce lo que se va en intereses, pero usa el mismo efectivo que necesitas para la casa y el colchón.",
+      "detalle": "Amex saldo: $3,500 al 20%, pago mensual $200, pago previsto julio 2028 (Michael).",
       "meta_id": null
     }
   ],
@@ -75,7 +75,7 @@
     "movimientos": [
       {
         "title": "Añadir seguro extra",
-        "action": "Añadir $1M de seguro extra por si os reclaman una cantidad muy grande",
+        "action": "Añadir $1M de seguro extra por si os reclaman una cantidad muy grande para aumentar la protección por responsabilidad",
         "effort": "bajo",
         "target_amount": 1000000,
         "score_before": 26,
@@ -83,8 +83,8 @@
         "lifts_a_cap": false
       },
       {
-        "title": "Bajar la tasa de retirada",
-        "action": "Reducir las retiradas a $10,300 al año (6.0%) para entrar en la banda sostenible",
+        "title": "Reducir la tasa de retirada",
+        "action": "Reducir las retiradas a $10,300 al año (6.0%) para alcanzar la banda sostenible",
         "effort": "alto",
         "target_amount": 10300,
         "score_before": 26,
@@ -92,8 +92,8 @@
         "lifts_a_cap": false
       },
       {
-        "title": "Aumentar la asignación a crecimiento según la guía",
-        "action": "Mover la mezcla invertida de 74% a 88% en crecimiento (guía 98%) para la siguiente banda adecuada al horizonte — unos $19,900 del libro invertido",
+        "title": "Aumentar la asignación hacia crecimiento según la guía",
+        "action": "Mover la mezcla invertida del 74% al 88% en crecimiento (guía 98%) para la siguiente banda adecuada — unos $19,900 del patrimonio invertido",
         "effort": "alto",
         "target_amount": 19900,
         "score_before": 26,
@@ -145,12 +145,12 @@
   },
   "siguiente_paso": {
     "titulo": "Añadir seguro extra",
-    "razon": "Poner una cobertura extra de responsabilidad es la forma más rápida dentro del plan para subir vuestra protección y proteger el efectivo y la futura casa de una reclamación grande. No arregla los huecos de efectivo o jubilación, pero evita que un solo problema grande os deje sin todo.",
+    "razon": "Una capa extra de responsabilidad protege el efectivo y los ahorros que estáis juntando para la casa y la jubilación; el plan no incluye seguro extra y marca esto como una carencia clara.",
     "minutos": 30,
     "pasos": [
-      "Comprobar el seguro de coche actual para el BMW y ver si los límites de responsabilidad ya son mayores de lo que aparece",
-      "Pedir presupuestos para un seguro extra que cubra al menos el mínimo recomendado",
-      "Decidir si la prima mensual entra en vuestro presupuesto y, si sí, contactar con la aseguradora para añadir la póliza"
+      "Llama a tu aseguradora o agente y pregunta si tenéis seguro extra y qué cubre",
+      "Si no tenéis, pide un presupuesto para al menos $1,000,000 en cobertura de seguro extra para comparar primas",
+      "Decide con el presupuesto si comprarlo ahora o posponerlo y deja por escrito la decisión"
     ],
     "acciones": {
       "recordatorios_url": "/recordatorios/michael-carter.ics?idioma=es",

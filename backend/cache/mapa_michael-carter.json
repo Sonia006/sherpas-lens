@@ -29,7 +29,7 @@
   "top_moves": [
     {
       "title": "Añadir seguro extra",
-      "action": "Añadir $1M de seguro extra por si os reclaman una cantidad muy grande",
+      "action": "Añadir $1M de seguro extra por si os reclaman una cantidad muy grande para aumentar la protección por responsabilidad",
       "effort": "bajo",
       "target_amount": 1000000,
       "score_before": 26,
@@ -37,8 +37,8 @@
       "lifts_a_cap": false
     },
     {
-      "title": "Bajar la tasa de retirada",
-      "action": "Reducir las retiradas a $10,300 al año (6.0%) para entrar en la banda sostenible",
+      "title": "Reducir la tasa de retirada",
+      "action": "Reducir las retiradas a $10,300 al año (6.0%) para alcanzar la banda sostenible",
       "effort": "alto",
       "target_amount": 10300,
       "score_before": 26,
@@ -46,8 +46,8 @@
       "lifts_a_cap": false
     },
     {
-      "title": "Aumentar la asignación a crecimiento según la guía",
-      "action": "Mover la mezcla invertida de 74% a 88% en crecimiento (guía 98%) para la siguiente banda adecuada al horizonte — unos $19,900 del libro invertido",
+      "title": "Aumentar la asignación hacia crecimiento según la guía",
+      "action": "Mover la mezcla invertida del 74% al 88% en crecimiento (guía 98%) para la siguiente banda adecuada — unos $19,900 del patrimonio invertido",
       "effort": "alto",
       "target_amount": 19900,
       "score_before": 26,

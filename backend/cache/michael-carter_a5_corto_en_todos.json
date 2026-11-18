@@ -5,41 +5,41 @@
   "tiempo": "corto",
   "idioma": "en",
   "num_tarjetas": 5,
-  "frase_inicial": "Michael: your cash, the planned home and your retirement all collide in January 2027",
+  "frase_inicial": "Michael: your plan must cover the January home buy, keep enough cash, and still get you to a secure retirement",
   "tarjetas": [
     {
       "id": "t1",
-      "frente": "January 2027 home and vacation strain your cash",
-      "reverso": "If you set aside the home payment and the trip from the cash you now hold, you would have no liquid cushion left. That makes any pay cut, job gap or bill harder to absorb and risks selling investments at a bad time.",
-      "detalle": "Assumes $113,300 needed for the home and $3,500 for the vacation in January 2027; accessible cash today $30,000.",
+      "frente": "January 2027 home purchase is the pivot",
+      "reverso": "If you use the savings set aside now for the down payment, the investment base that funds retirement gets smaller and monthly cash tightens. That trade-off is the central choice you face.",
+      "detalle": "Down payment hold of $113,300 required January 2027 for $566,500 purchase",
       "meta_id": "casa_2027"
     },
     {
       "id": "t2",
-      "frente": "Retirement at 58 currently leaves money short later in life",
-      "reverso": "Your plan expects savings to run out before the end of your life plan. That means planned spending would be unpaid unless you change how much you save, when you retire, or how you spend in retirement.",
-      "detalle": "Savings projected to run out at age 85; retirement gap about $1,177,586 in today's dollars.",
+      "frente": "Cash cushion is thinner than your plan assumes",
+      "reverso": "You have only a few months of expenses in accessible cash, so a bill, pay cut, or the home timing could force selling investments or relying on the credit card.",
+      "detalle": "Accessible cash $30,000 equals about 3.2 months of essential expenses before near-term goals",
       "meta_id": null
     },
     {
       "id": "t3",
-      "frente": "Life and liability protection is thin for a single earner",
-      "reverso": "If something happened to you, the coverage in place would not replace your income or protect the assets you’ve built. Fixing this costs premiums and competes with cash and saving choices.",
-      "detalle": "Life insurance on file $180,000; recommended minimum range $900,000 to $1,800,000; no umbrella policy recorded.",
+      "frente": "Retirement gap comes from drawing on the same paycheck",
+      "reverso": "You save a lot each year but your income is already committed. Boosting retirement savings or closing the retirement shortfall competes directly with the home and the cash cushion.",
+      "detalle": "Plan estimates a retirement gap requiring about $20,231 more per year to close",
       "meta_id": null
     },
     {
       "id": "t4",
-      "frente": "High-interest credit card is the most expensive debt",
-      "reverso": "That card eats money in interest each month. Paying it faster reduces interest paid but uses cash that you might need for the home or your emergency cushion. It's a clear tradeoff.",
-      "detalle": "Card balance $3,500 at 20% APR, monthly payment $200, projected payoff July 2028.",
+      "frente": "Insurance holes could wipe savings in a claim",
+      "reverso": "Your life cover and liability protection are far below recommended levels. A big claim or sudden loss of income would hit your liquid savings and derail the home or retirement plan.",
+      "detalle": "Life cover $180,000; recommended minimum $900,000. No umbrella; recommended $1,000,000",
       "meta_id": null
     },
     {
       "id": "t5",
-      "frente": "Your invested mix and home plan pull in different directions",
-      "reverso": "You aim for a growth mix for long-term gains, but the money for the home is short-term. Selling investments for the down payment lowers the base that funds retirement and raises the odds you’ll change the retirement timeline.",
-      "detalle": "Invested book $145,000; suggested shift of about $19,900 toward higher growth in plan moves.",
+      "frente": "High-rate credit card is an easy win, but it trades with cash needs",
+      "reverso": "Paying the card faster saves interest for you, yet the same cash could be used to shore up the emergency reserve or the home down payment. It's a straight trade you must choose.",
+      "detalle": "Credit card balance $3,500 at 20% APR, $200 monthly payment projected payoff July 2028",
       "meta_id": null
     }
   ],
@@ -145,12 +145,12 @@
   },
   "siguiente_paso": {
     "titulo": "Add umbrella",
-    "razon": "Because there is no umbrella recorded and a claim could reach your liquid assets and net worth, adding liability cover is the fastest way to protect what you already have without touching the down payment plans yet.",
+    "razon": "An umbrella policy raises the liability shield that otherwise exposes your liquid savings and net worth; it directly protects the home purchase and retirement base.",
     "minutos": 30,
     "pasos": [
-      "Call your current auto or renter insurer or agent and ask whether an umbrella policy can be added to your account",
-      "If yes, get a written quote for a one million dollar liability policy and note the premium",
-      "Compare that premium to your monthly budget and decide whether to buy it now or delay until after you confirm the home cash plan"
+      "Call your auto insurer or agent and ask if they sell umbrella liability cover",
+      "Get one quote for the minimum recommended amount and note the premium and start date",
+      "Decide whether the premium fits your budget or if you prefer to delay purchase until after the down payment"
     ],
     "acciones": {
       "recordatorios_url": "/recordatorios/michael-carter.ics?idioma=en",

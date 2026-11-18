@@ -5,41 +5,41 @@
   "tiempo": "corto",
   "idioma": "en",
   "num_tarjetas": 5,
-  "frase_inicial": "Michael: your January 2027 home purchase, retirement at 58 and the cash to cover both need to fit in the same plan",
+  "frase_inicial": "Michael: your January home choice, retirement at 58 and the cash you need all collide in the same budget",
   "tarjetas": [
     {
       "id": "t1",
-      "frente": "January 2027 home purchase is the near-term squeeze",
-      "reverso": "If you set money aside for the house and the yearly vacation from the cash you now hold, you would have no months of cushion left. That raises the chance a shock forces you to sell investments or borrow.",
-      "detalle": "Down payment to hold for purchase in Jan 2027: $113,300 (Michael). Vacation next payment Jan 2027: $3,500 (Michael).",
+      "frente": "January 2027 home and vacation land together",
+      "reverso": "If you set money aside for both, your bank cash would be gone. That would make everyday shocks force you to sell investments or borrow instead of keeping plans on track.",
+      "detalle": "Down payment and one-time costs for home: $113,300 (Michael, Jan 2027); vacation next payment: $3,500 (annual starting Jan 2027).",
       "meta_id": "casa_2027"
     },
     {
       "id": "t2",
-      "frente": "Retiring at 58 leaves a gap in later spending",
-      "reverso": "Your current plan shows savings and investments running out before the plan ends, so some planned spending after retirement would go unpaid unless you change how much you save, work longer or spend less in retirement.",
-      "detalle": "Savings run out at age 85; planned unpaid spending at end of plan: $32,439 (Michael).",
+      "frente": "Retirement at 58 currently runs short",
+      "reverso": "Your income and savings likely won’t stretch to the plan’s end age, so without change some planned spending would go unpaid in later life. This is driven by current withdrawals versus what the portfolio can safely supply.",
+      "detalle": "Projected retirement gap implies needing about $20,231 more per year to close; savings run out at age 85 leaving $32,439 unpaid.",
       "meta_id": null
     },
     {
       "id": "t3",
-      "frente": "Cash cushion is thinner than it should be",
-      "reverso": "You have about three months of essential expenses saved today. That is shorter than the 5–6 months recommended, so a job interruption or big bill would likely hit your cards or investments.",
-      "detalle": "Accessible cash today: $30,000 (Michael); recommended emergency reserve min: $46,530 (Michael).",
+      "frente": "Cash cushion is thinner than you should have",
+      "reverso": "Right now your accessible cash covers only a few months of essentials. That means a single big bill or income hiccup would push costs onto your credit card or force selling investments.",
+      "detalle": "Accessible cash today: $30,000 (Michael). Months covered before near-term goals: 3.2 months.",
       "meta_id": null
     },
     {
       "id": "t4",
-      "frente": "Life and liability protection leave the household exposed",
-      "reverso": "Your life insurance and lack of extra liability cover mean your income and savings could be at risk for big bills or if your income stopped. Confirming auto cover on the BMW matters too.",
-      "detalle": "Life insurance: $180,000; recommended minimum: $900,000. No umbrella policy recorded (recommended $1,000,000).",
+      "frente": "Life and liability protection leave gaps",
+      "reverso": "Your life cover and lack of extra liability protection mean your income and savings could be exposed if something big happens to you or if a claim exceeds your car or renter cover.",
+      "detalle": "Life insurance: $180,000 vs recommended $900,000–$1,800,000; umbrella recommended minimum gap: $1,000,000.",
       "meta_id": null
     },
     {
       "id": "t5",
-      "frente": "Credit card interest is your most expensive debt",
-      "reverso": "That high-rate card is small but costly. Paying it down faster reduces interest drain, but it competes with building the cash you need for the house and retirement saving.",
-      "detalle": "Amex balance $3,500 at 20% APR; current monthly payment $200 (Michael).",
+      "frente": "Credit card is the most expensive debt",
+      "reverso": "That card costs the most for each dollar outstanding. Paying it faster reduces interest drain, but it uses the same cash you need for the home and the emergency stash.",
+      "detalle": "Amex balance: $3,500 at 20%, monthly payment $200, projected payoff July 2028 (Michael).",
       "meta_id": null
     }
   ],
@@ -145,12 +145,12 @@
   },
   "siguiente_paso": {
     "titulo": "Add umbrella",
-    "razon": "Adding extra liability cover is the quickest way in the plan to raise your protection score and guard your liquid savings and future home from a large claim. It does not solve the cash or retirement gaps, but it stops one big risk from wiping out what you have.",
+    "razon": "An extra liability layer protects the cash and savings you’re building for the home and retirement; the plan shows no umbrella and flags this as a clear gap.",
     "minutos": 30,
     "pasos": [
-      "Check current auto insurance for the BMW to confirm whether liability limits are already higher than shown",
-      "Get quotes for an extra liability policy to cover at least the recommended minimum",
-      "Decide whether a monthly premium fits your budget and, if yes, contact the insurer to add the policy"
+      "Call your insurer or agent and ask if you have umbrella liability and what it covers",
+      "If none, request a quote for at least $1,000,000 in umbrella cover to compare premiums",
+      "Decide from the quote whether to buy it now or delay and document the decision"
     ],
     "acciones": {
       "recordatorios_url": "/recordatorios/michael-carter.ics?idioma=en",
