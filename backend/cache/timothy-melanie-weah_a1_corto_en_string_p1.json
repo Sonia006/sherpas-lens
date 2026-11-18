@@ -5,41 +5,41 @@
   "tiempo": "corto",
   "idioma": "en",
   "num_tarjetas": 5,
-  "frase_inicial": "Timothy and Melanie: let's go step by step—one small, useful thing to start.",
+  "frase_inicial": "Timothy and Melanie: protect Liam and Josh first, using money you already have",
   "tarjetas": [
     {
       "id": "t1",
-      "frente": "The high‑rate card is costing you both energy.",
-      "reverso": "Carrying that balance quietly eats your money each month and holds your score back. Paying part of it from cash frees you to protect the family next.",
-      "detalle": "Pay $6,800 from cash toward the 18% credit card to reduce high‑rate revolving exposure and clear the gate.",
+      "frente": "The high-rate credit card is holding you back",
+      "reverso": "Keeping that card means you pay more interest each month while cash sits idle. Clearing it frees money and lifts one of the plan limits.",
+      "detalle": "Pay $6,800 from accessible cash toward the Chase credit card (18%); balance after move: $11,200 remaining on card.",
       "meta_id": null
     },
     {
       "id": "t2",
-      "frente": "Life cover is one thing Liam and Josh depend on.",
-      "reverso": "Your current policies leave a big gap if one of you dies. Adding more life cover protects the kids and makes other plans feel safer.",
-      "detalle": "Add $235,000 of life insurance to raise total household cover toward recommended levels for two earners with young children.",
+      "frente": "Life cover is thinner than the kids need",
+      "reverso": "If one earner stopped, your current life policies would not replace the household income the kids depend on. Adding cover protects Liam and Josh.",
+      "detalle": "Plan recommends adding $235,000 of life insurance to reach $485,000 total; after card paydown target rises to $491,800.",
       "meta_id": null
     },
     {
       "id": "t3",
-      "frente": "You have spare cash that can work for you.",
-      "reverso": "You hold a cushion well above the emergency target. Using a slice of the extra cash now can pay the costly card or start protection without hurting your safety buffer.",
-      "detalle": "Accessible cash today: $150,800; cash above reserve and near‑term goals: $60,222.50.",
+      "frente": "You have a large cash cushion you can use",
+      "reverso": "You already hold more cash than the emergency reserve. A portion can go to fix the card and start closing protection gaps without risking day-to-day needs.",
+      "detalle": "Accessible cash: $150,800; cash above reserve and near-term goals: $60,222.50 available to reallocate.",
       "meta_id": null
     },
     {
       "id": "t4",
-      "frente": "No umbrella policy leaves home and savings exposed.",
-      "reverso": "Home and car insurance don't cover big liability claims. A modest umbrella policy would shield the family’s savings and give peace of mind.",
-      "detalle": "Recommended umbrella: $1,000,000; currently no umbrella in place.",
+      "frente": "No umbrella policy leaves assets exposed",
+      "reverso": "Your house, cars and savings could be reached by a big claim. Adding umbrella cover would protect the money you plan to keep for the kids.",
+      "detalle": "Plan gap: $1,000,000 of umbrella liability; no umbrella policy listed.",
       "meta_id": null
     },
     {
       "id": "t5",
-      "frente": "College saving can start slowly and still help.",
-      "reverso": "Nothing is set aside yet for Liam and Josh. Small regular contributions will build over years so college won’t surprise you later.",
-      "detalle": "Extra yearly saving needed for education (first year): $4,609.22 for both children combined.",
+      "frente": "College is unfunded but time gives options",
+      "reverso": "Liam and Josh start college years from now, so small yearly saving now can build the fund. Decide how education shares cash with protection.",
+      "detalle": "Total college funding gap: $113,508.60; extra yearly saving needed first-year: $4,609.22.",
       "meta_id": null
     }
   ],
@@ -155,12 +155,12 @@
       {
         "id": "vehicle_2028",
         "anio": 2028,
-        "titulo": "Vehicle"
+        "titulo": "New car"
       },
       {
         "id": "home_2030",
         "anio": 2030,
-        "titulo": "Home"
+        "titulo": "New home"
       }
     ],
     "palancas": [
@@ -187,17 +187,17 @@
     "aviso": "Illustrative simulator: it shows the direction of change, not a Sherpas projection."
   },
   "siguiente_paso": {
-    "titulo": "Pay down card",
-    "razon": "The plan flags the high‑rate card as the immediate drag. Reducing it from cash lifts the limit on your score and makes room to add protection for the kids.",
-    "minutos": 20,
+    "titulo": "Pay the card",
+    "razon": "Paying down the high-rate card first removes the plan limit that keeps your score low and uses cash you already hold, while leaving your emergency cushion intact.",
+    "minutos": 30,
     "pasos": [
-      "Sit together at the computer or phone.",
-      "Log into the checking account and the credit card online.",
-      "Initiate a one‑time payment from cash to pay $6,800 toward the high‑rate card."
+      "Sit together at the computer or phone",
+      "Open the bank app holding your cash account",
+      "Make a one-time payment toward the Chase card for $6,800 from the cash account"
     ],
     "acciones": {
       "recordatorios_url": "/recordatorios/timothy-melanie-weah.ics?idioma=en",
-      "asesor_url": "mailto:asesor@example.com?subject=I%27d%20like%20to%20talk%20about%20my%20plan&body=Hi%2C%20I%27ve%20seen%20my%20plan%20and%20I%27d%20like%20help%20with%20this%20step%3A%20Pay%20down%20card"
+      "asesor_url": "mailto:asesor@example.com?subject=I%27d%20like%20to%20talk%20about%20my%20plan&body=Hi%2C%20I%27ve%20seen%20my%20plan%20and%20I%27d%20like%20help%20with%20this%20step%3A%20Pay%20the%20card"
     }
   },
   "fallback": false

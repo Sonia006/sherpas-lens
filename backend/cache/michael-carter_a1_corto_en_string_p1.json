@@ -5,42 +5,42 @@
   "tiempo": "corto",
   "idioma": "en",
   "num_tarjetas": 5,
-  "frase_inicial": "Michael: let’s go step by step and start with one small cash task",
+  "frase_inicial": "Michael: the January home and your retirement both need the same dollars",
   "tarjetas": [
     {
       "id": "t1",
-      "frente": "Your cash cushion is thin",
-      "reverso": "With the house and vacation due soon, your bank cash won’t cover those plans. That could force selling investments or pausing other goals.",
-      "detalle": "Accessible cash today $30,000; cash target with near-term goals $163,330–$172,636.",
+      "frente": "Cash is thin before the house",
+      "reverso": "If you set aside the down payment and the vacation, your available cash would be gone and everyday bills would rely on cards or selling investments.",
+      "detalle": "Accessible cash today $30,000; near-term cash needs Jan 2027 $116,800 (home + vacation).",
       "meta_id": "casa_2027"
     },
     {
       "id": "t2",
-      "frente": "Retirement won’t last to your plan end",
-      "reverso": "At your planned retirement age, savings are projected to run out earlier than you planned, so some later spending may go unpaid unless you act.",
-      "detalle": "Savings run out at age 85; unpaid planned spending $32,439.",
+      "frente": "Retirement is short of the plan",
+      "reverso": "At your target retirement age, savings alone are projected to run short years before your plan ends, so future spending could be reduced unless you change course now.",
+      "detalle": "Retirement gap today ~ $1,177,586; savings run out at age 85 leaving planned unpaid spending $32,439.",
       "meta_id": null
     },
     {
       "id": "t3",
-      "frente": "Life and liability gaps need attention",
-      "reverso": "Your current life cover and lack of extra liability protection leave your savings exposed if something happens to you or you face a large claim.",
-      "detalle": "Life shortfall $720,000; no umbrella coverage recommended $1,000,000.",
+      "frente": "Life and liability cover is low",
+      "reverso": "If something happened, your single income and current policies leave big needs uncovered; this is about protecting what your paychecks support.",
+      "detalle": "Life cover $180,000 vs recommended $900k–$1.8M; no umbrella policy recorded.",
       "meta_id": null
     },
     {
       "id": "t4",
-      "frente": "High‑interest card is costing you",
-      "reverso": "That card is your most expensive debt. Keeping the payment steady will pay it off in the projection, but faster payoff would free cash later.",
-      "detalle": "Credit card balance $3,500 at 20% APR, monthly payment $200.",
+      "frente": "High-rate card is costing you",
+      "reverso": "That credit card is your most expensive debt; keeping its current payment schedule means it closes in the next year or two, but it still eats budget while you build cash.",
+      "detalle": "Credit card balance $3,500 at 20% APR, $200 monthly payment projected payoff July 2028.",
       "meta_id": null
     },
     {
       "id": "t5",
-      "frente": "You’re saving steadily — use it to choose",
-      "reverso": "You already put money aside and capture your employer match. Now decide which matters most next: the home, boosting retirement, or protection, then we act.",
-      "detalle": "Annual savings $43,000 including $7,000 employer match; net cash flow this year -$8,336.",
-      "meta_id": "casa_2027"
+      "frente": "You already capture employer match",
+      "reverso": "Good news: you get the full employer match, so your long-term saving habit is working; choices now are about where to shift money without stopping that habit.",
+      "detalle": "401(k) contributions include full $7,000 employer match; current 401(k) contribution $17,000.",
+      "meta_id": null
     }
   ],
   "mapa": {
@@ -112,7 +112,7 @@
       {
         "id": "vacation_2027",
         "anio": 2027,
-        "titulo": "Vacation"
+        "titulo": "Trip"
       },
       {
         "id": "retire_2047",
@@ -145,12 +145,12 @@
   },
   "siguiente_paso": {
     "titulo": "Add umbrella cover",
-    "razon": "It raises your liability shield so your savings and future plans are less exposed, and the plan lists this as a low‑effort move that improves your score.",
-    "minutos": 15,
+    "razon": "The plan flags no umbrella protection; adding it raises your liability shield and addresses a clear gap without touching retirement savings or the home cash right away.",
+    "minutos": 20,
     "pasos": [
-      "Sit together and open the insurance app or call your current insurer",
-      "Ask about adding one million dollars of extra liability cover over your auto policy",
-      "Save the quote screenshot or note the agent’s name and cost to review next"
+      "Sit together and open your insurer app or call your current insurer",
+      "Ask for a one‑million liability quote to add to your auto/renter package",
+      "Save the quote screenshot and bring it to our next chat"
     ],
     "acciones": {
       "recordatorios_url": "/recordatorios/michael-carter.ics?idioma=en",

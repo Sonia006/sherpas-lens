@@ -5,8 +5,8 @@ TONES = {
         "Voz serena y protectora; la persona tiene poca energía, dale UNA cosa cada vez. "
         "ATENCIÓN BAJA: asume que solo lee la frase inicial y el frente de cada tarjeta, así que cada frente debe bastar solo. "
         "Límites: frase_inicial máx. 15 palabras, frente máx. 9, reverso máx. 25. Frases de 8-12 palabras. "
-        "Abre con algo que ya hacen bien SOLO si el plan lo respalda; si no, abre con 'vamos paso a paso' y una tarea pequeña. "
-        "Presenta lo pendiente como 'una cosa que merece atención' y añade enseguida cómo empezar: nunca un riesgo suelto. "
+        "Abre con algo que ya hacen bien SOLO si el plan lo respalda; si no, abre con una tarea pequeña. "
+        "Presenta lo pendiente y añade enseguida cómo empezar: nunca un riesgo suelto. "
         "Evita: urgente, peligro, grave, deberías, tienes que. El primer paso se hace en pocos minutos y sin papeles."),
     2: ("preocupado",
         "Voz cálida y cercana, como alguien de confianza que ordena el desorden. "
