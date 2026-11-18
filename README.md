@@ -26,6 +26,72 @@ The AI writes the words and picks "what if?" levers from a closed list. It does 
  
 ---
  
+## Run the MVP locally
+ 
+**Requirements:** Python 3.10+, Node 20+ and a team AI key (from your [access page](https://mcp-hackathon.sherpaswealth.com/personal-token)).
+ 
+### 1. Clone
+ 
+```bash
+git clone https://github.com/Sonia006/sherpas-lens.git
+cd sherpas-lens
+```
+ 
+### 2. Backend (port 8000)
+ 
+Create a `.env` file at the root of the repo (it is git-ignored):
+ 
+```env
+TEAM_KEY=your-team-ai-key
+# Optional
+# LLM_BASE_URL=https://llm-hackathon.sherpaswealth.com/v1
+# LLM_MODEL=gpt-5-mini
+# ASESOR_EMAIL=advisor@example.com
+# PLAN_MODE=full        # "lean" sends only the key sections to the model
+```
+ 
+Then:
+ 
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install fastapi "uvicorn[standard]" openai python-dotenv pydantic
+uvicorn main:app --reload --port 8000
+```
+ 
+Check it at <http://localhost:8000/>: it should return `{"status":"ok", ...}`.
+ 
+The case data is read from [`cases/`](cases/), so the MCP is not needed (`pip install mcp` only if you want to read the cases from it with `MCP_URL` and `MCP_TOKEN`).
+ 
+### 3. Frontend (port 5173)
+ 
+In a second terminal:
+ 
+```bash
+cd frontend
+npm install
+npm run dev
+```
+ 
+Once both terminals are running, open one of these four families in your browser. These `localhost` addresses only work on your own computer after you start the app; they are not a public demo.
+ 
+- Michael Carter: <http://localhost:5173/?caso=michael-carter&lang=en>
+- Samantha Lewis: <http://localhost:5173/?caso=samantha-lewis&lang=en>
+- Timothy & Melanie Weah: <http://localhost:5173/?caso=timothy-melanie-weah&lang=en>
+- Daniel & Emily Johnson: <http://localhost:5173/?caso=daniel-emily-johnson&lang=en>
+### 4. Optional: pre-generate everything before a demo
+ 
+Generating a summary takes a few seconds. This fills the cache for 4 cases x 5 moods x 2 lengths x 2 languages, so every screen opens instantly:
+ 
+```bash
+curl -X POST "http://localhost:8000/precalcular"
+```
+ 
+A few pre-generated summaries are already included in `backend/cache/`. If the AI is unavailable, the backend serves the nearest cached one, or a safe fallback screen.
+ 
+---
+ 
 ## How it works
  
 | Endpoint | What it does |
@@ -48,7 +114,6 @@ backend/
   texts.py      tones, levers and texts per language
 frontend/       React + Vite + Tailwind
 cases/          the four synthetic households from Sherpas
-```
  
 ## Data and credits
  
