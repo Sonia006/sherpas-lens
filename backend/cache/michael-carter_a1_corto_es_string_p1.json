@@ -1,0 +1,161 @@
+{
+  "case_id": "michael-carter",
+  "animo": 1,
+  "tono": "muy agobiado",
+  "tiempo": "corto",
+  "idioma": "es",
+  "num_tarjetas": 5,
+  "frase_inicial": "Michael: la casa de enero y tu jubilación necesitan los mismos dólares",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "Poco efectivo antes de la casa",
+      "reverso": "Si apartas la entrada y el viaje, se te iría el efectivo disponible y las facturas diarias quedarían en las tarjetas o tendríais que vender inversiones.",
+      "detalle": "Efectivo accesible hoy $30,000; necesidades de efectivo a corto plazo ene 2027 $116,800 (casa + viaje).",
+      "meta_id": "casa_2027"
+    },
+    {
+      "id": "t2",
+      "frente": "La jubilación queda corta",
+      "reverso": "Con lo que lleváis ahorrado, el dinero se acabaría años antes de lo previsto, así que habría que recortar gastos futuros a menos que cambiéis algo ahora.",
+      "detalle": "Déficit para la jubilación hoy ~ $1,177,586; los ahorros se agotan a los 85 años dejando gasto previsto sin pagar $32,439.",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "Poca cobertura de vida y responsabilidad",
+      "reverso": "Si pasara algo, vuestro único ingreso y las pólizas actuales no cubrirían mucho; esto va de proteger lo que sostienen vuestros sueldos.",
+      "detalle": "Cobertura de vida $180,000 frente a lo recomendado $900k–$1.8M; no hay registro de seguro extra por si os reclaman una cantidad muy grande.",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "La tarjeta cara os cuesta",
+      "reverso": "Esa tarjeta es la deuda más cara; con los pagos actuales se pagará en uno o dos años, pero mientras tanto se come presupuesto justo cuando necesitáis efectivo.",
+      "detalle": "Saldo de la tarjeta $3,500 al 20% APR, pago mensual $200; pago proyectado julio 2028.",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "Aprovecháis el match",
+      "reverso": "Buena noticia: recibís todo el aporte que da la empresa, así que el hábito de ahorrar a largo plazo funciona; ahora se trata de mover dinero sin perder ese beneficio.",
+      "detalle": "Contribuciones al plan de ahorro para la jubilación de la empresa incluyen match total $7,000; contribución actual $17,000.",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 26,
+    "pilares": [
+      {
+        "pillar": "Ahorros y flujo de efectivo",
+        "score": 0,
+        "points_shown_in_app": "0/25"
+      },
+      {
+        "pillar": "Deuda",
+        "score": 78,
+        "points_shown_in_app": "8/10"
+      },
+      {
+        "pillar": "Inversiones",
+        "score": 42,
+        "points_shown_in_app": "11/25"
+      },
+      {
+        "pillar": "Liquidez y colchón para imprevistos",
+        "score": 22,
+        "points_shown_in_app": "4/20"
+      },
+      {
+        "pillar": "Seguro y protección",
+        "score": 18,
+        "points_shown_in_app": "4/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Añadir seguro extra por si os reclaman una cantidad muy grande",
+        "action": "Añadir $1M de seguro extra por si os reclaman una cantidad muy grande para aumentar la protección por responsabilidad",
+        "effort": "bajo",
+        "target_amount": 1000000,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Bajar la tasa de retirada",
+        "action": "Reducir las retiradas a $10,300/al año (6.0%) para alcanzar la banda sostenible",
+        "effort": "alto",
+        "target_amount": 10300,
+        "score_before": 26,
+        "score_after": 62,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Aumentar la asignación hacia crecimiento según la guía",
+        "action": "Mover la mezcla invertida de 74% a 88% en crecimiento (guía 98%) para la siguiente banda adecuada al horizonte — unos $19,900 del capital invertido",
+        "effort": "alto",
+        "target_amount": 19900,
+        "score_before": 26,
+        "score_after": 31,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [],
+    "limites": [],
+    "hitos": [
+      {
+        "id": "casa_2027",
+        "anio": 2027,
+        "titulo": "Comprar casa"
+      },
+      {
+        "id": "vacation_2027",
+        "anio": 2027,
+        "titulo": "Vacaciones"
+      },
+      {
+        "id": "retire_2047",
+        "anio": 2047,
+        "titulo": "Jubilación"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Ahorro mensual extra",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      },
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Pago extra de deuda al mes",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.008
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Simulador ilustrativo: muestra la dirección del cambio, no una proyección de Sherpas."
+  },
+  "siguiente_paso": {
+    "titulo": "Añadir seguro extra",
+    "razon": "El plan no muestra seguro extra por si os reclaman una cantidad muy grande; añadirlo sube vuestra protección sin tocar los ahorros de la jubilación ni el efectivo para la casa.",
+    "minutos": 20,
+    "pasos": [
+      "Sentaros juntos y abrir la app de vuestro asegurador o llamar a la compañía actual",
+      "Pedir una cotización de responsabilidad de un millón para añadir al paquete de auto/inquilino",
+      "Guardar la captura de la cotización y traerla a nuestra próxima charla"
+    ],
+    "acciones": {
+      "recordatorios_url": "/recordatorios/michael-carter.ics?idioma=es",
+      "asesor_url": "mailto:asesor@example.com?subject=Quiero%20hablar%20de%20mi%20plan&body=Hola%2C%20he%20visto%20mi%20plan%20y%20quiero%20ayuda%20con%20este%20paso%3A%20A%C3%B1adir%20seguro%20extra"
+    }
+  },
+  "fallback": false
+}

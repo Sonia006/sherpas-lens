@@ -1,0 +1,103 @@
+{
+  "pillars": [
+    {
+      "pillar": "Ahorros y flujo de caja",
+      "score": 86,
+      "points_shown_in_app": "26/30"
+    },
+    {
+      "pillar": "Deuda",
+      "score": 58,
+      "points_shown_in_app": "12/20"
+    },
+    {
+      "pillar": "Inversiones",
+      "score": 56,
+      "points_shown_in_app": "8/15"
+    },
+    {
+      "pillar": "Liquidez y colchón para imprevistos",
+      "score": 100,
+      "points_shown_in_app": "15/15"
+    },
+    {
+      "pillar": "Seguros y protección",
+      "score": 37,
+      "points_shown_in_app": "7/20"
+    }
+  ],
+  "top_moves": [
+    {
+      "title": "Pagar la tarjeta con saldo revolvente",
+      "action": "Pagar $6,800 de la tarjeta al 18% desde efectivo para eliminar la exposición alta a deuda revolvente y pasar el control",
+      "effort": "medio",
+      "target_amount": 11200,
+      "score_before": 60,
+      "score_after": 62,
+      "lifts_a_cap": true
+    },
+    {
+      "title": "Agregar seguro de vida",
+      "action": "Agregar $235,000 de seguro de vida para mejorar la proporción de cobertura por mortalidad y pasar el control",
+      "effort": "bajo",
+      "target_amount": 485000,
+      "score_before": 60,
+      "score_after": 60,
+      "lifts_a_cap": true
+    },
+    {
+      "title": "Agregar seguro extra por si os reclaman una cantidad muy grande",
+      "action": "Agregar $1M de seguro extra para aumentar la protección frente a responsabilidades",
+      "effort": "bajo",
+      "target_amount": 1000000,
+      "score_before": 60,
+      "score_after": 60,
+      "lifts_a_cap": false
+    }
+  ],
+  "combined_moves": [
+    {
+      "moves": [
+        "Pagar la tarjeta con saldo revolvente",
+        "Agregar seguro de vida",
+        "Agregar seguro extra por si os reclaman una cantidad muy grande"
+      ],
+      "score_after": 78,
+      "note": "Después de pagar la tarjeta, el seguro de vida debe llegar a $491,800 para mantener la proporción de mortalidad en la línea de control."
+    },
+    {
+      "moves": [
+        "Pagar la tarjeta con saldo revolvente",
+        "Agregar seguro de vida"
+      ],
+      "score_after": 73,
+      "note": "Después de pagar la tarjeta, el seguro de vida debe llegar a $491,800 para mantener la proporción de mortalidad en la línea de control."
+    },
+    {
+      "moves": [
+        "Pagar la tarjeta con saldo revolvente",
+        "Agregar seguro extra por si os reclaman una cantidad muy grande"
+      ],
+      "score_after": 62,
+      "note": "Juntos aumentan la puntuación publicada más que cualquiera de las acciones por separado."
+    },
+    {
+      "moves": [
+        "Agregar seguro de vida",
+        "Agregar seguro extra por si os reclaman una cantidad muy grande"
+      ],
+      "score_after": 60,
+      "note": "Juntos aumentan la puntuación publicada más que cualquiera de las acciones por separado."
+    }
+  ],
+  "caps_applied": [
+    {
+      "reason": "Saldo revolvente alto con APR alta",
+      "score_capped_at": 60
+    },
+    {
+      "reason": "Proporción de cobertura por mortalidad por debajo del umbral con dependientes",
+      "score_capped_at": 62
+    }
+  ]
+}

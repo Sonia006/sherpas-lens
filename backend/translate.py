@@ -2,6 +2,7 @@
 import asyncio
 import copy
 import json
+import re
 
 from cache import read_cache, save_cache
 from config import LLM_MODEL, llm, log
@@ -45,8 +46,9 @@ GLOSSARY = ("emergency fund / cash reserve = colchón para imprevistos; life ins
             "umbrella insurance = seguro extra por si os reclaman una cantidad muy grande; "
             "401(k) = plan de ahorro para la jubilación de la empresa; 529 = ahorro para la universidad de los niños; "
             "home equity = la parte de la casa que ya es vuestra; credit card debt = la deuda de la tarjeta; "
-            "goal = meta; next step = siguiente paso"
-            "cash account = cuenta de efectivo; per year = al año; per month = al mes")
+            "goal = meta; next step = siguiente paso; "
+            "cash account = cuenta de efectivo; per year = al año; per month = al mes; "
+            "Chase CC = la tarjeta de Chase")
 
 TRANSLATE_RULES = """You adapt a short financial-plan summary from English into {language}. This is NOT a literal translation: rewrite each text the way a warm, clear person would say it in a kitchen conversation with a family that has no financial training.
 
@@ -64,7 +66,24 @@ HOW TO ADAPT
   Only people's names stay as they are.
 
 KEEP EXACTLY: people's names, bank names (e.g. Chase), years, dates, numbers, currency symbols and amounts (write $6,800 as "$6,800"), JSON keys, and the order and number of items. Empty strings stay empty.
+EVERY text value must come back in {language}: frase_inicial, frente, reverso, detalle, the "titulo" of each hito, and the titulo, razon and pasos of siguiente_paso.
 TRANSLATE EVERYTHING ELSE, including "detalle": it is expert text full of figures and plan labels, but every word that is not a name, number or symbol must be in {language}. Translate generic account types ("Cash account" -> "cuenta de efectivo"), units ("/yr" -> "al año") and plan terms. A "detalle" left in English is an error."""
+
+ENGLISH_WORDS = (r"\b(the|and|your|you|from|with|for|per|toward|after|needed|estimated|current|cash|reach|to|of|is|are"
+                 r"|in|on|it|we|be|can|will|not|more|first|if|at|by|an|this|that|have|about|before|than)\b")
+
+async def translate_texts(texts: list[str]) -> list[str]:
+    resp = await llm.chat.completions.create(
+        model=LLM_MODEL,
+        reasoning_effort="low",
+        messages=[{"role": "system", "content": "Translate each text from English into plain Spanish. Keep people's names, years, numbers, currency amounts and the order. Translate every other word, including account types and units. Vocabulary: " + GLOSSARY + '. Reply with JSON {"textos": [...]} with exactly the same number of items.'},
+                  {"role": "user", "content": json.dumps({"textos": texts}, ensure_ascii=False)}],
+        response_format={"type": "json_object"},
+    )
+    out = json.loads(resp.choices[0].message.content)["textos"]
+    if len(out) != len(texts):
+        raise ValueError("La traduccion no conserva el numero de textos")
+    return [str(x).strip() for x in out]
 
 LANGUAGE_NAMES = {"es": "Spanish (informal 'tú', plain everyday words)", "en": "English"}
 
@@ -97,6 +116,7 @@ async def translate_summary(base: dict, req: SummaryRequest, ctx: dict) -> dict:
                     or [h.get("id") for h in out["hitos"]] != [h["id"] for h in src["hitos"]]
                     or len(sp["pasos"]) != len(step["pasos"]) or not str(out["frase_inicial"]).strip()):
                 raise ValueError("La traduccion no conserva la estructura")
+
             break
         except Exception as e:
             last_error = e
@@ -113,6 +133,7 @@ async def translate_summary(base: dict, req: SummaryRequest, ctx: dict) -> dict:
     for c, t in zip(result["tarjetas"], out["tarjetas"]):
         for k in ("frente", "reverso", "detalle"):
             c[k] = str(t.get(k) or "").strip()
+
     for h, t in zip(result["mapa"]["hitos"], out["hitos"]):
         h["titulo"] = str(t.get("titulo") or h["titulo"]).strip()
     title = str(sp.get("titulo") or texts["default_step"]).strip()
@@ -126,4 +147,20 @@ async def translate_summary(base: dict, req: SummaryRequest, ctx: dict) -> dict:
         combinaciones=block.get("combined_moves") or [], limites=block.get("caps_applied") or [],
         palancas=build_levers([p["id"] for p in base["mapa"]["palancas"]], lang, ctx.get("free_month"), req.case_id),
         aviso=texts["notice"])
+
+    # Lo que siga en ingles (el modelo se salta campos a veces) se traduce aparte, sea del campo que sea
+    sp_out, pasos = result["siguiente_paso"], result["siguiente_paso"]["pasos"]
+    fields = [(result, "frase_inicial", base["frase_inicial"]), (sp_out, "titulo", step["titulo"]), (sp_out, "razon", step["razon"])]
+    fields += [(pasos, i, step["pasos"][i]) for i in range(len(pasos))]
+    for c, b in zip(result["tarjetas"], base["tarjetas"]):
+        fields += [(c, "frente", b["frente"]), (c, "reverso", b["reverso"]), (c, "detalle", b["detalle"])]
+    fields += [(h, "titulo", b["titulo"]) for h, b in zip(result["mapa"]["hitos"], base["mapa"]["hitos"])]
+    pending = [(d, k) for d, k, original in fields
+               if d[k] and (re.search(ENGLISH_WORDS, d[k], re.I) or (k != "detalle" and d[k] == original))]
+    if pending:
+        try:
+            for (d, k), text in zip(pending, await translate_texts([d[k] for d, k in pending])):
+                d[k] = text
+        except Exception as e:
+            log.warning("Traduccion de los textos pendientes fallida: %r", e)
     return result

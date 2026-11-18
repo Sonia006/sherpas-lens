@@ -1,0 +1,204 @@
+{
+  "case_id": "timothy-melanie-weah",
+  "animo": 1,
+  "tono": "muy agobiado",
+  "tiempo": "corto",
+  "idioma": "es",
+  "num_tarjetas": 5,
+  "frase_inicial": "Timothy y Melanie: proteged primero a Liam y Josh con el dinero que ya tenéis",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "La tarjeta con alto interés os frena",
+      "reverso": "Mantener esa tarjeta hace que paguéis más intereses cada mes mientras el efectivo queda parado. Cancelarla libera dinero y quita uno de los límites del plan.",
+      "detalle": "Pagar $6,800 desde efectivo accesible hacia la tarjeta de Chase (18%); saldo después del movimiento: $11,200 restante en la tarjeta.",
+      "meta_id": null
+    },
+    {
+      "id": "t2",
+      "frente": "La cobertura de vida es insuficiente",
+      "reverso": "Si uno de los que trabaja dejara de hacerlo, las pólizas actuales no reemplazarían los ingresos del hogar de los que dependen los niños. Añadir seguro protege a Liam y Josh.",
+      "detalle": "El plan recomienda añadir $235,000 de seguro de vida para llegar a $485,000 en total; después de pagar la tarjeta el objetivo sube a $491,800.",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "Tenéis un colchón grande que podéis usar",
+      "reverso": "Ya tenéis más efectivo del que exige el colchón para imprevistos. Una parte puede ir a arreglar la tarjeta y a cubrir huecos de protección sin poner en riesgo las necesidades del día a día.",
+      "detalle": "Efectivo accesible: $150,800; efectivo por encima del colchón y de metas a corto plazo: $60,222.50 disponible para reasignar.",
+      "meta_id": null
+    },
+    {
+      "id": "t4",
+      "frente": "Sin seguro extra quedáis expuestos",
+      "reverso": "La casa, los coches y los ahorros podrían verse afectados por una reclamación grande. Añadir un seguro extra por si os reclaman una cantidad muy grande protegería el dinero que queréis dejar para los niños.",
+      "detalle": "Hueco del plan: $1,000,000 de responsabilidad de umbrella; no hay póliza de umbrella listada.",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "La universidad sin fondo, pero hay tiempo",
+      "reverso": "Liam y Josh empiezan la universidad dentro de unos años, así que con ahorrar poco cada año se puede construir el fondo. Decidid cómo compartir el efectivo entre educación y protección.",
+      "detalle": "Hueco total para la universidad: $113,508.60; ahorro extra al año necesario el primer año: $4,609.22.",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 60,
+    "pilares": [
+      {
+        "pillar": "Ahorros y flujo de caja",
+        "score": 86,
+        "points_shown_in_app": "26/30"
+      },
+      {
+        "pillar": "Deuda",
+        "score": 58,
+        "points_shown_in_app": "12/20"
+      },
+      {
+        "pillar": "Inversiones",
+        "score": 56,
+        "points_shown_in_app": "8/15"
+      },
+      {
+        "pillar": "Liquidez y colchón para imprevistos",
+        "score": 100,
+        "points_shown_in_app": "15/15"
+      },
+      {
+        "pillar": "Seguros y protección",
+        "score": 37,
+        "points_shown_in_app": "7/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Pagar la tarjeta con saldo revolvente",
+        "action": "Pagar $6,800 de la tarjeta al 18% desde efectivo para eliminar la exposición alta a deuda revolvente y pasar el control",
+        "effort": "medio",
+        "target_amount": 11200,
+        "score_before": 60,
+        "score_after": 62,
+        "lifts_a_cap": true
+      },
+      {
+        "title": "Agregar seguro de vida",
+        "action": "Agregar $235,000 de seguro de vida para mejorar la proporción de cobertura por mortalidad y pasar el control",
+        "effort": "bajo",
+        "target_amount": 485000,
+        "score_before": 60,
+        "score_after": 60,
+        "lifts_a_cap": true
+      },
+      {
+        "title": "Agregar seguro extra por si os reclaman una cantidad muy grande",
+        "action": "Agregar $1M de seguro extra para aumentar la protección frente a responsabilidades",
+        "effort": "bajo",
+        "target_amount": 1000000,
+        "score_before": 60,
+        "score_after": 60,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [
+      {
+        "moves": [
+          "Pagar la tarjeta con saldo revolvente",
+          "Agregar seguro de vida",
+          "Agregar seguro extra por si os reclaman una cantidad muy grande"
+        ],
+        "score_after": 78,
+        "note": "Después de pagar la tarjeta, el seguro de vida debe llegar a $491,800 para mantener la proporción de mortalidad en la línea de control."
+      },
+      {
+        "moves": [
+          "Pagar la tarjeta con saldo revolvente",
+          "Agregar seguro de vida"
+        ],
+        "score_after": 73,
+        "note": "Después de pagar la tarjeta, el seguro de vida debe llegar a $491,800 para mantener la proporción de mortalidad en la línea de control."
+      },
+      {
+        "moves": [
+          "Pagar la tarjeta con saldo revolvente",
+          "Agregar seguro extra por si os reclaman una cantidad muy grande"
+        ],
+        "score_after": 62,
+        "note": "Juntos aumentan la puntuación publicada más que cualquiera de las acciones por separado."
+      },
+      {
+        "moves": [
+          "Agregar seguro de vida",
+          "Agregar seguro extra por si os reclaman una cantidad muy grande"
+        ],
+        "score_after": 60,
+        "note": "Juntos aumentan la puntuación publicada más que cualquiera de las acciones por separado."
+      }
+    ],
+    "limites": [
+      {
+        "reason": "Saldo revolvente alto con APR alta",
+        "score_capped_at": 60
+      },
+      {
+        "reason": "Proporción de cobertura por mortalidad por debajo del umbral con dependientes",
+        "score_capped_at": 62
+      }
+    ],
+    "hitos": [
+      {
+        "id": "vacation_2027",
+        "anio": 2027,
+        "titulo": "Vacaciones"
+      },
+      {
+        "id": "vehicle_2028",
+        "anio": 2028,
+        "titulo": "Coche nuevo"
+      },
+      {
+        "id": "home_2030",
+        "anio": 2030,
+        "titulo": "Casa nueva"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "pago_deuda_extra",
+        "etiqueta": "Pago extra de deuda al mes",
+        "unidad": "$",
+        "min": 0,
+        "max": 3050,
+        "paso": 50,
+        "puntos_por_unidad": 0.00262
+      },
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Ahorro mensual extra",
+        "unidad": "$",
+        "min": 0,
+        "max": 3050,
+        "paso": 50,
+        "puntos_por_unidad": 0.00328
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Simulador ilustrativo: muestra la dirección del cambio, no una proyección de Sherpas."
+  },
+  "siguiente_paso": {
+    "titulo": "Pagar la tarjeta",
+    "razon": "Pagar primero la tarjeta con alto interés quita el límite del plan que afecta vuestra puntuación y usa efectivo que ya tenéis, sin tocar el colchón para imprevistos.",
+    "minutos": 30,
+    "pasos": [
+      "Sentaos juntos con el ordenador o el teléfono",
+      "Abre la app del banco donde está la cuenta de efectivo",
+      "Haced un pago único a la tarjeta de Chase por $6,800 desde la cuenta de efectivo"
+    ],
+    "acciones": {
+      "recordatorios_url": "/recordatorios/timothy-melanie-weah.ics?idioma=es",
+      "asesor_url": "mailto:asesor@example.com?subject=Quiero%20hablar%20de%20mi%20plan&body=Hola%2C%20he%20visto%20mi%20plan%20y%20quiero%20ayuda%20con%20este%20paso%3A%20Pagar%20la%20tarjeta"
+    }
+  },
+  "fallback": false
+}
