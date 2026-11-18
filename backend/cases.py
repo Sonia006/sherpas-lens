@@ -66,6 +66,7 @@ async def case_context(case_id: str) -> dict:
         "persona": extract_persona(persona_md),
         "score": find_score(fh),
         "score_block": fh.get("score") if isinstance(fh, dict) else None,
+        "free_month": find_free_month(fh),
         "_fh": fh,
     }
     _CTX[case_id] = ctx
@@ -79,6 +80,14 @@ def find_score(fh):
         return None
     is_num = isinstance(v, (int, float)) and not isinstance(v, bool)
     return v if is_num and 0 <= v <= 100 else None
+
+def find_free_month(fh):
+    """Dinero libre al mes (flujo de caja anual del plan / 12). None si no está."""
+    try:
+        v = fh["key_metrics"]["facts"]["retirement"]["netCashFlowThisYear"]["value"]
+    except (KeyError, TypeError):
+        return None
+    return v / 12 if isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0 else None
 
 # Plan para el prompt: el informe completo, o solo las secciones utiles si PLAN_MODE=lean
 def extract_plan(fh) -> str:

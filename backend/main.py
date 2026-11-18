@@ -165,6 +165,7 @@ async def case_keys(case_id: str = FPath(pattern=CASE_PATTERN), x_admin_token: s
         "caracteres_plan": len(ctx["plan"]),
         "caracteres_persona": len(ctx["persona"]),
         "persona_inicio": ctx["persona"][:300],
+        "free_month_detectado": ctx["free_month"],
     }
 
 @app.get("/")

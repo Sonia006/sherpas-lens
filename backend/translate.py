@@ -124,6 +124,6 @@ async def translate_summary(base: dict, req: SummaryRequest, ctx: dict) -> dict:
     result["mapa"].update(
         pilares=block.get("pillars") or [], movimientos=block.get("top_moves") or [],
         combinaciones=block.get("combined_moves") or [], limites=block.get("caps_applied") or [],
-        palancas=build_levers([p["id"] for p in base["mapa"]["palancas"]], lang),
+        palancas=build_levers([p["id"] for p in base["mapa"]["palancas"]], lang, ctx.get("free_month"), req.case_id),
         aviso=texts["notice"])
     return result

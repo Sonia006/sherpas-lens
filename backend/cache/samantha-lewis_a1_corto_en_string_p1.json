@@ -1,0 +1,161 @@
+{
+  "case_id": "samantha-lewis",
+  "animo": 1,
+  "tono": "very overwhelmed",
+  "tiempo": "corto",
+  "idioma": "en",
+  "num_tarjetas": 5,
+  "frase_inicial": "Samantha: let's go step by step — one small thing today to steady the cash and the kids' plans",
+  "tarjetas": [
+    {
+      "id": "t1",
+      "frente": "Home insurance needs a quick check",
+      "reverso": "Your home and car show as not insured in the plan. If underlying policies aren’t active, a big claim could tap the savings you use for college and retirement. Start by confirming a homeowners policy exists.",
+      "detalle": "Top move: add homeowners insurance on primary home (plan lift: score 82 → 84).",
+      "meta_id": null
+    },
+    {
+      "id": "t2",
+      "frente": "Cash cushion looks tight after near goals",
+      "reverso": "You have a solid emergency reserve, but once the vacation and Ethan's college payment are set aside only a little remains. If more bills come, you'd use the brokerage cash instead of keeping the cushion.",
+      "detalle": "Accessible cash today $80,000; near-term goals total $18,500; cash above reserve after goals $750.",
+      "meta_id": null
+    },
+    {
+      "id": "t3",
+      "frente": "College payments and retirement compete for the same money",
+      "reverso": "Ethan starts soon and Ava in two years. Paying college from cash reduces what you can put toward retirement accounts, which the plan shows are empty today. This is a choice to weigh, not an emergency.",
+      "detalle": "College funding still needed beyond 529s: $98,837.55 (lump sum for all years).",
+      "meta_id": "college_2027"
+    },
+    {
+      "id": "t4",
+      "frente": "Your invested mix leans heavily on one broad holding",
+      "reverso": "A large single holding and strong U.S./tech exposure make your investments concentrated. Spreading some of that in time would lower the household's dependence on one market move.",
+      "detalle": "Plan suggests reducing single-name concentration (about $58,300) and easing growth allocation (~$17,100).",
+      "meta_id": null
+    },
+    {
+      "id": "t5",
+      "frente": "You can use tax-advantaged accounts you haven’t touched",
+      "reverso": "A deductible IRA and a health-savings account could lower your yearly tax bill and direct savings toward retirement. Decide whether to move some yearly saving there or keep funding college first.",
+      "detalle": "Eligible: up to $7,500 to deductible IRA and up to $4,400 to HSA; contributions so far: 0.",
+      "meta_id": null
+    }
+  ],
+  "mapa": {
+    "score_base": 82,
+    "pilares": [
+      {
+        "pillar": "Savings and cash flow",
+        "score": 75,
+        "points_shown_in_app": "22/30"
+      },
+      {
+        "pillar": "Debt",
+        "score": 100,
+        "points_shown_in_app": "20/20"
+      },
+      {
+        "pillar": "Investments",
+        "score": 66,
+        "points_shown_in_app": "10/15"
+      },
+      {
+        "pillar": "Liquidity and emergency fund",
+        "score": 100,
+        "points_shown_in_app": "15/15"
+      },
+      {
+        "pillar": "Insurance and protection",
+        "score": 71,
+        "points_shown_in_app": "14/20"
+      }
+    ],
+    "movimientos": [
+      {
+        "title": "Close a coverage gap",
+        "action": "Add homeowners insurance on Primary home so coverage integrity clears that gap",
+        "effort": "medium",
+        "target_amount": null,
+        "score_before": 82,
+        "score_after": 84,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Reduce single-name concentration",
+        "action": "Bring VTI from 39% to 25% of investable for the next concentration band — about $58,300 of that line",
+        "effort": "high",
+        "target_amount": 58300,
+        "score_before": 82,
+        "score_after": 83,
+        "lifts_a_cap": false
+      },
+      {
+        "title": "Reduce growth allocation toward glide",
+        "action": "Move the invested mix from 85% to 80% growth (glide 80%) for the next horizon-fit band — about $17,100 of the invested book",
+        "effort": "high",
+        "target_amount": 17100,
+        "score_before": 82,
+        "score_after": 83,
+        "lifts_a_cap": false
+      }
+    ],
+    "combinaciones": [],
+    "limites": [],
+    "hitos": [
+      {
+        "id": "vacation_2027",
+        "anio": 2027,
+        "titulo": "Vacation"
+      },
+      {
+        "id": "college_2027",
+        "anio": 2027,
+        "titulo": "Ethan college"
+      },
+      {
+        "id": "college_2028",
+        "anio": 2028,
+        "titulo": "Ava college"
+      }
+    ],
+    "palancas": [
+      {
+        "id": "ahorro_mensual",
+        "etiqueta": "Extra monthly savings",
+        "unidad": "$",
+        "min": 0,
+        "max": 1000,
+        "paso": 50,
+        "puntos_por_unidad": 0.01
+      },
+      {
+        "id": "gasto_menos",
+        "etiqueta": "Monthly spending you cut",
+        "unidad": "$",
+        "min": 0,
+        "max": 500,
+        "paso": 25,
+        "puntos_por_unidad": 0.012
+      }
+    ],
+    "ilustrativo": true,
+    "aviso": "Illustrative simulator: it shows the direction of change, not a Sherpas projection."
+  },
+  "siguiente_paso": {
+    "titulo": "Confirm homeowners policy",
+    "razon": "The plan lists the home as uninsured and adding that coverage is the top recommended move. Confirming the policy protects your cash cushion and avoids an unexpected bill that would pull from savings for the kids and retirement.",
+    "minutos": 15,
+    "pasos": [
+      "Together, find the most recent home insurance bill or email",
+      "Call your insurer or agent and ask: “Is the homeowners policy active for the primary home?”",
+      "Save the policy number or a screenshot to the same folder you both can access"
+    ],
+    "acciones": {
+      "recordatorios_url": "/recordatorios/samantha-lewis.ics?idioma=en",
+      "asesor_url": "mailto:asesor@example.com?subject=I%27d%20like%20to%20talk%20about%20my%20plan&body=Hi%2C%20I%27ve%20seen%20my%20plan%20and%20I%27d%20like%20help%20with%20this%20step%3A%20Confirm%20homeowners%20policy"
+    }
+  },
+  "fallback": false
+}

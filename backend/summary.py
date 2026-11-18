@@ -23,7 +23,7 @@ def num_cards(mood: int, duration: str) -> int:
         base = max(5, base - 1)
     return base
 
-def normalize(raw: dict, req: SummaryRequest, n: int, score, score_block=None) -> dict:
+def normalize(raw: dict, req: SummaryRequest, n: int, score, score_block=None, free_month=None) -> dict:
     cards = []
     for t in (raw.get("tarjetas") or [])[:n]:
         front, back = str(t.get("frente", "")).strip(), str(t.get("reverso", "")).strip()
@@ -59,7 +59,7 @@ def normalize(raw: dict, req: SummaryRequest, n: int, score, score_block=None) -
             seen.add(p)
             ids.append(p)
     ids = (ids or DEFAULT_LEVERS)[:3]
-    levers = build_levers(ids, req.idioma)
+    levers = build_levers(ids, req.idioma, free_month, req.case_id)
 
     step = raw.get("siguiente_paso") or {}
     step_title = str(step.get("titulo") or TEXTS[req.idioma]["default_step"]).strip()
@@ -148,7 +148,7 @@ async def build_summary(req: SummaryRequest) -> dict:
                 response_format={"type": "json_object"},
             )
             raw = json.loads(resp.choices[0].message.content)
-            result = normalize(raw, req, n, ctx["score"], ctx["score_block"])
+            result = normalize(raw, req, n, ctx["score"], ctx["score_block"], ctx.get("free_month"))
             save_cache(key, result)
             return result
         except Exception as e:  # JSON roto, timeout, 429...
