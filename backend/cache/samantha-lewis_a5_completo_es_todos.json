@@ -5,76 +5,76 @@
   "tiempo": "completo",
   "idioma": "es",
   "num_tarjetas": 10,
-  "frase_inicial": "Samantha and Ethan: tu plan obtiene 82 y ya sois dueños de la casa — hay una ruta clara a seguir.",
+  "frase_inicial": "Samantha y los niños: la jubilación, la universidad y la casa de 2030 están tirando del mismo dinero.",
   "tarjetas": [
     {
       "id": "t1",
-      "frente": "La jubilación se queda corta a menos que cambiéis algo",
-      "reverso": "Hoy los ingresos garantizados cubren solo una parte de la jubilación, así que los ahorros tienen que cubrir una brecha grande; si no hacéis nada, el plan muestra que los ahorros se acaban mucho antes de la esperanza de vida.",
-      "detalle": "Los ahorros e inversiones se agotan a los 73 años; déficit anual de jubilación aproximadamente $115,335 por año en promedio",
-      "meta_id": null
+      "frente": "Se acabará el ahorro para la jubilación muy pronto",
+      "reverso": "Si seguís metiendo todo el ahorro solo en cuentas sujetas a impuestos, las cuentas muestran que lo invertido y el efectivo no sostendrán el nivel de vida previsto hasta edades avanzadas. Eso significa que más adelante tendríais que recortar gasto, vender cosas o cambiar el plan.",
+      "detalle": "Proyección: ahorros e inversiones se agotan a los 73 años; gasto planeado sin cubrir al final del plan aproximadamente $1,448,673.",
+      "meta_id": "retirement_2044"
     },
     {
       "id": "t2",
-      "frente": "Los pagos de la universidad empiezan ya y presionan vuestro efectivo",
-      "reverso": "Las facturas de la universidad de Ethan y Ava usan el mismo efectivo que podríais dedicar a la jubilación, así que pagar la universidad desde las cuentas reduce el colchón rápidamente a menos que elijáis una prioridad.",
-      "detalle": "Financiación universitaria todavía necesaria más allá de los saldos actuales del 529: $98,837.55; Ethan empieza en agosto de 2026, Ava en agosto de 2028",
-      "meta_id": null
+      "frente": "Los gastos universitarios empiezan pronto para Ethan",
+      "reverso": "Los pagos de Ethan empiezan primero y usan el mismo dinero que podríais destinar a la jubilación. Pagar la universidad con efectivo reduce el colchón para imprevistos y el ahorro a largo plazo.",
+      "detalle": "Financiación universitaria todavía necesaria más allá de los saldos actuales: $98,837.55 en total para ambos hijos.",
+      "meta_id": "college_2026"
     },
     {
       "id": "t3",
-      "frente": "Tenéis un buen colchón, pero queda casi nada tras los objetivos a corto plazo",
-      "reverso": "El efectivo cubre más meses de los recomendados, pero después de las vacaciones y del pago de Ethan solo queda un colchón muy pequeño para imprevistos o para cubrir un déficit anual continuado.",
-      "detalle": "Efectivo accesible $80,000; meses cubiertos hoy 7.9; efectivo sobrante tras el colchón y los objetivos a corto plazo $750",
+      "frente": "Flujo de caja anual es algo negativo ahora",
+      "reverso": "Ahora gastáis un poco más de lo que entra después de ahorrar. Ese hueco va desgastando el colchón para imprevistos si los objetivos a corto plazo siguen tirando de la cuenta.",
+      "detalle": "Flujo de caja neto este año: -$6,417.99.",
       "meta_id": null
     },
     {
       "id": "t4",
-      "frente": "Falta el seguro de la casa",
-      "reverso": "El plan pone como prioridad añadir el seguro de hogar porque la casa y el coche aparecen sin cobertura; confirmad las pólizas para que una sola reclamación no toque vuestros ahorros.",
-      "detalle": "Movimiento principal: Añadir seguro de hogar en la residencia principal; la puntuación subiría de 82 a 84",
+      "frente": "Gran parte del patrimonio está en la casa y no es líquida",
+      "reverso": "Tener la casa os da estabilidad, pero no paga facturas ni la universidad a menos que vendáis o pidáis prestado contra ella. Contar con la casa no es lo mismo que tener efectivo disponible.",
+      "detalle": "",
       "meta_id": null
     },
     {
       "id": "t5",
-      "frente": "La mayoría de las inversiones está en una sola posición grande en acciones estadounidenses",
-      "reverso": "Tener un gran paquete en una sola acción y mucha exposición a tecnología concentra vuestra inversión; repartirlo reduce el riesgo de que una caída del mercado borre el colchón que necesitáis para la jubilación.",
-      "detalle": "VTI es ~39% de lo invertible; el plan sugiere mover alrededor de $58,300 de esa línea hacia diversificación",
+      "frente": "Falta seguro del hogar y del coche en los registros",
+      "reverso": "El plan marca la casa y el coche como sin asegurar. Si esas pólizas no existen, una reclamación podría golpear los ahorros líquidos que preferiríais reservar para las metas.",
+      "detalle": "Movimiento más recomendado: añadir seguro de propietarios en la vivienda principal para cerrar la brecha de cobertura.",
       "meta_id": null
     },
     {
       "id": "t6",
-      "frente": "Ninguno de vuestros ahorros va aún a cuentas de jubilación",
-      "reverso": "Ya ahorráis bastante cada año, pero va a cuentas con impuestos; mover parte a las cuentas con ventajas fiscales que podéis usar cambia cuánto duran los ahorros y cuánto pagáis en impuestos.",
-      "detalle": "IRA tradicional deducible elegible hasta $7,500; HSA disponible hasta $4,400 si cumplís requisitos; contribuciones actuales $0",
+      "frente": "Una gran parte de las inversiones está en una sola acción de EE. UU.",
+      "reverso": "Tener la mayor parte del dinero invertible en un único fondo amplio de acciones de EE. UU. y con mucho peso en tecnología aumenta el riesgo de que un choque de mercado reduzca el dinero con que contáis.",
+      "detalle": "VTI es ~39% del invertible; movimiento sugerido: reducir a 25% (unos $58,300) para ajustar la concentración.",
       "meta_id": null
     },
     {
       "id": "t7",
-      "frente": "Ahora tenéis un pequeño déficit de efectivo anual",
-      "reverso": "Aunque no tengáis deudas y ahorréis mucho, el año del plan muestra salidas ligeramente por encima de los ingresos, lo que va comiendo el colchón si se repiten objetivos a corto plazo o aparecen gastos imprevistos.",
-      "detalle": "Flujo de caja neto este año: -$6,417.99",
+      "frente": "Las cuentas de jubilación están vacías hoy",
+      "reverso": "Habéis acumulado ahorro en cuentas sujetas a impuestos, pero todavía no en cuentas con ventajas fiscales. Pasar parte del ahorro a esas cuentas cambiaría cuánto dura el dinero y los impuestos que pagáis.",
+      "detalle": "Elegible: hasta $7,500 a IRA tradicional deducible y hasta $4,400 a HSA si el plan de salud lo permite; contribuciones actuales 0.",
       "meta_id": null
     },
     {
       "id": "t8",
-      "frente": "La compra de casa planificada para 2030 añade otra demanda de efectivo",
-      "reverso": "Comprar en 2030 requiere entrada y luego una hipoteca; decidid ahora cómo encaja la entrada con la universidad y la jubilación para que una meta no quite recursos a las otras.",
-      "detalle": "Valor de compra planificado 2030 ~$562,754; préstamo previsto ~$450,203.52 con pago mensual ~$2,995.22",
-      "meta_id": "home_2030"
-    },
-    {
-      "id": "t9",
-      "frente": "El seguro protege a los niños si dejáis de ingresar",
-      "reverso": "Vuestro seguro temporal y la cobertura por discapacidad están en su sitio: apoyarían a Ethan y Ava si no pudierais trabajar, así que mantened esas primas en el plan de efectivo anual.",
-      "detalle": "Cobertura de vida temporal $2,000,000; discapacidad a largo plazo paga $150,000 por año bruto ($12,500 por mes); seguro extra (umbrella) $2,000,000",
+      "frente": "La mayor parte de vuestro efectivo ya tiene destino a corto plazo",
+      "reverso": "Después de apartar las vacaciones y el pago próximo de Ethan, queda solo un colchón muy pequeño por encima del reserva para imprevistos. Eso deja poco margen si surgen facturas extra o si los costes de la universidad llegan antes.",
+      "detalle": "Efectivo accesible $80,000 cubre 7.9 meses antes de objetivos a corto plazo y 6.1 meses después; efectivo por encima de reserva y objetivos $750.",
       "meta_id": null
     },
     {
+      "id": "t9",
+      "frente": "Comprar casa en 2030 cambia lo que necesitaréis cada mes",
+      "reverso": "La compra prevista trae un gran pago inicial y una nueva hipoteca mensual que competirá con la universidad y el ahorro para la jubilación. Es otra decisión que exigirá elegir prioridades.",
+      "detalle": "Valor de compra previsto alrededor de $562,754 en 2030; préstamo planeado $450,203.52 al 7% con pago mensual ~ $2,995.",
+      "meta_id": "house_2030"
+    },
+    {
       "id": "t10",
-      "frente": "Una decisión que debéis tomar ahora: financiar la jubilación o acelerar el ahorro para la universidad",
-      "reverso": "Ambas metas compiten por el mismo efectivo. Un camino dirige más ahorro anual hacia cuentas de jubilación; el otro manda efectivo a la universidad. Cada uno reduce un riesgo distinto en el futuro — vosotros elegís cuál reducir primero.",
-      "detalle": "",
+      "frente": "Ya tenéis buena protección de vida y discapacidad",
+      "reverso": "El seguro de vida y el de discapacidad están dimensionados para proteger a Ethan y Ava si dejáis de ingresar. Por eso la protección no es lo primero que hay que cambiar. Mantened esas primas en el presupuesto anual.",
+      "detalle": "Seguro de vida a término $2,000,000; seguro extra por si os reclaman una cantidad muy grande $2,000,000; discapacidad paga $12,500/mes.",
       "meta_id": null
     }
   ],
@@ -110,8 +110,8 @@
     "movimientos": [
       {
         "title": "Cerrar una brecha de cobertura",
-        "action": "Agregar el seguro de hogar en la vivienda principal para que la integridad de la cobertura cierre esa brecha",
-        "effort": "media",
+        "action": "Añadir seguro de hogar en la vivienda principal para cerrar esa brecha de cobertura",
+        "effort": "medio",
         "target_amount": null,
         "score_before": 82,
         "score_after": 84,
@@ -119,17 +119,17 @@
       },
       {
         "title": "Reducir la concentración en un solo activo",
-        "action": "Bajar VTI del 39% al 25% del patrimonio invertible para la siguiente banda de concentración — unos $58,300 de esa línea",
-        "effort": "alta",
+        "action": "Bajar VTI del 39% al 25% del dinero invertible para la siguiente banda de concentración — unos $58,300 de esa línea",
+        "effort": "alto",
         "target_amount": 58300,
         "score_before": 82,
         "score_after": 83,
         "lifts_a_cap": false
       },
       {
-        "title": "Reducir la asignación de crecimiento hacia la transición",
-        "action": "Mover la mezcla invertida del 85% al 80% en crecimiento (transición 80%) para la siguiente banda de horizonte — unos $17,100 del libro invertido",
-        "effort": "alta",
+        "title": "Reducir la asignación de crecimiento hacia la trayectoria",
+        "action": "Mover la mezcla invertida del 85% al 80% en crecimiento (trayectoria 80%) para la siguiente banda adecuada al horizonte — unos $17,100 del libro invertido",
+        "effort": "alto",
         "target_amount": 17100,
         "score_before": 82,
         "score_after": 83,
@@ -140,19 +140,19 @@
     "limites": [],
     "hitos": [
       {
-        "id": "ethan_college_2027",
-        "anio": 2027,
-        "titulo": "Próximo pago universitario de Ethan vence agosto de 2027"
+        "id": "college_2026",
+        "anio": 2026,
+        "titulo": "Ethan college"
       },
       {
-        "id": "vacation_2027",
-        "anio": 2027,
-        "titulo": "Coged unas vacaciones (próximo pago enero de 2027)"
-      },
-      {
-        "id": "home_2030",
+        "id": "house_2030",
         "anio": 2030,
-        "titulo": "Compra de casa en 2030"
+        "titulo": "House plan"
+      },
+      {
+        "id": "retirement_2044",
+        "anio": 2044,
+        "titulo": "Retire target"
       }
     ],
     "palancas": [
@@ -179,17 +179,17 @@
     "aviso": "Simulador ilustrativo: muestra la dirección del cambio, no una proyección de Sherpas."
   },
   "siguiente_paso": {
-    "titulo": "Añadir seguro de hogar en la residencia principal",
-    "razon": "Es el movimiento mejor valorado del plan y cierra un hueco de cobertura que deja el mayor activo expuesto; confirmar o comprar esta póliza evita que una reclamación os obligue a vender inversiones.",
+    "titulo": "Añadir seguro de propietarios",
+    "razon": "La acción más recomendada del plan es cerrar la brecha de cobertura en vuestra vivienda principal porque la casa y el coche aparecen sin seguro y una reclamación os obligaría a usar ahorros destinados a la universidad o la jubilación.",
     "minutos": 30,
     "pasos": [
-      "Revisad la documentación actual o llamad a vuestra aseguradora para confirmar si la residencia principal ya está cubierta.",
-      "Si no está cubierta, pedid una cotización de seguro de hogar por el valor de la casa y comparadla con otra aseguradora.",
-      "Comprad la póliza que mejor encaje y guardad la hoja de declaración en vuestros papeles; añadid la prima anual al presupuesto del mes que viene."
+      "Busca los documentos de la póliza de hogar actual o entra en la cuenta de tu aseguradora para confirmar la cobertura",
+      "Si no hay póliza, llama a dos aseguradoras para pedir precios y pregunta por añadir el umbrella existente encima",
+      "Elige la póliza con cobertura comparable y apunta la prima anual en tu presupuesto"
     ],
     "acciones": {
-      "calendario_url": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=A%C3%B1adir%20seguro%20de%20hogar%20en%20la%20residencia%20principal&dates=20261119/20261120&details=Recordatorio%20de%20tu%20plan%20Sherpas",
-      "asesor_url": "mailto:asesor@example.com?subject=Quiero%20hablar%20de%20mi%20plan&body=Hola%2C%20he%20visto%20mi%20plan%20y%20quiero%20ayuda%20con%20este%20paso%3A%20A%C3%B1adir%20seguro%20de%20hogar%20en%20la%20residencia%20principal"
+      "recordatorios_url": "/recordatorios/samantha-lewis.ics?idioma=es",
+      "asesor_url": "mailto:asesor@example.com?subject=Quiero%20hablar%20de%20mi%20plan&body=Hola%2C%20he%20visto%20mi%20plan%20y%20quiero%20ayuda%20con%20este%20paso%3A%20A%C3%B1adir%20seguro%20de%20propietarios"
     }
   },
   "fallback": false

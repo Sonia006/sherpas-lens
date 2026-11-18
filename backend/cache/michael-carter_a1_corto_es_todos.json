@@ -5,41 +5,41 @@
   "tiempo": "corto",
   "idioma": "es",
   "num_tarjetas": 5,
-  "frase_inicial": "Michael: vamos paso a paso — haz hoy una tarea pequeña de dinero y seguimos desde ahí",
+  "frase_inicial": "Michael: vayamos paso a paso para proteger vuestro colchón para la casa y la jubilación",
   "tarjetas": [
     {
       "id": "t1",
-      "frente": "El colchón para imprevistos necesita atención",
-      "reverso": "El efectivo en el banco cubre unas tres meses. Con la casa y las vacaciones planeadas para enero de 2027, os quedaríais sin colchón. Empieza separando ya el dinero para esas metas para que no se gaste por error.",
-      "detalle": "Accessible cash today: $30,000. Shortfall to 5–6 month cushion: $16,530. Short-term goals cash need (Jan 2027): $116,800.",
+      "frente": "Poco efectivo en enero 2027",
+      "reverso": "Si apartas el pago inicial y las vacaciones del mismo sitio donde pagas las cuentas diarias, quizá tengas que vender inversiones o pedir prestado. Empieza por separar el dinero que es solo para la casa.",
+      "detalle": "Current accessible cash $30,000; short-term needs for home + vacation $116,800; adjusted cash target $163,330–$172,636.",
       "meta_id": "casa_2027"
     },
     {
       "id": "t2",
-      "frente": "La jubilación tiene un hueco a vigilar",
-      "reverso": "Si no cambia nada, las reservas podrían acabarse antes de lo previsto. Por eso hay que valorar ahorrar más frente a la decisión de la casa. Primero, confirma cuánto quieres dejar para la jubilación y cuánto para la entrada.",
-      "detalle": "Retirement planning gap in today's dollars: $1,177,586. Savings projected to run out at age 85; planned retirement age 58.",
+      "frente": "La jubilación puede no llegar",
+      "reverso": "Con el plan actual, los ahorros se agotarán antes de que termine vuestro horizonte, así que parte del gasto futuro quedaría sin cubrir a menos que ahorréis más o cambiéis las fechas.",
+      "detalle": "Savings projected to run out at age 85; retirement gap ~ $1,177,586; required extra savings about $20,231/yr.",
       "meta_id": null
     },
     {
       "id": "t3",
-      "frente": "Merece revisar el seguro de vida y la cobertura extra",
-      "reverso": "Tu seguro de vida y el seguro extra están por debajo de lo recomendado, y eso puede dejar los ahorros desprotegidos si pasa algo. Hoy mismo comprueba las pólizas y quiénes aparecen como beneficiarios.",
-      "detalle": "Recorded life insurance: $180,000. Recommended minimum range: $900,000 to $1,800,000. No umbrella recorded; recommended $1,000,000.",
+      "frente": "Protección vital y de responsabilidad",
+      "reverso": "La cobertura de vida actual y la falta de seguro extra os dejan la renta y los ahorros expuestos si pasa algo. Primero comprobad el seguro del coche y luego mirad añadir la cobertura extra.",
+      "detalle": "Life insurance $180,000; recommended minimum $900,000. Umbrella gap $1,000,000.",
       "meta_id": null
     },
     {
       "id": "t4",
-      "frente": "La tarjeta de crédito es la deuda más cara",
-      "reverso": "Esa tarjeta paga el interés más alto y consume efectivo. Pagar un poco más cada mes adelanta el final y libera dinero luego; compáralo con lo que necesitas guardar para la casa.",
-      "detalle": "Credit card balance: $3,500 at 20% APR; current monthly payment $200; projected payoff July 2028 if unchanged.",
+      "frente": "La tarjeta es la deuda más cara",
+      "reverso": "Esa tarjeta es la que más os cuesta mantener. Pagarla antes reduce los intereses mensuales, pero compite con juntar el dinero de la casa y ahorrar para la jubilación.",
+      "detalle": "Amex balance $3,500 at 20% APR, $200 monthly payment, projected payoff July 2028.",
       "meta_id": null
     },
     {
       "id": "t5",
-      "frente": "Tu hábito de ahorrar es una fortaleza",
-      "reverso": "Ahorráis mucho cada año y aprovecháis la contribución de la empresa. Eso da opciones: reconstruir efectivo, cambiar dónde ahorráis, o retrasar parte del plan de la casa—una decisión pequeña a la vez.",
-      "detalle": "Annual savings including employer match: $43,000; employer match captured: $7,000.",
+      "frente": "Tu hábito de ahorro ayuda mucho",
+      "reverso": "Ya ahorráis de forma constante y aprovecháis la aportación de la empresa. Eso os da opciones: reconstruir el colchón, bajar un poco el ritmo de ahorro a largo plazo, o cambiar inversiones después de decidir sobre la casa.",
+      "detalle": "You save $43,000/year including $7,000 employer match; 401(k) contributions active.",
       "meta_id": null
     }
   ],
@@ -75,7 +75,7 @@
     "movimientos": [
       {
         "title": "Añadir seguro extra por si os reclaman una cantidad muy grande",
-        "action": "Añadir $1M de seguro extra para subir la cobertura ante responsabilidades",
+        "action": "Añadir $1M de seguro extra para aumentar la protección por responsabilidad",
         "effort": "bajo",
         "target_amount": 1000000,
         "score_before": 26,
@@ -83,8 +83,8 @@
         "lifts_a_cap": false
       },
       {
-        "title": "Bajar la tasa de retirada",
-        "action": "Reducir las retiradas a $10,300/año (6.0%) para situarse en la banda sostenible",
+        "title": "Reducir la tasa de retirada",
+        "action": "Reducir las retiradas a $10,300/al año (6.0%) para entrar en la banda sostenible",
         "effort": "alto",
         "target_amount": 10300,
         "score_before": 26,
@@ -92,8 +92,8 @@
         "lifts_a_cap": false
       },
       {
-        "title": "Aumentar la asignación hacia crecimiento según la trayectoria",
-        "action": "Mover la mezcla invertida de 74% a 88% en crecimiento (trayectoria 98%) para la próxima banda adecuada para el horizonte — unos $19,900 del patrimonio invertido",
+        "title": "Aumentar la asignación a crecimiento hacia la guía",
+        "action": "Mover la mezcla invertida de 74% a 88% en crecimiento (guía 98%) para la siguiente banda adecuada — unos $19,900 del patrimonio invertido",
         "effort": "alto",
         "target_amount": 19900,
         "score_before": 26,
@@ -107,17 +107,17 @@
       {
         "id": "casa_2027",
         "anio": 2027,
-        "titulo": "Purchase a home in January 2027"
+        "titulo": "Comprar casa"
       },
       {
         "id": "vacation_2027",
         "anio": 2027,
-        "titulo": "Take the planned vacation in January 2027"
+        "titulo": "Vacaciones"
       },
       {
         "id": "retire_2047",
         "anio": 2047,
-        "titulo": "Michael's retirement target (age 58)"
+        "titulo": "Jubilarse"
       }
     ],
     "palancas": [
@@ -144,17 +144,17 @@
     "aviso": "Simulador ilustrativo: muestra la dirección del cambio, no una proyección de Sherpas."
   },
   "siguiente_paso": {
-    "titulo": "Añadir seguro extra por si os reclaman una cantidad muy grande",
-    "razon": "El plan no muestra seguro extra y recomienda añadirlo para proteger vuestros activos líquidos y patrimonio. Poner ese seguro mejora la protección y cierra una brecha clara.",
-    "minutos": 15,
+    "titulo": "Añadir seguro extra",
+    "razon": "Un seguro de responsabilidad amplia aumenta vuestra protección rápido y protege el colchón y los ahorros si os reclaman mucho, algo importante antes de comprar la casa.",
+    "minutos": 10,
     "pasos": [
-      "Busca el contacto de vuestro seguro de coche o de inquilinos (teléfono o app).",
-      "Pregunta: ¿tengo un seguro extra y podéis darme precio para $1,000,000 de cobertura?",
-      "Si la cotización es asequible, inicia la póliza hoy o agenda una breve llamada para contratarla."
+      "Abre la app de la aseguradora o llama a la compañía del seguro de alquiler",
+      "Pide un presupuesto para una póliza de responsabilidad extra de $1,000,000 que complemente tu seguro",
+      "Guarda el presupuesto y la comparación para decidirlo con vuestro presupuesto"
     ],
     "acciones": {
-      "calendario_url": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=A%C3%B1adir%20seguro%20extra%20por%20si%20os%20reclaman%20una%20cantidad%20muy%20grande&dates=20261119/20261120&details=Recordatorio%20de%20tu%20plan%20Sherpas",
-      "asesor_url": "mailto:asesor@example.com?subject=Quiero%20hablar%20de%20mi%20plan&body=Hola%2C%20he%20visto%20mi%20plan%20y%20quiero%20ayuda%20con%20este%20paso%3A%20A%C3%B1adir%20seguro%20extra%20por%20si%20os%20reclaman%20una%20cantidad%20muy%20grande"
+      "recordatorios_url": "/recordatorios/michael-carter.ics?idioma=es",
+      "asesor_url": "mailto:asesor@example.com?subject=Quiero%20hablar%20de%20mi%20plan&body=Hola%2C%20he%20visto%20mi%20plan%20y%20quiero%20ayuda%20con%20este%20paso%3A%20A%C3%B1adir%20seguro%20extra"
     }
   },
   "fallback": false

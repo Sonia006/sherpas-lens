@@ -29,8 +29,8 @@
   "top_moves": [
     {
       "title": "Cerrar una brecha de cobertura",
-      "action": "Agregar el seguro de hogar en la vivienda principal para que la integridad de la cobertura cierre esa brecha",
-      "effort": "media",
+      "action": "Añadir seguro de hogar en la vivienda principal para cerrar esa brecha de cobertura",
+      "effort": "medio",
       "target_amount": null,
       "score_before": 82,
       "score_after": 84,
@@ -38,17 +38,17 @@
     },
     {
       "title": "Reducir la concentración en un solo activo",
-      "action": "Bajar VTI del 39% al 25% del patrimonio invertible para la siguiente banda de concentración — unos $58,300 de esa línea",
-      "effort": "alta",
+      "action": "Bajar VTI del 39% al 25% del dinero invertible para la siguiente banda de concentración — unos $58,300 de esa línea",
+      "effort": "alto",
       "target_amount": 58300,
       "score_before": 82,
       "score_after": 83,
       "lifts_a_cap": false
     },
     {
-      "title": "Reducir la asignación de crecimiento hacia la transición",
-      "action": "Mover la mezcla invertida del 85% al 80% en crecimiento (transición 80%) para la siguiente banda de horizonte — unos $17,100 del libro invertido",
-      "effort": "alta",
+      "title": "Reducir la asignación de crecimiento hacia la trayectoria",
+      "action": "Mover la mezcla invertida del 85% al 80% en crecimiento (trayectoria 80%) para la siguiente banda adecuada al horizonte — unos $17,100 del libro invertido",
+      "effort": "alto",
       "target_amount": 17100,
       "score_before": 82,
       "score_after": 83,
