@@ -17,13 +17,15 @@ import json
 import logging
 import os
 import re
-from datetime import date, timedelta
+import copy
+import random
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Literal
 from urllib.parse import quote
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, Header, HTTPException, Path as FPath
+from fastapi import FastAPI, Header, HTTPException, Path as FPath, Response
 from fastapi.middleware.cors import CORSMiddleware
 from openai import AsyncOpenAI
 from pydantic import BaseModel, Field
@@ -39,11 +41,13 @@ LLM_API_KEY = os.getenv("TEAM_KEY") or os.getenv("GROQ_API_KEY") or "missing"
 LLM_MODEL = os.getenv("LLM_MODEL", "gpt-5-mini")
 ADVISOR_EMAIL = os.getenv("ASESOR_EMAIL", "asesor@example.com")
 ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "")
+APP_URL = os.getenv("APP_URL", "")  # enlace a la app que llevan los recordatorios
 PLAN_MODE = os.getenv("PLAN_MODE", "full")  # "full" = informes completos, "lean" = solo secciones clave
 CACHE_DIR = Path(os.getenv("CACHE_DIR", "cache"))
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 CASES = ["timothy-melanie-weah", "michael-carter", "daniel-emily-johnson", "samantha-lewis"]
+BASE_LANG = "en"  # idioma en el que se genera; el resto se traduce
 CASE_PATTERN = r"^[a-z0-9-]{3,60}$"  # evita rutas raras 
 
 llm = AsyncOpenAI(base_url=LLM_BASE_URL, api_key=LLM_API_KEY, timeout=90, max_retries=0)
@@ -142,6 +146,15 @@ TEXTS = {
         "fallback_front": "Tu plan está listo",
         "fallback_back": "Habla con tu asesor para verlo juntos.",
         "chat_error": "Ahora mismo no puedo responder. Tu asesor puede ayudarte con esto.",
+        "family": "la familia",
+        "goal_names": {"VACATION": "Ir de vacaciones", "VEHICLE_PURCHASE": "Comprar un vehículo",
+                       "REAL_ESTATE_PURCHASE": "Comprar una casa", "COLLEGE": "Universidad de {who}",
+                       "RETIREMENT": "Jubilación de {who}"},
+        "ics": {"cal_name": "Mis metas con Sherpas", "open": "Abre tu plan y revisa el siguiente paso.",
+                "when": {365: "falta 1 año", 180: "faltan 6 meses", 30: "falta 1 mes", 7: "falta 1 semana", 0: "es hoy"},
+                "nudges": ["Un pequeño paso hoy te acerca a esta meta.",
+                           "Echa un vistazo a tu plan: ¿sigue siendo la meta de siempre?",
+                           "Cinco minutos con tu plan hoy te lo ponen más fácil mañana."]},
     },
     "en": {
         "mood": {1: "very overwhelmed", 2: "worried", 3: "neutral", 4: "confident", 5: "very confident"},
@@ -162,6 +175,15 @@ TEXTS = {
         "fallback_front": "Your plan is ready",
         "fallback_back": "Talk to your advisor to go through it together.",
         "chat_error": "I can't answer right now. Your advisor can help you with this.",
+        "family": "the family",
+        "goal_names": {"VACATION": "Go on vacation", "VEHICLE_PURCHASE": "Buy a vehicle",
+                       "REAL_ESTATE_PURCHASE": "Buy a home", "COLLEGE": "{who}'s college",
+                       "RETIREMENT": "{who}'s retirement"},
+        "ics": {"cal_name": "My goals with Sherpas", "open": "Open your plan and check the next step.",
+                "when": {365: "1 year to go", 180: "6 months to go", 30: "1 month to go", 7: "1 week to go", 0: "it's today"},
+                "nudges": ["A small step today brings this goal closer.",
+                           "Take a look at your plan: is this still the goal you want?",
+                           "Five minutes with your plan today make tomorrow easier."]},
     },
 }
 
@@ -270,8 +292,9 @@ def extract_persona(md: str) -> str:
 def _slug(s: str | None) -> str:
     return re.sub(r"[^a-z0-9]", "", (s or "").lower())[:20] or "todos"
 
-def cache_key(case_id, mood, duration, language, persona) -> str:
-    return f"{case_id}_a{mood}_{duration}_{language}_{_slug(persona)}"
+def cache_key(case_id, mood, duration, language, persona, partner_mood=None) -> str:
+    extra = f"_p{partner_mood}" if partner_mood else ""
+    return f"{case_id}_a{mood}_{duration}_{language}_{_slug(persona)}{extra}"
 
 def read_cache(key: str):
     f = CACHE_DIR / f"{key}.json"
@@ -295,23 +318,34 @@ class SummaryRequest(BaseModel):
     persona: str | None = Field(default=None, max_length=40)  # "Melanie" en parejas
     idioma: Literal["es", "en"] = "en"
     regenerar: bool = False                             # ignora la cache
+    animo_pareja: int | None = Field(default=None, ge=1, le=5)
+    nombres: list[str] | None = Field(default=None, max_length=2)
+    @property
+    def animo_efectivo(self) -> int:
+        """El tono y el numero de tarjetas se adaptan a quien se siente peor."""
+        return min(self.animo, self.animo_pareja) if self.animo_pareja else self.animo
 
 # clase para el chatbot
 class Message(BaseModel):
     role: Literal["user", "assistant"]
     content: str = Field(max_length=2000)
 
-# 
+
 class ChatRequest(BaseModel):
     case_id: str = Field(pattern=CASE_PATTERN)
     animo: int = Field(default=3, ge=1, le=5)
     persona: str | None = Field(default=None, max_length=40)
     idioma: Literal["es", "en"] = "en"
     mensajes: list[Message] = Field(min_length=1, max_length=30)
+    animo_pareja: int | None = Field(default=None, ge=1, le=5)
+    nombres: list[str] | None = Field(default=None, max_length=2)
+    @property
+    def animo_efectivo(self) -> int:
+        return min(self.animo, self.animo_pareja) if self.animo_pareja else self.animo
 
 
 
-# Prompts
+# Prompts--------------------------------------------------------------------------------------------------------------------------------------------
 LANGUAGES = {"es": "espanol (tuteo, nombres de pila)", "en": "English (friendly, first names)"}
 
 LANGUAGE_RULE = {
@@ -332,6 +366,14 @@ COMMON_RULES = """REGLAS ESTRICTAS
 - No muestres etiquetas internas del perfil: nada de "perfil ansioso", "D4", "O1" ni "T1".
 </fuentes>
 
+<nivel_de_lenguaje>
+- El vocabulario es el MISMO en los cinco estados de ánimo y en TODOS los campos, "detalle" incluido. El ánimo cambia la calidez, la longitud y el orden, nunca el nivel técnico. Un cliente muy seguro de sí mismo sigue necesitando palabras de andar por casa.
+- El plan está escrito para asesores. No copies sus expresiones técnicas, sus siglas ni la redacción de sus acciones: tradúcelas siempre.
+- Prueba: si una palabra no se diría en una conversación en la cocina, cámbiala por otra.
+- Cero siglas y cero nombres de productos financieros en ningún campo: ni 401(k), ni 529, ni umbrella, ni IRA, HSA, Roth, ETF, VTI, broker, equity, ratio... Explica siempre qué es y para qué sirve con palabras normales.
+- Explica el "qué hay que hacer" y el "por qué" de forma directa, para que una familia sin estudios financieros lo entienda al primer vistazo.
+</nivel_de_lenguaje>
+
 <cifras>
 Las cifras apagan la atención. La frase inicial, los frentes, los reversos y el siguiente paso NO llevan importes, porcentajes, ratios ni puntuaciones. Di lo mismo así:
 - Comparación: "bastante más de lo que haría falta", "casi todo lo que tenéis está en la casa".
@@ -343,10 +385,9 @@ No calcules cifras nuevas. Si dos cifras del plan no coinciden o miden cosas dis
 </cifras>
 
 <lenguaje>
-- PROHIBIDA la jerga financiera o bancaria: exposición, ratio, activos, liquidez, cobertura, rentabilidad, "optimizar". No uses ningún término técnico (401(k), 529, umbrella...) sin explicar antes para qué sirve.
+- PROHIBIDA la jerga financiera o bancaria: exposición, ratio, activos, liquidez, cobertura, rentabilidad, "optimizar". No uses ningún término técnico (401(k), 529, umbrella...).
 - Traduce a lenguaje de andar por casa. Ejemplos: "colchón para imprevistos" (fondo de emergencia); "seguro extra por si te reclaman una cantidad muy grande (umbrella)"; "el plan de ahorro para la jubilación de tu empresa (401(k))"; "el ahorro para la universidad de los niños (529)"; "la parte de la casa que ya es vuestra" (equity); "la tarjeta es la deuda que más cuesta de mantener"; "tenéis más ahorro parado de lo que haría falta; parte podría trabajar para vosotros" (exceso de reserva). Los ratios de deuda no se mencionan: di solo si la deuda aprieta o no.
 - Frases cortas, una idea por frase, verbos concretos: pagar, apartar, comprobar, elegir, mantener. Di quién hace qué y cómo le afecta.
-- Explica el "qué hay que hacer" y el "por qué" de forma directa, para que una familia sin estudios financieros lo entienda al primer vistazo.
 </lenguaje>
 
 <psicologia>
@@ -362,7 +403,25 @@ No calcules cifras nuevas. Si dos cifras del plan no coinciden o miden cosas dis
 - Jubilación: distingue dinero que ya hay de ingresos futuros estimados. Deuda: distingue lo que se debe, lo que cuesta y lo que se paga ahora. Ahorro: distingue dinero en cuenta, colchón necesario y dinero libre tras los gastos previstos (mucho colchón es una oportunidad; poco, un riesgo). Seguros: di quién o qué quedaría desprotegido; si el plan dice que algo "aparece sin asegurar en los datos", pide comprobarlo, no afirmes que no lo tiene. Inversiones: cuándo podría necesitarse ese dinero. Metas: relaciona cada fecha con su objetivo.
 - Distingue "hoy", "el plan recomienda" y "el plan estima que, si...". Un saldo cero no prueba falta de ingresos.
 - La puntuación es una nota del diagnóstico, nunca un porcentaje de éxito. Un efecto de varias medidas juntas no se atribuye a una sola. No prometas subidas de puntos.
-</contenido>"""
+</contenido>
+
+<variedad>
+Las tarjetas se leen una detrás de otra: si todas suenan igual, la persona deja de leer.
+- Cada tarjeta usa un ÁNGULO distinto. Reparte entre estos según lo que el plan permita: algo que ya funciona; un riesgo con su salida; una meta con fecha y el dinero de hoy; una decisión entre dos caminos; algo que conviene comprobar; la explicación de algo del plan que la familia no entendería sola.
+- El frente nombra el tema concreto de esta familia (por ejemplo, la universidad de Ethan, la tarjeta, la casa de 2030), nunca una etiqueta genérica. Dos frentes no pueden empezar con las mismas palabras ni compartir fórmula.
+- Prohibido repetir muletillas entre tarjetas ("una cosa que merece atención", "hay algo que...", "conviene que...", "te ayuda a..."). Si una expresión ya salió, busca otra forma de decirlo.
+- Varía también la forma de los reversos: uno puede abrir con una escena ("si mañana..."), otro con la fecha de la meta, otro con una pregunta, otro con el dato clave. No uses el mismo esquema "problema + solución" en todas.
+- Usa los nombres de pila y los datos de la familia (hijos, metas, profesión, casa) para personalizar. Una frase que podría valer para cualquier familia está mal: reescríbela con algo propio de esta.
+</variedad>
+
+<sentido>
+- Cada frase debe poder explicarse con un hecho del plan. Escribe solo consecuencias que el plan sostiene; no inventes causas ("decidir X evita que se agote Y") ni efectos que el plan no menciona.
+- Cada reverso responde, sin decirlo así: qué ocurre, por qué le importa a esta familia y qué se puede hacer. Si el reverso solo repite el frente con otras palabras, está mal.
+- Si el plan trae un dato dudoso, contradictorio o que parece un error, no lo conviertas en tarjeta ni en cifra; omítelo.
+- Relee cada tarjeta como la leería alguien sin conocimientos: si hay que adivinar qué significa, reescríbela más simple.
+</sentido>
+
+"""
 
 SCHEMA = json.dumps({
     "frase_inicial": "Gancho con el nombre de la persona o familia y lo que está en juego (máx. según el tono). SIN cifras ni signos de exclamación",
@@ -382,19 +441,32 @@ SCHEMA = json.dumps({
     },
 }, ensure_ascii=False, indent=2)
 
+def audience(req) -> tuple[str, str]:
+    """Quien lee (frase para el prompt) y, en parejas, el bloque con la regla del paso comun."""
+    if not req.animo_pareja:
+        return (f"Habla con {req.persona}." if req.persona else "Habla con la familia."), ""
+    names = " y ".join(req.nombres) if req.nombres else "la pareja"
+    who = f"Hablas con {names}, que hacen el recorrido JUNTOS."
+    couple = f"""
+    PAREJA: cada uno se siente distinto hoy (animo {req.animo}/5 y {req.animo_pareja}/5; no lo menciones tal cual).
+    - Usa el tono del que se siente peor y habla siempre en plural ("vosotros" / "you both").
+    - El "siguiente_paso" debe ser UN primer paso COMUN, bueno para los dos: pequeno, facil de empezar juntos y que ninguno viva como una carga. Elígelo entre score.top_moves.
+    - No atribuyas culpa ni reproches a ninguno de los dos en las tarjetas.
+    """
+    return who, couple
 
 def summary_prompt(req: SummaryRequest, ctx: dict, n: int) -> list[dict]:
-    label, tone = TONES[req.animo]
-    who = f"Habla con {req.persona}." if req.persona else "Habla con la familia."
+    label, tone = TONES[req.animo_efectivo]
+    who, couple = audience(req)
     levers_list = "\n".join(f'- "{k}": {v["etiqueta"]}' for k, v in LEVERS.items())
     system = f"""Eres el redactor de 'Sherpas Lens'. Escribes la primera pantalla que ve, en el móvil, una familia de EE. UU. sin estudios financieros, a veces con poca energía para esto. Al terminar debe poder decir con sus palabras qué le pasa a su dinero, por qué le afecta y qué hace primero, y debe querer seguir leyendo.
 
 {who} Idioma: {LANGUAGES[req.idioma]}.
-Hoy el cliente se siente: {label} (animo {req.animo}/5, no lo menciones tal cual).
+Hoy el cliente se siente: {label} (animo {req.animo_efectivo}/5, no lo menciones tal cual).
 TONO: {tone}
 
 {COMMON_RULES}
-
+{couple}
 {LANGUAGE_RULE[req.idioma]}"""
     user = f"""<plan>
 {ctx['plan']}
@@ -418,7 +490,7 @@ SIGUIENTE PASO (siguiente_paso): elige uno de los movimientos de score.top_moves
 - Una cantidad que el plan ya paga o tiene (por ejemplo, un pago mensual actual) es la situacion de hoy, nunca un extra.
 
 Genera el resumen con EXACTAMENTE {n} tarjetas (idea corta al frente, explicacion al reverso).
-Ordena las tarjetas de lo mas importante a lo menos. Anade 3-5 hitos con fechas reales del plan.
+Ordena las tarjetas de lo mas importante a lo menos. Anade 3-5 hitos(con no mas de 3 palabras) con fechas reales del plan.
 Elige 2-3 palancas SOLO de esta lista:
 {levers_list}
 
@@ -500,7 +572,7 @@ def normalize(raw: dict, req: SummaryRequest, n: int, score, score_block=None) -
     return {
         "case_id": req.case_id,
         "animo": req.animo,
-        "tono": TEXTS[req.idioma]["mood"][req.animo],
+        "tono": TEXTS[req.idioma]["mood"][req.animo_efectivo],
         "tiempo": req.tiempo,
         "idioma": req.idioma,
         "num_tarjetas": len(cards),
@@ -530,7 +602,7 @@ def fallback_summary(req: SummaryRequest) -> dict:
     texts = TEXTS[req.idioma]
     step = texts["fallback_step"]
     return {
-        "case_id": req.case_id, "animo": req.animo, "tono": texts["mood"][req.animo], "tiempo": req.tiempo, "idioma": req.idioma,
+        "case_id": req.case_id, "animo": req.animo, "tono": texts["mood"][req.animo_efectivo], "tiempo": req.tiempo, "idioma": req.idioma,
         "num_tarjetas": 1,
         "frase_inicial": texts["fallback_intro"],
         "tarjetas": [{"id": "t1", "frente": texts["fallback_front"], "reverso": texts["fallback_back"],
@@ -560,9 +632,7 @@ async def map_texts(case_id, block, language):
                 model=LLM_MODEL,
                 reasoning_effort="minimal",
                 messages=[
-                    {"role": "system", "content": "Traduce al español sencillo y sin jerga financiera los textos de este JSON. "
-                     "Devuelve el mismo JSON, con las mismas claves, el mismo orden y los mismos números; traduce solo los valores de texto. "
-                     "Los nombres dentro de 'moves' deben coincidir con los 'title' traducidos."},
+                    {"role": "system", "content": "Adapta al español sencillo y natural, sin jerga financiera y sin calcos del inglés, los textos de este JSON. Vocabulario fijo: " + GLOSSARY + ". "},
                     {"role": "user", "content": json.dumps(src, ensure_ascii=False)},
                 ],
                 response_format={"type": "json_object"},
@@ -576,17 +646,104 @@ async def map_texts(case_id, block, language):
             log.warning("Traduccion del mapa fallida (%s): %s", case_id, e)
         return block
 
+GLOSSARY = ("emergency fund / cash reserve = colchón para imprevistos; life insurance = seguro de vida; "
+            "umbrella insurance = seguro extra por si os reclaman una cantidad muy grande; "
+            "401(k) = plan de ahorro para la jubilación de la empresa; 529 = ahorro para la universidad de los niños; "
+            "home equity = la parte de la casa que ya es vuestra; credit card debt = la deuda de la tarjeta; "
+            "goal = meta; next step = siguiente paso")
+
+TRANSLATE_RULES = """You adapt a short financial-plan summary from English into {language}. This is NOT a literal translation: rewrite each text the way a warm, clear person would say it in a kitchen conversation with a family that has no financial training.
+
+READER: a family in the US. Today they feel "{mood}": let that set the warmth of the wording, and never mention it.
+
+HOW TO ADAPT
+- Translate the meaning, not the words. Rephrase and reorder freely inside each field, as long as the facts stay the same and each sentence keeps one idea.
+- Avoid calques and stiff phrasing. Examples: "you're on track" -> "vais por buen camino" (not "estáis en la pista"); "put your cash to work" -> "que ese dinero trabaje para vosotros"; "a cushion for surprises" -> "un colchón para imprevistos".
+- Short sentences and everyday verbs (pagar, apartar, comprobar, elegir, mantener). No bank or finance jargon, no acronyms.
+- Register: tú for one person, vosotros for two or more.
+- Use this vocabulary every time: {glossary}.
+
+KEEP EXACTLY: names, years, dates, numbers, currency symbols and amounts (write $6,800 as "$6,800"), account names, JSON keys, and the order and number of items. Empty strings stay empty.
+LENGTH: the translation runs longer by default. Keep each text within about 10% of the word count of the English original: cut filler, never meaning.
+Do not add, remove or soften facts, and do not add notes or explanations."""
+
+LANGUAGE_NAMES = {"es": "Spanish (informal 'tú', plain everyday words)", "en": "English"}
+
+# Traduce un resumen ya generado en BASE_LANG: mucho mas rapido que generarlo de nuevo
+async def translate_summary(base: dict, req: SummaryRequest, ctx: dict) -> dict:
+    lang, texts = req.idioma, TEXTS[req.idioma]
+    step = base["siguiente_paso"]
+    src = {
+        "frase_inicial": base["frase_inicial"],
+        "tarjetas": [{k: t[k] for k in ("frente", "reverso", "detalle")} for t in base["tarjetas"]],
+        "hitos": [h["titulo"] for h in base["mapa"]["hitos"]],
+        "siguiente_paso": {k: step[k] for k in ("titulo", "razon", "pasos")},
+    }
+    system = TRANSLATE_RULES.format(language=LANGUAGE_NAMES[lang], mood=texts["mood"][req.animo_efectivo], glossary=GLOSSARY)
+
+    block_task = asyncio.create_task(map_texts(req.case_id, ctx["score_block"], lang))
+    last_error = None
+    for attempt in (1, 2):
+        try:
+            resp = await llm.chat.completions.create(
+                model=LLM_MODEL,
+                reasoning_effort="minimal",
+                messages=[{"role": "system", "content": system},
+                          {"role": "user", "content": json.dumps(src, ensure_ascii=False)}],
+                response_format={"type": "json_object"},
+            )
+            out = json.loads(resp.choices[0].message.content)
+            sp = out["siguiente_paso"]
+            if (len(out["tarjetas"]) != len(src["tarjetas"]) or len(out["hitos"]) != len(src["hitos"])
+                    or len(sp["pasos"]) != len(step["pasos"]) or not str(out["frase_inicial"]).strip()):
+                raise ValueError("La traduccion no conserva la estructura")
+            break
+        except Exception as e:
+            last_error = e
+            log.warning("Traduccion del resumen fallida, intento %s: %r", attempt, e)
+            await asyncio.sleep(0.5)
+    else:
+        raise RuntimeError(f"No se pudo traducir el resumen: {last_error}")
+
+    block = await block_task
+    block = block if isinstance(block, dict) else {}
+    result = copy.deepcopy(base)
+    result.update(idioma=lang, tono=texts["mood"][req.animo_efectivo], frase_inicial=str(out["frase_inicial"]).strip())
+    for c, t in zip(result["tarjetas"], out["tarjetas"]):
+        for k in ("frente", "reverso", "detalle"):
+            c[k] = str(t.get(k) or "").strip()
+    for h, title in zip(result["mapa"]["hitos"], out["hitos"]):
+        h["titulo"] = str(title).strip()
+    title = str(sp.get("titulo") or texts["default_step"]).strip()
+    result["siguiente_paso"].update(
+        titulo=title, razon=str(sp.get("razon") or "").strip(),
+        pasos=[str(p).strip() for p in sp["pasos"]],
+        acciones={"calendario_url": calendar_link(title, lang), "asesor_url": advisor_link(title, lang)})
+    result["mapa"].update(
+        pilares=block.get("pillars") or [], movimientos=block.get("top_moves") or [],
+        combinaciones=block.get("combined_moves") or [], limites=block.get("caps_applied") or [],
+        palancas=build_levers([p["id"] for p in base["mapa"]["palancas"]], lang),
+        aviso=texts["notice"])
+    return result
+
 
 # Generacion
 async def build_summary(req: SummaryRequest) -> dict:
-    key = cache_key(req.case_id, req.animo, req.tiempo, req.idioma, req.persona)
+    key = cache_key(req.case_id, req.animo, req.tiempo, req.idioma, req.persona, req.animo_pareja)
     if not req.regenerar:
         cached = read_cache(key)
         if cached:
             return cached
 
     ctx = await case_context(req.case_id)
-    n = num_cards(req.animo, req.tiempo)
+
+    if req.idioma != BASE_LANG:
+        base = await build_summary(req.model_copy(update={"idioma": BASE_LANG, "regenerar": False}))
+        result = await translate_summary(base, req, ctx)
+        save_cache(key, result)
+        return result
+        
+    n = num_cards(req.animo_efectivo, req.tiempo)
     last_error = None
     for attempt in (1, 2):
         try:
@@ -598,7 +755,6 @@ async def build_summary(req: SummaryRequest) -> dict:
                 response_format={"type": "json_object"},
             )
             raw = json.loads(resp.choices[0].message.content)
-            #result = normalize(raw, req, n, ctx["score"], ctx["score_block"])
             result = normalize(raw, req, n, ctx["score"], await map_texts(req.case_id, ctx["score_block"], req.idioma))
             save_cache(key, result)
             return result
@@ -619,21 +775,99 @@ async def generate_summary(req: SummaryRequest):
         log.error("Usando reserva: %s", e)
         return {"status": "fallback", "error": str(e)[:300], "resultado": fallback_summary(req)}
 
+# Recordatorios: un .ics con las metas reales del plan (un clic y el calendario avisa solo)
+def plan_goals(fh) -> list[dict]:
+    goals = []
+    for g in ((fh or {}).get("goals") or {}).get("chartGoals") or [] if isinstance(fh, dict) else []:
+        try:
+            day = datetime.fromisoformat(g["date"].replace("Z", "+00:00")).date()
+        except (KeyError, ValueError, AttributeError):
+            continue
+        goals.append({"date": day, "type": g.get("subType") or g.get("goalType"), "name": str(g.get("name") or "")})
+    return goals
 
+def goal_label(g: dict, lang: str) -> str:
+    texts = TEXTS[lang]
+    template = texts["goal_names"].get(g["type"])
+    if not template:
+        return g["name"]
+    name = g["name"]
+    who = name[:-len("'s Retirement")] if name.endswith("'s Retirement") else name.split(" ", 1)[1] if " " in name else ""
+    return template.format(who=who or texts["family"])
+
+def _ics_text(s: str) -> str:
+    return s.replace("\\", "\\\\").replace(";", "\\;").replace(",", "\\,").replace("\n", "\\n")
+
+def _fold(line: str) -> str:  # las lineas de un .ics no pasan de 75 bytes
+    parts, cur = [], ""
+    for ch in line:
+        if len((cur + ch).encode()) > (74 if parts else 75):
+            parts.append(cur)
+            cur = ch
+        else:
+            cur += ch
+    parts.append(cur)
+    return "\r\n ".join(parts)
+
+def build_ics(case_id: str, goals: list[dict], lang: str) -> str:
+    ics = TEXTS[lang]["ics"]
+    today = date.today()
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    rng = random.Random(case_id)
+    events = []
+
+    def add(uid, day, hour, summary, desc):
+        start = datetime(day.year, day.month, day.day, hour)
+        events.append(["BEGIN:VEVENT", f"UID:{uid}@sherpas-lens", f"DTSTAMP:{stamp}",
+                       f"DTSTART:{start:%Y%m%dT%H%M%S}", f"DTEND:{start + timedelta(minutes=15):%Y%m%dT%H%M%S}",
+                       f"SUMMARY:{_ics_text(summary)}", f"DESCRIPTION:{_ics_text(desc)}"]
+                      + ([f"URL:{APP_URL}"] if APP_URL else [])
+                      + ["BEGIN:VALARM", "ACTION:DISPLAY", f"DESCRIPTION:{_ics_text(summary)}", "TRIGGER:PT0S",
+                         "END:VALARM", "END:VEVENT"])
+
+    upcoming = [g for g in goals if g["date"] >= today]
+    for g in upcoming:  # avisos en las fechas reales de cada meta
+        label = goal_label(g, lang)
+        for days, when in ics["when"].items():
+            day = g["date"] - timedelta(days=days)
+            if day > today:
+                add(f"{case_id}-{g['date']}-{days}-{_slug(label)}", day, 9, f"{label}: {when}", ics["open"])
+    order = rng.sample(upcoming, len(upcoming))
+    for i in range(8 if upcoming else 0):  # avisos sueltos, repartidos al azar entre las metas
+        g = order[i % len(order)]
+        day = today + timedelta(days=3 + i * 10 + rng.randint(0, 3))
+        add(f"{case_id}-nudge-{day}-{i}", day, rng.randint(9, 19), f"{goal_label(g, lang)} · {g['date'].year}", rng.choice(ics["nudges"]))
+
+    lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Sherpas Lens//EN", "CALSCALE:GREGORIAN",
+             f"X-WR-CALNAME:{_ics_text(ics['cal_name'])}", "REFRESH-INTERVAL;VALUE=DURATION:P1D", "X-PUBLISHED-TTL:P1D"]
+    for ev in events:
+        lines += ev
+    lines.append("END:VCALENDAR")
+    return "\r\n".join(_fold(l) for l in lines) + "\r\n"
+
+
+@app.get("/recordatorios/{case_id}.ics")
+async def reminders(case_id: str = FPath(pattern=CASE_PATTERN), idioma: Literal["es", "en"] = "en"):
+    goals = plan_goals((await case_context(case_id))["_fh"])
+    if not goals:
+        raise HTTPException(404, "El plan no tiene metas con fecha")
+    return Response(build_ics(case_id, goals, idioma), media_type="text/calendar",
+                    headers={"Content-Disposition": f'attachment; filename="{case_id}.ics"'})
 
 # Chat con el plan
 @app.post("/chat")
 async def chat(req: ChatRequest):
     ctx = await case_context(req.case_id)
-    label, tone = TONES[req.animo]
-    who = f"Hablas con {req.persona}." if req.persona else "Hablas con un miembro de la familia."
+    label, tone = TONES[req.animo_efectivo]
+    who, couple = audience(req)
+    who = who.replace("Habla con", "Hablas con") if not req.animo_pareja else who
     system = f"""Eres el asistente de 'Sherpas Lens'. Respondes dudas sobre el plan financiero de esta familia.
 {who} Idioma: {LANGUAGES[req.idioma]}.
 TONO: {tone}
 
 {COMMON_RULES}
 - Responde SOLO con lo que dice el plan. Menciona de donde sale ("segun tu plan...").
-- Maximo 80 palabras. Frases cortas.
+- Maximo 80 palabras. Frases cortas.{couple}
 - Si la pregunta no se puede responder con el plan, o pide asesoramiento fiscal/legal/de inversion concreto,
   o toca algo delicado (muerte, salud, divorcio, mucha angustia), di que no puedes decidirlo por el
   y pon "derivar_asesor": true.
@@ -676,7 +910,7 @@ Devuelve EXCLUSIVAMENTE un JSON: {{"respuesta": "...", "derivar_asesor": false}}
 
 # Utilidades: precalcular y depurar
 @app.post("/precalcular")
-async def precompute(x_admin_token: str = Header(default=""), regenerar: bool = False, solo_es: bool = True):
+async def precompute(x_admin_token: str = Header(default=""), regenerar: bool = False, idiomas: str = "en,es"):
     """Genera 4 casos x 5 animos x 2 tiempos y los guarda en cache. Ejecurar antes de la demo."""
     if ADMIN_TOKEN and x_admin_token != ADMIN_TOKEN:
         raise HTTPException(401, "Falta X-Admin-Token")
@@ -684,16 +918,20 @@ async def precompute(x_admin_token: str = Header(default=""), regenerar: bool = 
     sem = asyncio.Semaphore(3)  # el proxy permite 4 peticiones concurrentes por equipo
     results = {"ok": 0, "errores": []}
 
-    async def run_one(case_id, mood, duration):
+    langs = sorted((l for l in idiomas.split(",") if l in TEXTS), key=lambda l: l != BASE_LANG)
+
+    async def run_one(case_id, mood, duration, lang):
         async with sem:
             try:
                 await build_summary(SummaryRequest(case_id=case_id, animo=mood, tiempo=duration,
-                                                   idioma="es", regenerar=regenerar))
+                                                   idioma=lang, regenerar=regenerar))
                 results["ok"] += 1
             except Exception as e:
                 results["errores"].append(f"{case_id} a{mood} {duration}: {e}")
 
-    await asyncio.gather(*[run_one(c, a, t) for c in CASES for a in range(1, 6) for t in ("corto", "completo")])
+    for lang in langs:  # primero el idioma base; los demas solo traducen
+        await asyncio.gather(*[run_one(c, a, t, lang) for c in CASES for a in range(1, 6) for t in ("corto", "completo")])
+
     return results
 
 
